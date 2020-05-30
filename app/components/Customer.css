@@ -1,3 +1,40 @@
 .container {
-  background-color: black;
+  padding-top: 30px;
+  height: 100%;
+  display: flex;
+}
+
+.btnContainer {
+  margin: auto;
+  width: 100%;
+}
+
+.btnContainer a {
+  display: block;
+  margin: 10px;
+}
+
+.container button {
+  font-family: serif;
+  border-radius: 3px;
+  filter: drop-shadow(1.5px 1.5px 1.5px black);
+  width: 140px;
+}
+
+.btnContainer a button:hover {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+.btnContainer a button:active {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.2);
+  transform: scale(0.97);
+  outline: 1px black;
+}
+
+.btnContainer a button:focus {
+  outline: thin;
 }
