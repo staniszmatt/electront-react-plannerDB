@@ -16,5 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "msnodesqlv8": "^1.1.5"
+  },
+  "devDependencies": {
+    "@types/redux-form": "^8.2.6"
   }
 }
