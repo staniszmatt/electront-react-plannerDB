@@ -5,7 +5,10 @@ import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as counterActions from '../actions/counter';
+// import * as customerActions from '../actions/customer';
 import { counterStateType } from '../reducers/types';
+// import { customerStateType } from '../reducers/customerTypes';
+
 
 declare global {
   interface Window {

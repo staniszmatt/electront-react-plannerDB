@@ -9,10 +9,12 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import customerList from './api/customerList';
+
 
 export default class AppUpdater {
   constructor() {
@@ -116,4 +118,16 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+ipcMain.on('asynchronous-message', async (event, arg) => {
+  console.log("Main Asyn arg", arg);
+  try {
+    const data = await customerList();
+    console.log("main request data", data);
+
+    event.sender.send('asynchronous-reply', data);
+  } catch (err) {
+    console.length("Error on ipcMain", err);
+  }
 });

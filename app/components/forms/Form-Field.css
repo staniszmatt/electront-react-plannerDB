@@ -1,0 +1,19 @@
+.form-container {
+  text-align: center;
+}
+
+.form-field {
+  margin: auto;
+}
+
+.form-container p {
+  color: red;
+}
+
+#input-label {
+  background-color: rgba(217, 225, 232, 0.750);
+  padding: 5px;
+  border-radius: 5px;
+  color: #2196F3;
+  border: 1px solid black;
+}

@@ -4,12 +4,7 @@
 }
 
 .btnContainer {
-  width: 160px;
-}
-
-.btnContainer a {
-  display: block;
-  margin: 10px;
+  width: 200px;
 }
 
 .container button {
@@ -17,15 +12,16 @@
   border-radius: 3px;
   filter: drop-shadow(1.5px 1.5px 1.5px black);
   width: 140px;
+  margin: 5px;
 }
 
-.btnContainer a button:hover {
+.btnContainer button:hover {
   background-color: cornflowerblue;
   cursor: pointer;
   transform: scale(1.01);
 }
 
-.btnContainer a button:active {
+.btnContainer button:active {
   background-color: cornflowerblue;
   cursor: pointer;
   box-shadow: 1px 1px rgba(255, 255, 255, 0.2);
@@ -33,6 +29,23 @@
   outline: 1px black;
 }
 
-.btnContainer a button:focus {
+.btnContainer button:focus {
   outline: thin;
+}
+
+.btnContainer form {
+  margin: 5px;
+}
+
+.btnContainer form .form-container {
+  width: 100%;
+}
+
+.btnContainer form .form-container label {
+  font-size: 15px;
+}
+
+.btnContainer form .form-container  input {
+  width: 100%;
+  padding: 2px;
 }

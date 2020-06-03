@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Counter.css';
 import routes from '../constants/routes.json';
+import { ProgressPlugin } from 'webpack';
 
 type Props = {
   increment: () => void;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function Counter(props: Props) {
+  console.log("counterpage coutner", props.counter);
   const {
     increment,
     incrementIfOdd,
