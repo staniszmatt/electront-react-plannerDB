@@ -1,46 +1,36 @@
-// // TODO: Setup types for customer
-// import {Dispatch, GetCustomerState, GetState} from '../reducers/customerTypes';
-// //ipcRender to call to electron main and request the server infor instead of axios
-// import { ipcRenderer } from 'electron';
-// // import { type } from '@babel/core';
+import {
+  CustomerProps,
+  LIST_CUSTOMERS,
+  EDIT_CUSTOMER,
+  ADD_CUSTOMER,
+  SEARCH_CUSTOMER,
+  CustomerActionTypes
+} from '../store/customer/types';
 
+export function listCustomers(createListCustomers: CustomerProps): CustomerActionTypes {
+  return {
+    type: LIST_CUSTOMERS,
+    payload: createListCustomers
+  }
+}
 
-// export const SHOW_CUSTOMERS = 'SHOW_CUSTOMERS';
-// export const ADD_CUSTOMER = 'ADD_CUSTOMER';
+export function editCustomer(editACustomer: CustomerProps): CustomerActionTypes {
+  return {
+    type: EDIT_CUSTOMER,
+    payload: editACustomer
+  }
+}
 
-// export function showAllCustomers() {
-//   console.log("Show Customers action" );
+export function addCustomer(addACustomer: CustomerProps): CustomerActionTypes {
+  return {
+    type: ADD_CUSTOMER,
+    payload: addACustomer
+  }
+}
 
-
-
-//   return (dispatch: Dispatch, getState: GetState) => {
-//     const { customers } = getState();
-//     console.log("Current Customers State", customers);
-
-
-//     const requestData = {
-//       testRequestString: "Request Customers!"
-//     };
-//     ipcRenderer.send('asynchronous-message', requestData);
-
-//     ipcRenderer.on('asynchronous-reply', (event, resp) => {
-//       console.log("getCustomer: Pull Data", resp);
-
-//       dispatch({
-//         type: SHOW_CUSTOMERS,
-//         customers: resp
-//       });
-//     });
-//   };
-
-//   // return {
-//   //   type: SHOW_CUSTOMERS
-//   // };
-// }
-
-// export function addCustomer() {
-//   console.log("Add customer action");
-//   return {
-//     type: ADD_CUSTOMER
-//   };
-// }
+export function searchCustoemr(searchACustomer: CustomerProps): CustomerActionTypes {
+  return {
+    type: SEARCH_CUSTOMER,
+    payload: searchACustomer
+  }
+}

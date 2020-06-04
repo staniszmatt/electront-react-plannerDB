@@ -1,26 +1,24 @@
 /* eslint-disable prettier/prettier */
 // import React, { useState } from 'react';
 import * as React  from 'react';
-import { Link } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 import SearchForm from './forms/Search-Form';
-import routes from '../constants/routes.json';
 import styles from './Customer.css';
 import CustomerList from './CustomerList';
-import { render } from 'enzyme';
-import { initialize } from 'redux-form';
-import { ipcRenderer } from 'electron';
-import { setMaxListeners, listenerCount } from 'cluster';
-import NewButton  from './buttonFunctions/displayCustomer';
+import NewButton  from './buttonFunctions/buttonClickHandler';
+import CustomerHeadTable from './tables/customerHeaderTable'
 
 //setup props
 interface CustomerProps {
-  DefaultStatus: showCustomerList;
+  Status: showCustomerList; //Only default required, deafult is setting limited options
   CustomerListItems:[];
+  CustomerID: number;
 }
 //setup state
 interface CustomerState {
   Status: showCustomerList;
   CustomerListItems: [];
+  CustomerID: number;
 }
 //Create all prop status
 type showCustomerList = false | true;
@@ -29,17 +27,17 @@ export default class Customer extends React.Component<CustomerProps, CustomerSta
   //set defautl props
   static defaultProps = {
     DefaultStatus: false,
-    CustomerListItems: []
+    CustomerListItems: [],
+    CustomerID: 0
   }
   //set defaut state
   state = {
-    Status: this.props.DefaultStatus,
-    CustomerListItems: this.props.CustomerListItems
+    Status: this.props.Status,
+    CustomerListItems: this.props.CustomerListItems,
+    CustomerID: this.props.CustomerID
   }
 
   toggleCustomerList = () => {
-    console.log('toggle state', this.state.Status);
-
     this.setState((prevState) => {
       if (prevState.Status) {
         return {Status: false}
@@ -74,21 +72,7 @@ export default class Customer extends React.Component<CustomerProps, CustomerSta
     });
   }
 
-
-  renderCustomerList() {
-    this.props.CustomerListItems = this.state.CustomerListItems;
-    console.log('setup for customer divs');
-    const customerItem = this.props.CustomerListItems.map((CustomerListItems) =>{
-      return <CustomerList key={CustomerListItems.id} {...CustomerListItems} />
-    })
-
-
-  }
-
   render() {
-    const customerItem = this.state.CustomerListItems.map((CustomerListItems) =>{
-      return <CustomerList key={CustomerListItems.id} {...CustomerListItems} />
-    })
 
     return (
       <div className={styles.container}>
@@ -106,8 +90,8 @@ export default class Customer extends React.Component<CustomerProps, CustomerSta
           <SearchForm onSubmit={this.handleSubmit} />
         </div>
         <div className="customerData" data-tid="customerData">
-          <div>
-            {this.state.Status && customerItem}
+         <div style={{display: this.state.Status ? "block" : "none"}}>
+            <CustomerHeadTable props={this.state.CustomerListItems} />
           </div>
         </div>
       </div>
