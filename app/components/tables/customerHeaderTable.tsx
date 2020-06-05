@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import CustomerRow from './customerRow';
 import { render } from 'react-dom';
 

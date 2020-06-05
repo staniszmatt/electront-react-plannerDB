@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Counter.css';
 import routes from '../constants/routes.json';
-import { ProgressPlugin } from 'webpack';
 
 type Props = {
   increment: () => void;
@@ -21,7 +20,6 @@ export default function Counter(props: Props) {
     decrement,
     counter
   } = props;
-
   return (
     <div>
       <div className={styles.backButton} data-tid="backButton">

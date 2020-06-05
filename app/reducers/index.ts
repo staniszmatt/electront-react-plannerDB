@@ -3,13 +3,13 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 import counter from './counter';
-import { customerReducer } from './customer'
+import customer from './customer';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     // form: formReducer,
-    customer: customerReducer,
+    customer,
     counter
   });
 }

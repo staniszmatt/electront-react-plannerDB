@@ -1,5 +1,5 @@
 import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { connect, ReactReduxContext } from 'react-redux';
 import Counter from '../components/Counter';
 import {
   increment,
@@ -26,5 +26,11 @@ function mapDispatchToProps(dispatch: Dispatch) {
     dispatch
   );
 }
+
+// function  MyConnectedComponent() {
+//   return (
+//     {({})}
+//   )
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);

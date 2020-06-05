@@ -1,36 +1,30 @@
-import {
-  CustomerProps,
-  LIST_CUSTOMERS,
-  EDIT_CUSTOMER,
-  ADD_CUSTOMER,
-  SEARCH_CUSTOMER,
-  CustomerActionTypes
-} from '../store/customer/types';
+import { GetCustomerState, Dispatch} from '../reducers/types';
 
-export function listCustomers(createListCustomers: CustomerProps): CustomerActionTypes {
+export const LIST_CUSTOMERS = 'LIST_CUSTOMERS';
+export const EDIT_CUSTOMER = 'EDIT_CUSTOMER';
+export const ADD_CUSTOMER = 'ADD_CUSTOMER';
+export const SEARCH_CUSTOMER = 'SEARCH_CUSTOMER';
+
+export function listAllCustomers() {
   return {
-    type: LIST_CUSTOMERS,
-    payload: createListCustomers
-  }
+    type: LIST_CUSTOMERS
+  };
 }
 
-export function editCustomer(editACustomer: CustomerProps): CustomerActionTypes {
+export function editCustomer() {
   return {
-    type: EDIT_CUSTOMER,
-    payload: editACustomer
-  }
+    type: EDIT_CUSTOMER
+  };
 }
 
-export function addCustomer(addACustomer: CustomerProps): CustomerActionTypes {
+export function addACustomer() {
   return {
-    type: ADD_CUSTOMER,
-    payload: addACustomer
-  }
+    type: ADD_CUSTOMER
+  };
 }
 
-export function searchCustoemr(searchACustomer: CustomerProps): CustomerActionTypes {
+export function searchACustomer() {
   return {
-    type: SEARCH_CUSTOMER,
-    payload: searchACustomer
-  }
+    type: SEARCH_CUSTOMER
+  };
 }
