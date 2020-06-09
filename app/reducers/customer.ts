@@ -18,15 +18,7 @@ export default function customer(
 ) {
   switch (action.type) {
     case LIST_CUSTOMERS:
-      // return {
-      //   ...state,
-      //   DisplayCustomerList: !state.DisplayAddCustomer
-      // };
-      // The above line is the same as:
-      // return Ojbect.assign({}, state, {
-      // DisplayCustomerList: !state.DisplayCustomerList
-      // })
-      return state;
+      return { ...state, DisplayCustomerList: !state.DisplayCustomerList };
     case EDIT_CUSTOMER:
       return state;
     case ADD_CUSTOMER:
