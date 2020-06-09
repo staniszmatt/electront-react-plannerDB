@@ -10,12 +10,14 @@ export type customerStateType = {
   CustomerListItems: [];
   CustomerID: number;
   error: [];
-}
+};
 
 export type GetState = () => counterStateType;
 export type GetCustomerState = () => customerStateType;
 
 export type Dispatch = ReduxDispatch<Action<string>>;
 
-export type Store = ReduxStore<counterStateType, Action<string>>;
-export type CustomerStore = ReduxStore<customerStateType, Action<string>>;
+export type Store =
+  | ReduxStore<counterStateType, Action<string>>
+  | ReduxStore<customerStateType, Action<string>>;
+// export type CustomerStore = ReduxStore<customerStateType, Action<string>>;

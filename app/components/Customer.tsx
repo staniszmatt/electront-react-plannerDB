@@ -1,102 +1,178 @@
 /* eslint-disable prettier/prettier */
 // import React, { useState } from 'react';
-import * as React  from 'react';
+import React, { Component, ReactNode }  from 'react';
 import { ipcRenderer } from 'electron';
 import SearchForm from './forms/Search-Form';
 import styles from './Customer.css';
 import CustomerList from './CustomerList';
 import NewButton  from './buttonFunctions/buttonClickHandler';
-import CustomerHeadTable from './tables/customerHeaderTable'
+import CustomerHeadTable from './tables/customerHeaderTable';
+import { listAllCustomers } from '../actions/customer';
+import { stat } from 'fs';
 
-//setup props
-interface CustomerProps {
-  Status: showCustomerList; //Only default required, deafult is setting limited options
-  CustomerListItems:[];
-  CustomerID: number;
+type Props = {
+  listAllCustomers: () => void;
+  editCustomer: () => void;
+  addACustomer: () => void;
+  searchACustomer: () => void;
+  customer: {};
+};
+
+function toggleCustomerList(){
+  console.log("toggle customer list")
 }
-//setup state
-interface CustomerState {
-  Status: showCustomerList;
-  CustomerListItems: [];
-  CustomerID: number;
-}
-//Create all prop status
-type showCustomerList = false | true;
 
-export default class Customer extends React.Component<CustomerProps, CustomerState> {
-  //set defautl props
-  static defaultProps = {
-    DefaultStatus: false,
-    CustomerListItems: [],
-    CustomerID: 0
-  }
-  //set defaut state
-  state = {
-    Status: this.props.Status,
-    CustomerListItems: this.props.CustomerListItems,
-    CustomerID: this.props.CustomerID
-  }
+export default function Customer(props: Props) {
+  const {
+    listAllCustomers,
+    editCustomer,
+    addACustomer,
+    searchACustomer,
+    customer
+  } = props
 
-  toggleCustomerList = () => {
-    this.setState((prevState) => {
-      if (prevState.Status) {
-        return {Status: false}
-      }
-      return { Status: true };
-    });
-    if (!this.state.Status) {
-      this.getCustomers();
-    }
-  }
 
-  //buttons
-  addCustomer () {
-    console.log("add Customer");
-  }
+  console.log("customer Display State", props);
 
-  handleSubmit () {
-    console.log("handle Subbmit");
-  }
 
-  getCustomers () {
-    console.log("show all customers");
 
-    const requestData = {testRequestString: "Request Customers!"};
-    ipcRenderer.send('asynchronous-message', requestData);
+  // //buttons
+  // addCustomer () {
+  //   console.log("add Customer");
+  // }
 
-    ipcRenderer.on('asynchronous-reply', (event, resp) => {
-      // console.log("getCustomer: Pull Data", resp);
-      this.setState({
-        CustomerListItems: resp
-      })
-    });
-  }
+  // handleSubmit () {
+  //   console.log("handle Subbmit");
+  // }
 
-  render() {
+  // getCustomers () {
+  //   console.log("show all customers");
+
+  //   const requestData = {testRequestString: "Request Customers!"};
+  //   ipcRenderer.send('asynchronous-message', requestData);
+
+  //   ipcRenderer.on('asynchronous-reply', (event, resp) => {
+  //     // console.log("getCustomer: Pull Data", resp);
+  //     this.setState({
+  //       CustomerListItems: resp
+  //     })
+  //   });
+  // }
 
     return (
       <div className={styles.container}>
-        <div className={styles.btnContainer}>
-          <button
-            className={styles.btnContainer}
-            onClick={this.addCustomer}
-            data-tclass="btn"
-            type="button"
-          >
-            Add Customer
-          </button>
-          <NewButton className={styles.btnContainer} buttonName="List Customers" ClickHandler={this.toggleCustomerList} />
-
-          <SearchForm onSubmit={this.handleSubmit} />
-        </div>
+        <button className={styles.btnContainer} type="button" onClick={listAllCustomers}>List Customers</button>
         <div className="customerData" data-tid="customerData">
-         <div style={{display: this.state.Status ? "block" : "none"}}>
-            <CustomerHeadTable props={this.state.CustomerListItems} />
+          <div style={{display: true ? "block" : "none"}}>
+            <div>
+              test display div
+            </div>
           </div>
         </div>
       </div>
     );
-  }
 }
 
-const el = <Customer />
+// /* eslint-disable prettier/prettier */
+// // import React, { useState } from 'react';
+// import * as React  from 'react';
+// import { ipcRenderer } from 'electron';
+// import SearchForm from './forms/Search-Form';
+// import styles from './Customer.css';
+// import CustomerList from './CustomerList';
+// import NewButton  from './buttonFunctions/buttonClickHandler';
+// import CustomerHeadTable from './tables/customerHeaderTable'
+
+// //setup props
+// interface CustomerProps {
+//   Status: showCustomerList; //Only default required, deafult is setting limited options
+//   CustomerListItems:[];
+//   CustomerID: number;
+// }
+// //setup state
+// interface CustomerState {
+//   Status: showCustomerList;
+//   CustomerListItems: [];
+//   CustomerID: number;
+// }
+// //Create all prop status
+// type showCustomerList = false | true;
+
+// export default class Customer extends React.Component<CustomerProps, CustomerState> {
+//   //set defautl props
+//   static defaultProps = {
+//     DefaultStatus: false,
+//     CustomerListItems: [],
+//     CustomerID: 0
+//   }
+//   //set defaut state
+//   state = {
+//     Status: this.props.Status,
+//     CustomerListItems: this.props.CustomerListItems,
+//     CustomerID: this.props.CustomerID
+//   }
+
+//   toggleCustomerList = () => {
+//     this.setState((prevState) => {
+//       if (prevState.Status) {
+//         return {Status: false}
+//       }
+//       return { Status: true };
+//     });
+//     if (!this.state.Status) {
+//       this.getCustomers();
+//     }
+//   }
+
+//   //buttons
+//   addCustomer () {
+//     console.log("add Customer");
+//   }
+
+//   handleSubmit () {
+//     console.log("handle Subbmit");
+//   }
+
+//   getCustomers () {
+//     console.log("show all customers");
+
+//     const requestData = {testRequestString: "Request Customers!"};
+//     ipcRenderer.send('asynchronous-message', requestData);
+
+//     ipcRenderer.on('asynchronous-reply', (event, resp) => {
+//       // console.log("getCustomer: Pull Data", resp);
+//       this.setState({
+//         CustomerListItems: resp
+//       })
+//     });
+//   }
+
+//   render() {
+
+//     return (
+//       <div className={styles.container}>
+//         <div className={styles.btnContainer}>
+//           <button
+//             className={styles.btnContainer}
+//             onClick={this.addCustomer}
+//             data-tclass="btn"
+//             type="button"
+//           >
+//             Add Customer
+//           </button>
+//           <NewButton className={styles.btnContainer} buttonName="List Customers" ClickHandler={this.toggleCustomerList} />
+
+//           <SearchForm onSubmit={this.handleSubmit} />
+//         </div>
+//         <div className="customerData" data-tid="customerData">
+//          <div style={{display: this.state.Status ? "block" : "none"}}>
+//             <CustomerHeadTable props={this.state.CustomerListItems} />
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
+// const el = <Customer />
+

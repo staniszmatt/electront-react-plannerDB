@@ -27,10 +27,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   );
 }
 
-// function  MyConnectedComponent() {
-//   return (
-//     {({})}
-//   )
-// }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Counter);
