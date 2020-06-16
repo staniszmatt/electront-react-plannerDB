@@ -4,12 +4,18 @@ export type counterStateType = {
   counter: number;
 };
 
+export type customerList = {
+  customerList: [];
+  gettingCustomerList: boolean;
+  haveCustomerList: boolean;
+  error: [];
+};
+
 export type customerStateType = {
   DisplayCustomerList: boolean;
-  DisplayAddCustomer: boolean;
-  CustomerListItems: [];
-  CustomerID: number;
-  error: [];
+  CustomerListItems: customerList;
+  // DisplayAddCustomer: boolean;
+  // CustomerID: number;
 };
 
 export type GetState = () => counterStateType;
@@ -20,4 +26,3 @@ export type Dispatch = ReduxDispatch<Action<string>>;
 export type Store =
   | ReduxStore<counterStateType, Action<string>>
   | ReduxStore<customerStateType, Action<string>>;
-// export type CustomerStore = ReduxStore<customerStateType, Action<string>>;

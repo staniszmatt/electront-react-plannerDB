@@ -13,28 +13,22 @@ const enhancer = applyMiddleware(thunk, router);
 function configureStore(
   initialState:
     | {
-        router?:
+        customer?:
           | {
-              location: {
-                pathname: string;
-                search: string;
-                state: import('history').History.PoorMansUnknown;
-                hash: string;
-                key?: string | undefined;
+              DisplayCustomerList: boolean;
+              CustomerListItems: {
+                customerList: [];
+                gettingCustomerList: boolean;
+                haveCustomerList: boolean;
+                error: [];
               };
-              action: import('history').Action;
             }
-          | undefined;
-        customer?: {} | customerStateType | undefined;
-        counter?: number | counterStateType | undefined;
+          | customerStateType;
+        counter?: number | counterStateType;
       }
     | undefined
 ): Store {
   return createStore(rootReducer, initialState, enhancer);
 }
-
-// function configureCustomerStore(initialState?: customerStateType): CustomerStore {
-//   return createStore(rootReducer, initialState, enhancer);
-// }
 
 export default { configureStore, history };

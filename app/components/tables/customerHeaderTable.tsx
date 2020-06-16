@@ -46,8 +46,8 @@ export default function CustomerHeadTable(props){
           <th>Active Customer</th>
           <th>Edit Customer</th>
         </tr>
-          {renderRows()}
+        {/** {renderRows()} */}
       </tbody>
     </table>
-  )
+  );
 }

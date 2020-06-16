@@ -10,28 +10,23 @@ import { listAllCustomers, addACustomer } from '../actions/customer';
 
 interface Props {
   DisplayCustomerList: boolean,
-  DisplayAddCustomer: boolean,
-  CustomerListItems: {},
-  CustomerID: number,
-  error: {}
+  CustomerListItems: {
+    customerList: [],
+    gettingCustomerList: boolean,
+    haveCustomerList: boolean,
+    error: []
+  }
+  DisplayAddCustomer: boolean
+  // CustomerID: number,
 };
-
-interface DispatchProps {
-  listAllCustomers: () => void;
-  editCustomer: () => void;
-  addACustomer: () => void;
-  searchACustomer: () => void;
-}
 
 export default function Customer(props: Props) {
   const {
     listAllCustomers,
-    editCustomer,
-    addACustomer,
-    searchACustomer,
-    customer
+    // editCustomer,
+    // addACustomer,
+    // searchACustomer,
   } = props
-
 
   console.log("customer Display State", props);
   console.log("display customer list is: ", props.customer.customer.DisplayCustomerList);
@@ -53,9 +48,7 @@ export default function Customer(props: Props) {
           {/** <SearchForm onSubmit={this.handleSubmit} />*/}
         </div>
         <div className="customerData" data-tid="customerData">
-          <div style={{display: props.customer.customer.DisplayCustomerList ? "block" : "none"}}>
-            <CustomerHeadTable props={props} />
-          </div>
+          {props.customer.customer.DisplayCustomerList && <CustomerHeadTable props={props} />}
         </div>
       </div>
     );
