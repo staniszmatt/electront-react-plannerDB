@@ -1,12 +1,7 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import Customer from '../components/Customer';
-import {
-  listAllCustomers,
-  addACustomer,
-  editCustomer,
-  searchACustomer
-} from '../actions/customer';
+import Customer from '../components/customer/Customer';
+import { listAllCustomers, requestCustomerList } from '../actions/customer';
 import { customerStateType } from '../reducers/types';
 
 function mapStateToProps(state: customerStateType) {
@@ -19,9 +14,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
     {
       listAllCustomers,
-      editCustomer,
-      addACustomer,
-      searchACustomer
+      requestCustomerList
     },
     dispatch
   );

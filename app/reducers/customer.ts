@@ -1,97 +1,77 @@
 import { Action } from 'redux';
 import {
   LIST_CUSTOMERS,
-  REQUEST_CUSTOMER_LIST,
-  RECIEVED_CUSTOMER_LIST,
-  ERROR_CUSTOMER_LIST,
-  SELECT_CUSTOMER_LIST
-  // EDIT_CUSTOMER,
-  // ADD_CUSTOMER,
-  // SEARCH_CUSTOMER
+  CUSTOMER_LIST_REQUEST,
+  CUSTOMER_LIST_RECIEVED
 } from '../actions/customer';
 
-export default function customer(
-  state = {
-    DisplayCustomerList: false
+const IState = {
+  DisplayCustomerList: false,
+  CustomerListItems: {
+    status: 'INITIAL',
+    customerList: [],
+    error: []
+  }
+}
 
-    // DisplayAddCustomer: false,
-    // CustomerID: 0,
-    // error: []
-  },
-  action: Action<string>
-) {
+function customer(state = IState, action: Action<string>) {
   switch (action.type) {
     case LIST_CUSTOMERS:
       return { ...state, DisplayCustomerList: !state.DisplayCustomerList };
-    // case EDIT_CUSTOMER:
-    //   return state;
-    // case ADD_CUSTOMER:
-    //   return state;
-    // case SEARCH_CUSTOMER:
-    //   return state;
     default:
       return state;
   }
 }
 
-function selectCustomerList (state = 'reactjs',
-  action: Action<string>
-) {
-  switch (action.type) {
-    case SELECT_CUSTOMER_LIST:
-      return action.response
-    default:
-      return state;
-  }
-}
+// function currentListStatus(state = IState.CustomerListItems, action: Action<string> ){
+//   switch (action.type) {
+//     case CUSTOMER_LIST_REQUEST:
+//       return {
+//         ...state,
+//         RetrivingList: true,
+//         RetrivedList: false,
+//         ErrorList: false,
+//         customerList: action.status
+//       }
+//     case CUSTOMER_LIST_RECIEVED:
+//       return {
+//         ...state,
+//         RetrivingList: false,
+//         RetrivedList: true,
+//         ErrorList: false
+//       }
+//     case CUSTOMER_LIST_ERROR:
+//       return {
+//         ...state,
+//         RetrivingList: false,
+//         RetrivedList: false,
+//         ErrorList: true
+//       }
+//     default:
+//       return state;
+//   }
+// }
 
-function posts(
-  state = {
-    CustomerListItems: {
-      customerList: [],
-      gettingCustomerList: false,
-      haveCustomerList: false,
-      error: []
-    }
-  },
-  action: Action<string>
-) {
-  switch (action.type){
-    case REQUEST_CUSTOMER_LIST:
-      return {
-        ...state.CustomerListItems,
-        gettingCustomerList: true,
-        haveCustomerList: false
-      };
-    case RECIEVED_CUSTOMER_LIST:
-      return {
-        ...state.CustomerListItems,
-        gettingCustomerList: false,
-        haveCustomerList: true,
-        list: action.posts
-      };
-    case ERROR_CUSTOMER_LIST:
-      return {
-        ...state.CustomerListItems,
-        gettingCustomerList: false,
-        haveCustomerList: false,
-        list: action.type.error
-      };
-    default:
-      return state.CustomerListItems;
-  }
-}
-
-function postsByCustomerList(state = {}, action: Action<string>) {
+function customerListRequestStatus(state = IState.CustomerListItems, action: Action<string> ) {
   switch (action.type) {
-    case REQUEST_CUSTOMER_LIST:
-    case RECIEVED_CUSTOMER_LIST:
-    case ERROR_CUSTOMER_LIST:
+    case CUSTOMER_LIST_RECIEVED:
+      // NOTE: Error on action.resp does excist, just not until after its passed.
+      console.log("reducer customer list check action pass", action.resp);
+
       return {
         ...state,
-        [action.response]: posts(state[action.response], action)
+        status: 'LOADED',
+        customerList: action.resp.list,
+        error: false
       };
     default:
       return state;
   }
 }
+
+const customerCombineForReducer = {
+  customer,
+  customerListRequestStatus
+};
+
+export default customerCombineForReducer;

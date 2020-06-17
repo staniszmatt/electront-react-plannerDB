@@ -1,14 +1,10 @@
-import { GetCustomerState, Dispatch } from '../reducers/types';
 import { ipcRenderer } from 'electron';
+import { GetCustomerState, Dispatch } from '../reducers/types';
+
 export const LIST_CUSTOMERS = 'LIST_CUSTOMERS';
 
-export const REQUEST_CUSTOMER_LIST = 'REQUEST_CUSTOMER_LIST';
-export const RECIEVED_CUSTOMER_LIST = 'RECIEVED_CUSTOMER_LIST';
-export const ERROR_CUSTOMER_LIST = 'ERROR_CUSTOMER_LIST';
-export const SELECT_CUSTOMER_LIST = 'SELECT_CUSTOMER_LIST';
-// export const EDIT_CUSTOMER = 'EDIT_CUSTOMER';
-// export const ADD_CUSTOMER = 'ADD_CUSTOMER';
-// export const SEARCH_CUSTOMER = 'SEARCH_CUSTOMER';
+export const CUSTOMER_LIST_REQUEST = 'CUSTOMER_LIST_REQUEST';
+export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 
 export function listAllCustomers() {
   return {
@@ -16,69 +12,47 @@ export function listAllCustomers() {
   };
 }
 
-export function selectCustomerList(response) {
+// Resp is example setup, need to setup for the strucured data
+// Setup resp:{} for typescript instead of making a how seperate file and folder
+export function customerListPending() {
   return {
-    type: SELECT_CUSTOMER_LIST,
-    response
-  }
-}
-
-export function requestCustomerList(response) {
-  return {
-    type: REQUEST_CUSTOMER_LIST,
-    response
+    type: CUSTOMER_LIST_REQUEST
   };
 }
 
-export function errorCustomerList(response) {
+export function customerListRecieved(resp: {}) {
   return {
-    type: ERROR_CUSTOMER_LIST,
-    response,
-    error
+    type: CUSTOMER_LIST_RECIEVED,
+    resp
   };
 }
 
-export function receivedCustomerList(response, json) {
-  console.log("recived data aaction", json);
-  console.log("test portion", response);
-  return {
-    type: RECIEVED_CUSTOMER_LIST,
-    response,
-    posts: json
-  }
-}
+// Call to get server for customer list
+export function pullRequestCustomerListData() {
+  return (dispatch: Dispatch) => {
 
-
-
-// export function editCustomer() {
-//   return {
-//     type: EDIT_CUSTOMER
-//   };
-// }
-
-// export function addACustomer() {
-//   return {
-//     type: ADD_CUSTOMER
-//   };
-// }
-
-// export function searchACustomer() {
-//   return {
-//     type: SEARCH_CUSTOMER
-//   };
-// }
-
-export function getCustomerListPosts(response) {
-  return (dispatch: Dispatch, getState: GetCustomerState) => {
-    dispatch(requestCustomerList(response));
-
-    const requestData = { testRequestString: 'Request Customers!' };
-    ipcRenderer.send('asynchronous-message', requestData);
-
+    ipcRenderer.send('asynchronous-message', 'Request Customers!');
+    dispatch(customerListPending());
     ipcRenderer.on('asynchronous-reply', (event, resp) => {
-      // console.log("getCustomer: Pull Data", resp);
       console.log('customer data ', resp);
-      dispatch(receivedCustomerList(resp, event));
+      console.log('custoemr data event', event);
+
+      dispatch(customerListRecieved(resp));
     });
+  };
+}
+// Setup Order for customer list call
+export function requestCustomerList() {
+  console.log("request list action");
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+    const state = getState();
+    console.log('action request custoemr list state', state);
+    if (state.customer.CustomerListItems.customerList.length === 0) {
+      dispatch(pullRequestCustomerListData());
+    }
+    if (state.customer.DisplayCustomerList) {
+      return;
+    }
+    dispatch(listAllCustomers());
   };
 }

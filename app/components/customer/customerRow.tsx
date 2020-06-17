@@ -9,7 +9,7 @@ export default function CustomerRow(props) {
     console.log("Return Customer ID: ", id);
     return id;
   }
-
+// TODO: Fix setup of button on edit customer
   return (
     <tr>
       <td>Test Row</td>

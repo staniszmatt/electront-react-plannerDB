@@ -1,4 +1,4 @@
-import sql from 'mssql/msnodesqlv8';
+const sql = require('mssql/msnodesqlv8');
 
 const pool = new sql.ConnectionPool({
   user: "staniszmatt",  //Remove user name and password when windows creds are being used.

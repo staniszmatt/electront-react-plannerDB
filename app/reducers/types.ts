@@ -5,17 +5,14 @@ export type counterStateType = {
 };
 
 export type customerList = {
+  status: string;
   customerList: [];
-  gettingCustomerList: boolean;
-  haveCustomerList: boolean;
   error: [];
 };
 
 export type customerStateType = {
   DisplayCustomerList: boolean;
   CustomerListItems: customerList;
-  // DisplayAddCustomer: boolean;
-  // CustomerID: number;
 };
 
 export type GetState = () => counterStateType;

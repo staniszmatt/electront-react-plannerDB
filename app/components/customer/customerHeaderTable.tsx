@@ -1,33 +1,20 @@
 import React from 'react';
-import { ipcRenderer } from 'electron';
 import CustomerRow from './customerRow';
-import { render } from 'react-dom';
 
 export default function CustomerHeadTable(props){
+  console.log("cust header component props", props);
+
   //Stop running if nothing was passed
-  if (!props || props.props.length === 0) {
+  if (!props || props.props.customerList.length === 0) {
     return null;
   }
 
-  const getCustomerList = () => {
-    console.log("Get Customers");
-
-    const requestData = {testRequestString: "Request Customers!"};
-    ipcRenderer.send('asynchronous-message', requestData);
-
-    ipcRenderer.on('asynchronous-reply', (event, resp) => {
-      // console.log("getCustomer: Pull Data", resp);
-      console.log("customer data ", resp);
-      return resp;
-    });
-  }
-
-  const data = getCustomerList();
-
+  // TODO: Setup error handing here if error was passed
   console.log('header component props', props);
 
+
   const renderRows = () => {
-    console.log("render row data ", data);
+    const data = props.props.customerList;
     const customerRow = data.map(customer => {
       return <CustomerRow key={customer.id} props={customer} />;
     });
@@ -46,7 +33,7 @@ export default function CustomerHeadTable(props){
           <th>Active Customer</th>
           <th>Edit Customer</th>
         </tr>
-        {/** {renderRows()} */}
+        {props.props.status === 'LOADED' && renderRows()}
       </tbody>
     </table>
   );

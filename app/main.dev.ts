@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import customerList from './api/customerList';
 
+require('mssql/msnodesqlv8');
 
 export default class AppUpdater {
   constructor() {
@@ -128,6 +129,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
 
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
-    console.length("Error on ipcMain", err);
+    console.length("ipcMain ERROR ****************************", err);
   }
 });

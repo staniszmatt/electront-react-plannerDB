@@ -89,11 +89,6 @@ const configureStore = (
   // Create Store
   const store = createStore(rootReducer, initialState, enhancer);
 
-  store.dispatch(customerActions.selectCustomerList('reactjs'));
-  // store.dispatch(customerActions.getCustomerListPosts('reactjs')).then(() => {
-  //   console.log(store.getState())
-  // })
-
   if (module.hot) {
     module.hot.accept(
       '../reducers',

@@ -3,17 +3,16 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 import counter from './counter';
-import customer from './customer';
-import selectCustomerList from './customer';
-import postsByCustomerList from './customer';
+import customerCombineForReducer from './customer';
+
+const { customer, customerListRequestStatus } = customerCombineForReducer;
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     // form: formReducer,
     customer,
-    selectCustomerList,
-    postsByCustomerList,
+    customerListRequestStatus,
     counter
   });
 }
