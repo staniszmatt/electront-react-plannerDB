@@ -9,13 +9,13 @@ export default function CustomerHeadTable(props){
     return null;
   }
 
-  // TODO: Setup error handing here if error was passed
   console.log('header component props', props);
 
 
   const renderRows = () => {
     const data = props.props.customerList;
     const customerRow = data.map(customer => {
+      console.log(`Render Row data ${customer}`);
       return <CustomerRow key={customer.id} props={customer} />;
     });
     return customerRow;
@@ -33,7 +33,7 @@ export default function CustomerHeadTable(props){
           <th>Active Customer</th>
           <th>Edit Customer</th>
         </tr>
-        {props.props.status === 'LOADED' && renderRows()}
+        {renderRows()}
       </tbody>
     </table>
   );

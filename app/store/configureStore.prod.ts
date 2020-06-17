@@ -15,13 +15,11 @@ function configureStore(
     | {
         customer?:
           | {
-              DisplayCustomerList: boolean;
-              CustomerListItems: {
-                customerList: [];
-                gettingCustomerList: boolean;
-                haveCustomerList: boolean;
-                error: [];
-              };
+              loadingState: boolean;
+              loadedState: boolean;
+              errorState: boolean;
+              customerList: [];
+              error: [];
             }
           | customerStateType;
         counter?: number | counterStateType;

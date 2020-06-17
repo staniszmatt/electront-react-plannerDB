@@ -5,14 +5,14 @@ import { History } from 'history';
 import counter from './counter';
 import customerCombineForReducer from './customer';
 
-const { customer, customerListRequestStatus } = customerCombineForReducer;
+const { customer } = customerCombineForReducer;
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     // form: formReducer,
+    // customer,
     customer,
-    customerListRequestStatus,
     counter
   });
 }

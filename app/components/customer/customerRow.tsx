@@ -5,6 +5,12 @@ export default function CustomerRow(props) {
   console.log("Row function", props);
   const { id, customerName, customerCodeName, customerGenStd, customerRsStd, customerActive } = props.props
 
+  // Setup boolean to string to add to row data
+  const genStd = booleanToStringYesNo(customerGenStd);
+  const rsStd = booleanToStringYesNo(customerRsStd);
+  const acitve = booleanToStringYesNo(customerActive);
+
+
   const returnCustomerID = () => {
     console.log("Return Customer ID: ", id);
     return id;
@@ -12,17 +18,22 @@ export default function CustomerRow(props) {
 // TODO: Fix setup of button on edit customer
   return (
     <tr>
-      <td>Test Row</td>
-      <td>Test Row</td>
-      <td>Test Row</td>
-      <td>Test Row</td>
-      <td>Test Row</td>
+      <td>{customerName}</td>
+      <td>{customerCodeName}</td>
+      <td>{genStd}</td>
+      <td>{rsStd}</td>
+      <td>{acitve}</td>
       <td>
-        <EditButton
-          buttonName="EDIT"
-          ClickHandler={returnCustomerID()}
-        />
+        <EditButton buttonName="EDIT" ClickHandler={returnCustomerID} />
       </td>
     </tr>
   )
+}
+
+// Funciton to setup returns of yes or no based on boolean data recieved
+function booleanToStringYesNo(varToCheck){
+  if (varToCheck) {
+    return 'YES';
+  }
+  return 'NO';
 }

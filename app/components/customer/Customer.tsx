@@ -4,28 +4,22 @@ import styles from './Customer.css';
 import CustomerList from './CustomerList';
 import NewButton  from '../buttonFunctions/buttonClickHandler';
 import CustomerHeadTable from './customerHeaderTable';
-import { listAllCustomers } from '../../actions/customer';
+// import { requestCustomerList } from '../../actions/customer';
 
 interface Props {
-  DisplayCustomerList: boolean;
-  CustomerListItems: {
-    status: string;
-    customerList: [];
-    error: [];
-  };
+  loadingState: boolean;
+  loadedState: boolean;
+  errorState: boolean;
+  customerList: [];
+  error: [];
 }
 
 export default function Customer(props: Props) {
-  const {
-    listAllCustomers,
-    requestCustomerList
-  } = props
+  const { requestCustomerList } = props;
 
-  console.log("customer Display State", props);
-
-  console.log("display customer list is: ", props.customer.customer.DisplayCustomerList);
-
-
+  console.log("customer Display State loading", props.customer.customer.loadingState);
+  console.log("customer Display State loading", props.customer.customer.loadedState);
+  console.log("customer Display State loading", props.customer.customer.errorState);
     return (
       <div className={styles.container}>
         <div className={styles.btnContainer}>
@@ -38,13 +32,15 @@ export default function Customer(props: Props) {
             Add Customer
           </button>*/}
           <NewButton
-          buttonName="List Customers"
-          ClickHandler={requestCustomerList}
+            buttonName="List Customers"
+            ClickHandler={requestCustomerList}
           />
           {/** <SearchForm onSubmit={this.handleSubmit} />*/}
         </div>
         <div className="customerData" data-tid="customerData">
-          {props.customer.customer.DisplayCustomerList && <CustomerHeadTable props={props.customer.customerListRequestStatus} />}
+          {props.customer.customer.loadingState && <div>LOADING</div>}
+          {props.customer.customer.loadedState && <CustomerHeadTable props={props.customer.customerListRequestStatus} />}
+          {props.customer.customer.errorState && <div>ERROR</div>}
         </div>
       </div>
     );

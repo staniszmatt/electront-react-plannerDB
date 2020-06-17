@@ -4,15 +4,12 @@ export type counterStateType = {
   counter: number;
 };
 
-export type customerList = {
-  status: string;
+export type customerStateType = {
+  loadingState: boolean;
+  loadedState: boolean;
+  errorState: boolean;
   customerList: [];
   error: [];
-};
-
-export type customerStateType = {
-  DisplayCustomerList: boolean;
-  CustomerListItems: customerList;
 };
 
 export type GetState = () => counterStateType;
