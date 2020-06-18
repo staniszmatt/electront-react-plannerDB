@@ -1,10 +1,8 @@
 import React from 'react';
-import SearchForm from '../forms/Search-Form';
 import styles from './Customer.css';
-import CustomerList from './CustomerList';
 import NewButton  from '../buttonFunctions/buttonClickHandler';
 import CustomerHeadTable from './customerHeaderTable';
-// import { requestCustomerList } from '../../actions/customer';
+import CustomerErrorDisplay from './customerError';
 
 interface Props {
   loadingState: boolean;
@@ -15,12 +13,21 @@ interface Props {
 }
 
 export default function Customer(props: Props) {
+  console.log("customer component props", props);
+
   const { requestCustomerList } = props;
 
-  console.log("customer Display State loading", props.customer.customer.loadingState);
-  console.log("customer Display State loading", props.customer.customer.loadedState);
-  console.log("customer Display State loading", props.customer.customer.errorState);
-    return (
+  const renderErrorRows = () => {
+    const data = props.customer.customer.error;
+
+    const returnErrorDiv = Object.keys(data).map((key, x) => {
+      console.log("Key Erro funcgtion ", key, x);
+      return <CustomerErrorDisplay props={"test"} />;
+    });
+    return returnErrorDiv;
+  };
+
+  return (
       <div className={styles.container}>
         <div className={styles.btnContainer}>
         {/**   <button
@@ -39,8 +46,8 @@ export default function Customer(props: Props) {
         </div>
         <div className="customerData" data-tid="customerData">
           {props.customer.customer.loadingState && <div>LOADING</div>}
-          {props.customer.customer.loadedState && <CustomerHeadTable props={props.customer.customerListRequestStatus} />}
-          {props.customer.customer.errorState && <div>ERROR</div>}
+          {props.customer.customer.loadedState && <CustomerHeadTable props={props.customer.customer.customerList} />}
+          {props.customer.customer.errorState && {renderErrorRows}}
         </div>
       </div>
     );

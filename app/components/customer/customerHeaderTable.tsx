@@ -5,15 +5,12 @@ export default function CustomerHeadTable(props){
   console.log("cust header component props", props);
 
   //Stop running if nothing was passed
-  if (!props || props.props.customerList.length === 0) {
+  if (props.props === undefined || props.props.length === 0) {
     return null;
   }
 
-  console.log('header component props', props);
-
-
   const renderRows = () => {
-    const data = props.props.customerList;
+    const data = props.props;
     const customerRow = data.map(customer => {
       console.log(`Render Row data ${customer}`);
       return <CustomerRow key={customer.id} props={customer} />;
