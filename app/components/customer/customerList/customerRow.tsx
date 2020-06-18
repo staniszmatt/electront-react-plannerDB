@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EditButton from '../buttonFunctions/buttonClickHandler';
+import EditButton from '../../buttonFunctions/buttonClickHandler';
 
 export default function CustomerRow(props) {
   console.log("Row function", props);

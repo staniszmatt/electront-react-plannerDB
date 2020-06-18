@@ -1,7 +1,11 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import Customer from '../components/customer/Customer';
-import { requestCustomerList } from '../actions/customer';
+import {
+  requestCustomerList,
+  searchForCustomer,
+  handleCustomerSearchForm
+} from '../actions/customer';
 import { customerStateType } from '../reducers/types';
 
 function mapStateToProps(state: customerStateType) {
@@ -13,7 +17,9 @@ function mapStateToProps(state: customerStateType) {
 function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
     {
-      requestCustomerList
+      requestCustomerList,
+      searchForCustomer,
+      handleCustomerSearchForm
     },
     dispatch
   );

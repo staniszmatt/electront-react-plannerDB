@@ -1,11 +1,11 @@
 import { ipcRenderer } from 'electron';
 import { GetCustomerState, Dispatch } from '../reducers/types';
 
-// export const LIST_CUSTOMERS = 'LIST_CUSTOMERS';
-
 export const CUSTOMER_LIST_REQUEST = 'CUSTOMER_LIST_REQUEST';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_LIST_ERROR = 'CUSTOMER_LIST_ERROR';
+export const CUSTOMER_SEARCH_SCREEN = 'CUSTOMER_SEARCH_SCREEN';
+
 
 // Setup resp:{} for typescript instead of making a how seperate file and folder
 export function customerListPending() {
@@ -25,6 +25,26 @@ export function customerListError(resp: {}) {
   return {
     type: CUSTOMER_LIST_ERROR,
     resp
+  };
+}
+
+export function customerListSearchSet() {
+  return {
+    type: CUSTOMER_SEARCH_SCREEN
+  };
+}
+
+// Check if search is already selected
+export function searchForCustomer() {
+  console.log("search customer btn clicked");
+
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+    const state = getState();
+    console.log('action request custoemr list state', state);
+    if (state.customer.searchCustomerState) {
+      return;
+    }
+    dispatch(customerListSearchSet());
   };
 }
 
@@ -59,4 +79,8 @@ export function requestCustomerList() {
       return;
     }
   };
+}
+
+export function handleCustomerSearchForm() {
+  console.log("Action Handle Customer Search Submit");
 }
