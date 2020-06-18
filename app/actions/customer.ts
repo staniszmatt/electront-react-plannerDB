@@ -7,12 +7,6 @@ export const CUSTOMER_LIST_REQUEST = 'CUSTOMER_LIST_REQUEST';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_LIST_ERROR = 'CUSTOMER_LIST_ERROR';
 
-// export function listAllCustomers() {
-//   return {
-//     type: LIST_CUSTOMERS
-//   };
-// }
-
 // Setup resp:{} for typescript instead of making a how seperate file and folder
 export function customerListPending() {
   return {
@@ -52,9 +46,9 @@ export function pullRequestCustomerListData() {
     });
   };
 }
+
 // Setup Order for customer list call
 export function requestCustomerList() {
-  console.log("request list action");
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     console.log('action request custoemr list state', state);
