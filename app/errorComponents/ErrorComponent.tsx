@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CustomerErrorRow from './customerErrorRow';
+import ErrorRow from './ErrorRow';
 
 export default function CustomerErrorDisplay(props) {
   console.log('Error Display Props', props);
@@ -7,13 +7,12 @@ export default function CustomerErrorDisplay(props) {
   if (props.props === undefined) {
     return null;
   }
-
   const renderErroRows = () => {
     const errors = props.props;
     const customerErrorRow = Object.keys(errors).map((key, index) => {
       console.log(`errors: ${errors} key: ${key}`);
       return (
-        <CustomerErrorRow
+        <ErrorRow
           key={key + index}
           props={{ keyName: key, error: errors[key] }}
         />

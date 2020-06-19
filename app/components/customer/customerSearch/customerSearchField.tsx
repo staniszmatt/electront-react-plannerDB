@@ -1,7 +1,6 @@
 import React from 'react';
+import { Field, reduxForm, InjectedFormProps, submit } from 'redux-form';
 import styles from './customerSearch.css';
-import customerStyles from '../Customer.css';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
 import '../../forms/formInput.css';
 import './customerSearch.css';
@@ -28,7 +27,7 @@ const CustomerSearchFormComponent = (
           name="customerSearch"
           type="text"
         />
-        <button type="button" onSubmit={handleSubmit(onSubmit)}>
+        <button type="button" onClick={handleSubmit(onSubmit)}>
           Submit
         </button>
       </div>

@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.customer-head-container {
+  display: inline-flex;
+}
+
 .btnContainer {
   width: 200px;
 }

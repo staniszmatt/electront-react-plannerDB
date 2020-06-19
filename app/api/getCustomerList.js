@@ -1,8 +1,7 @@
-require('mssql/lib/msnodesqlv8');
-const pool = require('../config/config');
+import 'mssql/msnodesqlv8';
+import pool from '../config/config';
 
-async function customerList(arg) {
-  console.log('Arg sent through Customer List Request: ', arg);
+async function customerList() {
   let returnData = {};
   try {
     const db = await pool.connect();

@@ -1,11 +1,16 @@
-require('mssql/lib/msnodesqlv8');
-const pool = require('../config/config');
+import 'mssql/msnodesqlv8';
+import pool from '../config/config';
 
-async function singleCustomer() {
+async function singleCustomer(request) {
+  console.log("Request Single Customer API, Request: ", request);
   let returnData = {};
   try {
     const db = await pool.connect();
-    const query = `select * from customer`;
+    const query = `SELECT id, c.customerName, c.customerCodeName, c.customerGenStd, c.customerRsStd, c.customerActive
+      FROM  customer as c
+        WHERE (c.customerName = '${request.customerName}')`;
+
+    console.log("Data query for customer request ", query);
     const data = await db.query(query);
 
     console.log('config data request data', data);
@@ -25,7 +30,6 @@ async function singleCustomer() {
     }
     return returnData;
   } catch (err) {
-    console.log("Error config", err);
     returnData = {
       list: [],
       error: err

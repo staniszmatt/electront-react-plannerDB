@@ -1,69 +1,61 @@
 import { Action } from 'redux';
 import {
-  CUSTOMER_LIST_REQUEST,
+  CUSTOMER_PENDING,
+  CUSTOMER_ERROR,
   CUSTOMER_LIST_RECIEVED,
-  CUSTOMER_LIST_ERROR,
-  CUSTOMER_SEARCH_SCREEN
+  CUSTOMER_ADD_RECIVED
 } from '../actions/customer';
 
 const IState = {
-  searchCustomerState: false,
   loadingState: false,
-  loadedState: false,
   errorState: false,
+  loadedCustomerListState: false,
+  loadedCustomerAddState: false,
   customerList: [],
   error: []
 };
 
 function customer(state = IState, action: Action<string>) {
   switch (action.type) {
-    case CUSTOMER_LIST_REQUEST:
+    case CUSTOMER_PENDING:
       return {
         ...state,
-        searchCustomerState: false,
         loadingState: true,
-        loadedState: false,
         errorState: false,
+        loadedCustomerListState: false,
+        loadedCustomerAddState: false,
         customerList: [],
         error: {}
       };
     case CUSTOMER_LIST_RECIEVED:
       return {
         ...state,
-        searchCustomerState: false,
         loadingState: false,
-        loadedState: true,
         errorState: false,
+        loadedCustomerListState: true,
+        loadedCustomerAddState: false,
         customerList: action.resp.list,
         error: {}
       };
-    case CUSTOMER_LIST_ERROR:
+    case CUSTOMER_ERROR:
       return {
         ...state,
-        searchCustomerState: false,
         loadingState: false,
-        loadedState: false,
         errorState: true,
+        loadedCustomerListState: false,
+        loadedCustomerAddState: false,
         customerList: [],
         error: action.resp.error
       };
-    case CUSTOMER_SEARCH_SCREEN:
-      return {
-        ...state,
-        searchCustomerState: true,
-        loadingState: false,
-        loadedState: false,
-        errorState: false,
-        customerList: [],
-        error: {}
-      };
+    // case CUSTOMER_LIST_RECIEVED:
+
     default:
       return state;
   }
 }
 
 const customerCombineForReducer = {
-  // customer,
+  // Can add another state managment here and shows as a seperate object in props
   customer
 };
 

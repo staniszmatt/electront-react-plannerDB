@@ -7,14 +7,16 @@
  * When running `yarn build` or `yarn build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
+import 'mssql/msnodesqlv8';
 import path from 'path';
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
+import getSingleCustomer from './api/getSingleCustomer';
 
-import 'mssql/msnodesqlv8';
+// require('mssql/msnodesqlv8');
 
 export default class AppUpdater {
   constructor() {
@@ -122,19 +124,34 @@ app.on('activate', () => {
 
 ipcMain.on('asynchronous-message', async (event, arg) => {
   let requestToSend = () => {};
+  let swtichFail = false;
+
+  console.log('ipcMain arg: ', arg);
 
   switch (arg.request) {
     case 'getCustomerList':
       requestToSend = getCustomerList;
       break;
+    case 'getSearchCustomer':
+      requestToSend = getSingleCustomer;
+      break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
+      swtichFail = true;
       break;
+  }
+  if (swtichFail) {
+    event.sender.send('asynchronous-reply', {
+      list: [],
+      error: {
+        switchFail: `No Request found for ${arg.request}`
+      }
+    });
+    return;
   }
   try {
     const data = await requestToSend(arg);
     console.log('main request data', data);
-
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
     console.log('ipcMain ERROR ****************************', err);

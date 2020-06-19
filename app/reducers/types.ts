@@ -5,10 +5,10 @@ export type counterStateType = {
 };
 
 export type customerStateType = {
-  searchCustomerState: boolean;
   loadingState: boolean;
-  loadedState: boolean;
   errorState: boolean;
+  loadedCustomerListState: boolean;
+  loadedCustomerAddState: boolean;
   customerList: [];
   error: [];
 };
