@@ -5,7 +5,9 @@ import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as counterActions from '../actions/counter';
-import { counterStateType } from '../reducers/types';
+import * as customerActions from '../actions/customer';
+import { customerStateType } from '../reducers/types';
+// import { counterStateType, customerStateType } from '../reducers/types';
 
 declare global {
   interface Window {
@@ -25,7 +27,23 @@ const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState?: counterStateType) => {
+const configureStore = (
+  initialState:
+    | {
+        customer?:
+          | {
+              loadingState: boolean;
+              errorState: boolean;
+              loadedCustomerListState: boolean;
+              loadedCustomerAddState: boolean;
+              customerList: [];
+              error: [];
+            }
+          | customerStateType;
+        // counter?: number | counterStateType;
+      }
+    | undefined
+) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -50,7 +68,8 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
+    ...customerActions,
+    // ...counterActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

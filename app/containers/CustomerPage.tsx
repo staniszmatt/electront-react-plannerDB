@@ -1,6 +1,28 @@
-import React from 'react';
-import Customer from '../components/Customer';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import Customer from '../components/customer/Customer';
+import {
+  requestCustomerList,
+  searchForCustomer,
+  handleCustomerSearchForm
+} from '../actions/customer';
+import { customerStateType } from '../reducers/types';
 
-export default function CustomerPage() {
-  return <Customer />;
+function mapStateToProps(state: customerStateType) {
+  return {
+    customer: state
+  }
 }
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return bindActionCreators(
+    {
+      requestCustomerList,
+      searchForCustomer,
+      handleCustomerSearchForm
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Customer);

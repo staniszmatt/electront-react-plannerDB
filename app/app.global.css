@@ -11,14 +11,25 @@ body {
   margin: unset;
 }
 
+.backgroundImageContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  z-index: -1;
+}
+
 .mainBackground {
-  opacity: 0.2;
+  opacity: 0.05;
   object-fit: contain;
   width: 100%;
-  margin-top: 20vh;
+  margin: auto;
   user-select: none;
   pointer-events: none;
-  position: absolute;
+}
+
+#root {
+  height: 100%;
 }
 
 h2 {
