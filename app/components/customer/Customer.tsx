@@ -4,7 +4,6 @@ import NewButton from '../buttonFunctions/buttonClickHandler';
 import CustomerHeadTable from './customerList/customerHeaderTable';
 import CustomerErrorDisplay from './customerError';
 import CustomerSearchForm from './customerSearch/customerSearchField';
-
 interface Props {
   searchCustomerState: boolean;
   loadingState: boolean;

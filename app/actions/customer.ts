@@ -52,7 +52,11 @@ export function searchForCustomer() {
 export function pullRequestCustomerListData() {
   return (dispatch: Dispatch) => {
 
-    ipcRenderer.send('asynchronous-message', 'Request Customers!');
+    const mainRequest = {
+      request: 'getCustomerList'
+    };
+
+    ipcRenderer.send('asynchronous-message', mainRequest);
     // TODO: Function to set state for loading screen
     dispatch(customerListPending());
     ipcRenderer.on('asynchronous-reply', (event, resp) => {
@@ -81,6 +85,16 @@ export function requestCustomerList() {
   };
 }
 
-export function handleCustomerSearchForm() {
-  console.log("Action Handle Customer Search Submit");
+export function handleCustomerSearchForm(customerName: {}) {
+  console.log('handle customer search action, check name: ', customerName);
+  // return (dispatch: Dispatch, getState: GetCustomerState) => {
+  //   const state = getState();
+  //   console.log('action request custoemr list state', state);
+  //   if (state.customer.customerList.length === 0) {
+  //     dispatch(pullRequestCustomerListData());
+  //   }
+  //   if (state.customer.loadedState) {
+  //     return;
+  //   }
+  // };
 }

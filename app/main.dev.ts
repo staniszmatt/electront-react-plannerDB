@@ -1,5 +1,4 @@
 /* eslint global-require: off, no-console: off */
-
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -13,9 +12,9 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import customerList from './api/customerList';
+import getCustomerList from './api/getCustomerList';
 
-require('mssql/msnodesqlv8');
+import 'mssql/msnodesqlv8';
 
 export default class AppUpdater {
   constructor() {
@@ -122,13 +121,22 @@ app.on('activate', () => {
 });
 
 ipcMain.on('asynchronous-message', async (event, arg) => {
-  console.log("Main Asyn arg", arg);
+  let requestToSend = () => {};
+
+  switch (arg.request) {
+    case 'getCustomerList':
+      requestToSend = getCustomerList;
+      break;
+    default:
+      console.log('ERROR, Request does not match allowed requests!');
+      break;
+  }
   try {
-    const data = await customerList();
-    console.log("main request data", data);
+    const data = await requestToSend(arg);
+    console.log('main request data', data);
 
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
-    console.length("ipcMain ERROR ****************************", err);
+    console.log('ipcMain ERROR ****************************', err);
   }
 });

@@ -8,7 +8,7 @@ interface NewButton {
 
 export default function ButtonHandle(props: NewButton) {
   return (
-    <button onClick={props.ClickHandler} data-tclass="btn" type="button">
+    <button onClick={props.ClickHandler} type="button">
       {props.buttonName}
     </button>
   )

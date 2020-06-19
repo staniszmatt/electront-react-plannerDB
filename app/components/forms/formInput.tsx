@@ -1,7 +1,9 @@
 import React from 'react';
-import './formInput.css';
+import styles from './formInput.css';
 
-export default props => {
+interface Props {}
+
+export default function FormField(props: Props) {
   const {
     input,
     label,
@@ -9,10 +11,9 @@ export default props => {
     meta: { error, touched }
   } = props;
   return (
-    <div className="form-container" >
-      <label className="form-label" id="input-label"> {label} </label>
-      <input className="form-field" {...input} type={type ? type : 'text'} />
-    {/**  <p className="red-text darken-2" > {touched && error} </p>*/}
+    <div className={styles['form-container']}>
+      <label className={styles["form-label-input"]} id="input-label"> {label} </label>
+      <input className={styles["form-field"]} {...input} type={type ? type : 'text'} />
     </div>
   );
 };

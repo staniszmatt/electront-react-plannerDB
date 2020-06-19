@@ -1,7 +1,7 @@
 require('mssql/lib/msnodesqlv8');
 const pool = require('../config/config');
 
-async function customerList() {
+async function singleCustomer() {
   let returnData = {};
   try {
     const db = await pool.connect();
@@ -34,4 +34,4 @@ async function customerList() {
   }
 }
 
-module.exports = customerList;
+module.exports = singleCustomer;
