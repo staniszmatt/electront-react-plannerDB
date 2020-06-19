@@ -3,7 +3,8 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 import createRootReducer from '../reducers';
-import { Store, customerStateType, counterStateType } from '../reducers/types';
+import { Store, customerStateType } from '../reducers/types';
+// import { Store, customerStateType, counterStateType } from '../reducers/types';
 
 const history = createHashHistory();
 const rootReducer = createRootReducer(history);
@@ -23,7 +24,7 @@ function configureStore(
               error: [];
             }
           | customerStateType;
-        counter?: number | counterStateType;
+        // counter?: number | counterStateType;
       }
     | undefined
 ): Store {

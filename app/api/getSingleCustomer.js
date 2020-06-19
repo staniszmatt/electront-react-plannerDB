@@ -24,7 +24,7 @@ async function singleCustomer(request) {
       returnData = {
         list: [],
         error: {
-          empty: 'No Data Found For Customers'
+          empty: `No Data Found For Customer ${request.customerName}`
         }
       };
     }

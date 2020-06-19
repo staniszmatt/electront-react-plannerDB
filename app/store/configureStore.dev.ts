@@ -6,7 +6,8 @@ import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 import * as counterActions from '../actions/counter';
 import * as customerActions from '../actions/customer';
-import { counterStateType, customerStateType } from '../reducers/types';
+import { customerStateType } from '../reducers/types';
+// import { counterStateType, customerStateType } from '../reducers/types';
 
 declare global {
   interface Window {
@@ -39,7 +40,7 @@ const configureStore = (
               error: [];
             }
           | customerStateType;
-        counter?: number | counterStateType;
+        // counter?: number | counterStateType;
       }
     | undefined
 ) => {
@@ -68,7 +69,7 @@ const configureStore = (
   // Redux DevTools Configuration
   const actionCreators = {
     ...customerActions,
-    ...counterActions,
+    // ...counterActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

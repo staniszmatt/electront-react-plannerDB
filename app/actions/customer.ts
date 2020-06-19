@@ -52,7 +52,7 @@ export function requestCustomerList() {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     console.log('action request customer list state', state);
-    if (state.customer.customerList.length === 0) {
+    if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }
     if (state.customer.loadedCustomerListState) {
@@ -85,21 +85,19 @@ export function handleCustomerSearchForm(customerName: {}) {
       if (resp.list.length > 0){
         // Reusing the customer list display for displaying single customer
         dispatch(customerListRecieved(resp));
-      } else {
+      } else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
-        if(resp.error.name === 'RequestError') {
-          dispatch(
-            customerError({
-              list: [],
-              error: {
-                customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
-              }
-            })
-          );
-        } else {
-          // If errors are not specified above, then pass whole error
-          dispatch(customerError(resp));
-        }
+        dispatch(
+          customerError({
+            list: [],
+            error: {
+              customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
+            }
+          })
+        );
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
       }
     });
   };
