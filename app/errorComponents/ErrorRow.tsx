@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styles from './error.css';
 
 export default function CustomerErrorRow(props) {
   console.log("Row function", props);
@@ -9,9 +10,9 @@ export default function CustomerErrorRow(props) {
   }
 
   return (
-    <div>
-      <div>{keyName}</div>
-      <div>{error}</div>
+    <div className={styles.errorRowContainer}>
+      <div className={styles.errorName}>{keyName}:</div>
+      <div className={styles.errorData}>{error}</div>
     </div>
   );
 }
