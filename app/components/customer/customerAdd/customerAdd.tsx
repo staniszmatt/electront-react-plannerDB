@@ -75,6 +75,19 @@ const CustomerAddFormComponent = (
             </label>
           </div>
         </label>
+        <label className={styles['customer-notes-form']}>
+          Customer Notes:
+          <div>
+            <Field
+              label="Customer Notes:"
+              component="textarea"
+              name="customerNotes"
+              type="textarea"
+              aria-multiline
+              rows="15"
+            />
+          </div>
+        </label>
       </div>
       <button type="button" onClick={handleSubmit(onSubmit)}>
         Submit
