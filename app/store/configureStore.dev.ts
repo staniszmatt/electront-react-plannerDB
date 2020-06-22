@@ -4,7 +4,7 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
-import * as counterActions from '../actions/counter';
+// import * as counterActions from '../actions/counter';
 import * as customerActions from '../actions/customer';
 import { customerStateType } from '../reducers/types';
 // import { counterStateType, customerStateType } from '../reducers/types';
@@ -36,6 +36,7 @@ const configureStore = (
               errorState: boolean;
               loadedCustomerListState: boolean;
               loadedCustomerAddState: boolean;
+              loadCustomerAddPage: boolean;
               customerList: [];
               error: [];
             }

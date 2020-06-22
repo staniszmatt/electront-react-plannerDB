@@ -7,9 +7,9 @@
   font-family: serif;
   border-radius: 3px;
   filter: drop-shadow(1.5px 1.5px 1.5px black);
-  width: 55px;
+  width: 60px;
+  height: 25px;
   margin: 5px;
-  height: 20px;
 }
 
 .form-main-container button:hover {

@@ -20,6 +20,7 @@ function configureStore(
               errorState: boolean;
               loadedCustomerListState: boolean;
               loadedCustomerAddState: boolean;
+              loadCustomerAddPage: boolean;
               customerList: [];
               error: [];
             }
