@@ -5,6 +5,9 @@
 
 .customer-head-container {
   display: inline-flex;
+  width: 100%;
+  background-color: #8080802b;
+  padding: 10px 0px;
 }
 
 .btnContainer {

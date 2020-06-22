@@ -3,7 +3,7 @@ import {
   CUSTOMER_PENDING,
   CUSTOMER_ERROR,
   CUSTOMER_LIST_RECIEVED,
-  CUSTOMER_ADD_RECIVED
+  CUSTOMER_ADD_PAGE
 } from '../actions/customer';
 
 const IState = {
@@ -11,6 +11,7 @@ const IState = {
   errorState: false,
   loadedCustomerListState: false,
   loadedCustomerAddState: false,
+  loadCustomerAddPage: false,
   customerList: [],
   error: []
 };
@@ -24,6 +25,7 @@ function customer(state = IState, action: Action<string>) {
         errorState: false,
         loadedCustomerListState: false,
         loadedCustomerAddState: false,
+        loadCustomerAddPage: false,
         customerList: [],
         error: {}
       };
@@ -34,6 +36,7 @@ function customer(state = IState, action: Action<string>) {
         errorState: false,
         loadedCustomerListState: true,
         loadedCustomerAddState: false,
+        loadCustomerAddPage: false,
         customerList: action.resp.list,
         error: {}
       };
@@ -44,11 +47,21 @@ function customer(state = IState, action: Action<string>) {
         errorState: true,
         loadedCustomerListState: false,
         loadedCustomerAddState: false,
+        loadCustomerAddPage: false,
         customerList: [],
         error: action.resp.error
       };
-    // case CUSTOMER_LIST_RECIEVED:
-
+    case CUSTOMER_ADD_PAGE:
+      return {
+        ...state,
+        loadingState: false,
+        errorState: false,
+        loadedCustomerListState: false,
+        loadedCustomerAddState: false,
+        loadCustomerAddPage: true,
+        customerList: [],
+        error: {}
+      };
     default:
       return state;
   }

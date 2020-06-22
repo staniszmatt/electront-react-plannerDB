@@ -28,3 +28,10 @@ label.form-label {
   border: none;
   padding: 4px;
 }
+
+.form-container p {
+  padding-left: 50px;
+  font-size: 18px;
+  margin: 0px;
+  color: red;
+}

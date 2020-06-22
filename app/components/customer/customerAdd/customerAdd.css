@@ -1,0 +1,50 @@
+form.form-main-container {
+  display: block;
+  border: 1px solid black;
+  width: unset;
+}
+
+form.form-main-container div {
+  display: block;
+  text-align: unset;
+  padding: 5px 0px;
+}
+
+form.form-main-container button {
+  width: 60px;
+  height: 25px;
+}
+
+
+form.form-main-container div div label {
+  font-size: 18px;
+}
+
+form.form-main-container div div input {
+  font-size: 16px;
+}
+
+.radio-form {
+  display: block;
+  font-size: 18px;
+  padding: 5px 10px;
+}
+
+.radio-form div.radio-container {
+  display: inline;
+  padding: unset;
+  margin-left: 5px;
+}
+
+.radio-form div label {
+  display: inline-flex;
+}
+
+.radio-form div label div {
+  padding: unset;
+  width: 30px;
+}
+
+.radio-form div label div label {
+  padding: unset;
+}

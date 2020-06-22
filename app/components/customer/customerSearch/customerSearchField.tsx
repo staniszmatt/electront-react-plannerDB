@@ -1,9 +1,8 @@
 import React from 'react';
-import { Field, reduxForm, InjectedFormProps, submit } from 'redux-form';
+import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import styles from './customerSearch.css';
 import FormInput from '../../forms/formInput';
 import '../../forms/formInput.css';
-import './customerSearch.css';
 
 interface FormProps {
   // Need to set this up yet!
@@ -16,11 +15,11 @@ interface DispatchProps {
 const CustomerSearchFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-  console.log("Feild Props", props);
+  console.log('Feild Props', props);
   const { handleSubmit, onSubmit } = props;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles["form-main-container"]}>
+      <div className={styles['form-main-container']}>
         <Field
           label="Search For Customer"
           component={FormInput}
@@ -35,6 +34,6 @@ const CustomerSearchFormComponent = (
   );
 };
 
-export default reduxForm<IFormProps, IDispatchProps>({
-  form: 'customerSearchForm'
+export default reduxForm<FormProps, DispatchProps>({
+  form: 'customerAddForm'
 })(CustomerSearchFormComponent);
