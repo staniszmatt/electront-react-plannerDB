@@ -11,6 +11,7 @@ form {
 
 .form-field {
   margin: auto;
+  text-transform: uppercase;
 }
 
 .form-label-input {
@@ -29,9 +30,29 @@ label.form-label {
   padding: 4px;
 }
 
-.form-container p {
-  padding-left: 50px;
+.form-container > p {
   font-size: 18px;
   margin: 0px;
   color: red;
+}
+
+.form-radio-container {
+  display: flex;
+  font-size: 18px;
+}
+
+.form-radio-container > div {
+  font-size: 16px;
+  padding: 0px 5px;
+  display: flex;
+}
+
+.form-radio-container > div > label {
+  padding: 0px 8px;
+  margin: auto;
+}
+
+.form-radio-container > div > input {
+  margin: auto;
+  padding: unset;
 }

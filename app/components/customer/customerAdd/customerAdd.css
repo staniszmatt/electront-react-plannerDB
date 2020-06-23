@@ -3,18 +3,26 @@ form.form-main-container {
   border: 1px solid black;
   width: unset;
   text-align: center;
+
 }
 
-form.form-main-container div {
-  height: 540px;
+form.form-main-container > div {
+  height: 510px;
   text-align: left;
 }
 
-form.form-main-container div div {
+form.form-main-container > div > div:nth-child(1),
+form.form-main-container > div > div:nth-child(2) {
   display: block;
   text-align: unset;
   padding: 5px 0px;
   height: unset;
+}
+
+form.form-main-container > div > div:nth-child(3),
+form.form-main-container > div > div:nth-child(4),
+form.form-main-container > div > div:nth-child(5) {
+  padding: 5px 10px;
 }
 
 form.form-main-container button {
@@ -22,38 +30,15 @@ form.form-main-container button {
   height: 25px;
 }
 
-form.form-main-container div div label {
+form.form-main-container > div > div:nth-child(1) label,
+form.form-main-container > div > div:nth-child(2) label {
   font-size: 18px;
   padding: 5px 10px;
 }
 
-form.form-main-container div div input {
+form.form-main-container > div > div:nth-child(1) input
+form.form-main-container > div > div:nth-child(2) input {
   font-size: 16px;
-}
-
-.radio-form {
-  display: block;
-  font-size: 18px;
-  padding: 5px 10px;
-}
-
-.radio-form div.radio-container {
-  display: inline;
-  padding: unset;
-  margin-left: 5px;
-}
-
-.radio-form div label {
-  display: inline-flex;
-}
-
-.radio-form div label div {
-  padding: unset;
-  width: 30px;
-}
-
-.radio-form div label div label {
-  padding: unset;
 }
 
 .customer-notes-form {
@@ -61,15 +46,15 @@ form.form-main-container div div input {
   padding: 5px 10px;
 }
 
-.customer-notes-form div {
+.customer-notes-form > div {
   display: flex;
+  padding: 10px;
 }
 
-.customer-notes-form div textarea {
+.customer-notes-form > div > textarea {
   font-size: 16px;
   display: block;
   box-shadow: inset 0 0 3px rgba(0,0,0,.8);
   width: 750px;
   padding: 20px;
-  margin-left: 10px;
 }

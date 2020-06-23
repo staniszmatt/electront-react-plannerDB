@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
+import FormYesNoInput from '../../forms/formYesNoInput';
 // import FormRadioInput from '../../forms/formRadioInput';
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
@@ -36,62 +37,34 @@ const CustomerAddFormComponent = (
           name="customerCodeName"
           type="text"
         />
-        <label className={styles["radio-form"]}>
-          General Standards Approved:
-          <div className={styles["radio-container"]}>
-            <label>
-              Yes
-              <Field name="genSTD" component={FormInput} type="radio" value="yes" />
-            </label>
-            <label>
-              No
-              <Field name="genSTD" component={FormInput} type="radio" value="no" />
-            </label>
-          </div>
-        </label>
-        <label className={styles["radio-form"]}>
-          RS Standards Approved:
-          <div className={styles["radio-container"]}>
-            <label>
-              Yes
-              <Field
-                name="rsStd"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="rsStd"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label className={styles["radio-form"]}>
-          Customer Active:
-          <div className={styles["radio-container"]}>
-            <label>
-              Yes
-              <Field name="customerActive" component={FormInput} type="radio" value="yes" />
-            </label>
-            <label>
-              No
-              <Field name="customerActive" component={FormInput} type="radio" value="no" />
-            </label>
-          </div>
-        </label>
+        <Field
+          className={styles['radio-form']}
+          label="General Standards Approved:"
+          component={FormYesNoInput}
+          name="customerGenStatus"
+          type="radio"
+        />
+        <Field
+          className={styles['radio-form']}
+          label="RS Standards Approved:"
+          component={FormYesNoInput}
+          name="customerRSStatus"
+          type="radio"
+        />
+        <Field
+          className={styles['radio-form']}
+          label="Customer Active:"
+          component={FormYesNoInput}
+          name="customerActive"
+          type="radio"
+        />
         <label className={styles['customer-notes-form']}>
           Customer Notes:
           <div>
             <Field
               label="Customer Notes:"
               component="textarea"
-              name="customerNotes"
+              name="customerNote"
               type="textarea"
               aria-multiline
               rows="15"
@@ -106,6 +79,38 @@ const CustomerAddFormComponent = (
   );
 };
 
+function validate(values) {
+  const {
+    customerName,
+    customerCodeName,
+    customerGenStatus,
+    customerRSStatus,
+    customerActive
+  } = values;
+
+  const errors = {};
+
+  if (!customerName) {
+    errors.customerName = 'Please Enter a Customer Name!';
+  }
+  if (!customerCodeName) {
+    errors.customerCodeName = 'Please Enter a Customer Name!';
+  }
+  if (!customerGenStatus) {
+    // eslint-disable-next-line prettier/prettier
+    errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
+  }
+  if (!customerRSStatus) {
+    // eslint-disable-next-line prettier/prettier
+    errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
+  }
+  if (!customerActive) {
+    errors.customerActive = 'Please Select if Customer is Active!';
+  }
+  return errors;
+};
+
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerSearchForm'
+  form: 'customerSearchForm',
+  validate: validate
 })(CustomerAddFormComponent);

@@ -122,7 +122,8 @@ export function handleCustomerAddForm(customerToAdd: {}) {
       customerCodeName: `${customerToAdd.customerCodeName}`,
       customerGenStatus: `${customerToAdd.customerGenStatus}`,
       customerRSStatus: `${customerToAdd.customerRSStatus}`,
-      customerActive: `${customerToAdd.customerActive}`
+      customerActive: `${customerToAdd.customerActive}`,
+      customerNote: `${customerToAdd.customerNote}`
     };
 
     console.log('add customer object to be sent', mainIPCRequest);
