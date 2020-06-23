@@ -41,11 +41,11 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="General Standards Approved" component={FormInput} type="radio" value="yes" />
+              <Field name="genSTD" component={FormInput} type="radio" value="yes" />
             </label>
             <label>
               No
-              <Field name="General Standards Approved" component={FormInput} type="radio" value="no" />
+              <Field name="genSTD" component={FormInput} type="radio" value="no" />
             </label>
           </div>
         </label>
@@ -54,11 +54,21 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="RS Standards Approved" component={FormInput} type="radio" value="yes" />
+              <Field
+                name="rsStd"
+                component={FormInput}
+                type="radio"
+                value="yes"
+              />
             </label>
             <label>
               No
-              <Field name="RS Standards Approved" component={FormInput} type="radio" value="no" />
+              <Field
+                name="rsStd"
+                component={FormInput}
+                type="radio"
+                value="no"
+              />
             </label>
           </div>
         </label>
@@ -67,11 +77,11 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="Customer Active" component={FormInput} type="radio" value="yes" />
+              <Field name="customerActive" component={FormInput} type="radio" value="yes" />
             </label>
             <label>
               No
-              <Field name="Customer Active" component={FormInput} type="radio" value="no" />
+              <Field name="customerActive" component={FormInput} type="radio" value="no" />
             </label>
           </div>
         </label>
