@@ -35,24 +35,3 @@ label.form-label {
   margin: 0px;
   color: red;
 }
-
-.form-radio-container {
-  display: flex;
-  font-size: 18px;
-}
-
-.form-radio-container > div {
-  font-size: 16px;
-  padding: 0px 5px;
-  display: flex;
-}
-
-.form-radio-container > div > label {
-  padding: 0px 8px;
-  margin: auto;
-}
-
-.form-radio-container > div > input {
-  margin: auto;
-  padding: unset;
-}

@@ -37,27 +37,45 @@ const CustomerAddFormComponent = (
           name="customerCodeName"
           type="text"
         />
-        <Field
-          className={styles['radio-form']}
-          label="General Standards Approved:"
-          component={FormYesNoInput}
-          name="customerGenStatus"
-          type="radio"
-        />
-        <Field
-          className={styles['radio-form']}
-          label="RS Standards Approved:"
-          component={FormYesNoInput}
-          name="customerRSStatus"
-          type="radio"
-        />
-        <Field
-          className={styles['radio-form']}
-          label="Customer Active:"
-          component={FormYesNoInput}
-          name="customerActive"
-          type="radio"
-        />
+        <label className={styles["radio-form"]}>
+          General Standards Approved:
+          <div className={styles["radio-container"]}>
+            <label>
+              Yes
+              <Field name="General Standards Approved" component={FormInput} type="radio" value="yes" />
+            </label>
+            <label>
+              No
+              <Field name="General Standards Approved" component={FormInput} type="radio" value="no" />
+            </label>
+          </div>
+        </label>
+        <label className={styles["radio-form"]}>
+          RS Standards Approved:
+          <div className={styles["radio-container"]}>
+            <label>
+              Yes
+              <Field name="RS Standards Approved" component={FormInput} type="radio" value="yes" />
+            </label>
+            <label>
+              No
+              <Field name="RS Standards Approved" component={FormInput} type="radio" value="no" />
+            </label>
+          </div>
+        </label>
+        <label className={styles["radio-form"]}>
+          Customer Active:
+          <div className={styles["radio-container"]}>
+            <label>
+              Yes
+              <Field name="Customer Active" component={FormInput} type="radio" value="yes" />
+            </label>
+            <label>
+              No
+              <Field name="Customer Active" component={FormInput} type="radio" value="no" />
+            </label>
+          </div>
+        </label>
         <label className={styles['customer-notes-form']}>
           Customer Notes:
           <div>
