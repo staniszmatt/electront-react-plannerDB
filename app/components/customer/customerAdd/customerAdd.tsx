@@ -1,8 +1,6 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
-import FormYesNoInput from '../../forms/formYesNoInput';
-// import FormRadioInput from '../../forms/formRadioInput';
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
 
@@ -42,11 +40,11 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="General Standards Approved" component={FormInput} type="radio" value="yes" />
+              <Field name="customerGenStatus" component={FormInput} type="radio" value="yes" />
             </label>
             <label>
               No
-              <Field name="General Standards Approved" component={FormInput} type="radio" value="no" />
+              <Field name="customerGenStatus" component={FormInput} type="radio" value="no" />
             </label>
           </div>
         </label>
@@ -55,11 +53,11 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="RS Standards Approved" component={FormInput} type="radio" value="yes" />
+              <Field name="customerRSStatus" component={FormInput} type="radio" value="yes" />
             </label>
             <label>
               No
-              <Field name="RS Standards Approved" component={FormInput} type="radio" value="no" />
+              <Field name="customerRSStatus" component={FormInput} type="radio" value="no" />
             </label>
           </div>
         </label>
@@ -68,11 +66,11 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="Customer Active" component={FormInput} type="radio" value="yes" />
+              <Field name="customerActive" component={FormInput} type="radio" value="yes" />
             </label>
             <label>
               No
-              <Field name="Customer Active" component={FormInput} type="radio" value="no" />
+              <Field name="customerActive" component={FormInput} type="radio" value="no" />
             </label>
           </div>
         </label>
@@ -98,6 +96,7 @@ const CustomerAddFormComponent = (
 };
 
 function validate(values) {
+  console.log("initial validate customer add value", values);
   const {
     customerName,
     customerCodeName,
@@ -111,8 +110,18 @@ function validate(values) {
   if (!customerName) {
     errors.customerName = 'Please Enter a Customer Name!';
   }
+  if (customerName) {
+    if (customerName.length > 32) {
+      errors.customerName = 'Customer name is to long!';
+    }
+  }
   if (!customerCodeName) {
     errors.customerCodeName = 'Please Enter a Customer Name!';
+  }
+  if (customerCodeName) {
+    if (customerCodeName.length > 6) {
+      errors.customerCodeName = 'Code name is too long!';
+    }
   }
   if (!customerGenStatus) {
     // eslint-disable-next-line prettier/prettier
@@ -130,5 +139,5 @@ function validate(values) {
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerSearchForm',
-  validate: validate
+  validate
 })(CustomerAddFormComponent);

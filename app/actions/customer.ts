@@ -6,6 +6,15 @@ export const CUSTOMER_ERROR = 'CUSTOMER_LIST_ERROR';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 
+// Helper Functions
+function returnOneZeroFromString(stringToCheck: string) {
+  if (stringToCheck === 'yes') {
+    return 1;
+  }
+  return 0;
+}
+
+// Reducer function calls
 export function customerPending() {
   return {
     type: CUSTOMER_PENDING
@@ -91,6 +100,7 @@ export function handleCustomerSearchForm(customerName: {}) {
       console.log('customer search data event', event);
       if (resp.list.length > 0){
         // Reusing the customer list display for displaying single customer
+        // TODO: need to setup for a seperate customer display page to include notes and change history
         dispatch(customerListRecieved(resp));
       } else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
@@ -115,41 +125,41 @@ export function handleCustomerAddForm(customerToAdd: {}) {
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
-
+    // Setting yes no values as a boolean number 1 or 0
+    const returnGenStatus = returnOneZeroFromString(
+      customerToAdd.customerGenStatus
+    );
+    const returnRSStatus = returnOneZeroFromString(
+      customerToAdd.customerRSStatus
+    );
+    const returnActiveStatus = returnOneZeroFromString(
+      customerToAdd.customerActive
+    );
     const mainIPCRequest = {
       request: 'postAddCustomer',
       customerName: `${customerToAdd.customerName}`,
       customerCodeName: `${customerToAdd.customerCodeName}`,
-      customerGenStatus: `${customerToAdd.customerGenStatus}`,
-      customerRSStatus: `${customerToAdd.customerRSStatus}`,
-      customerActive: `${customerToAdd.customerActive}`,
+      customerGenStatus: returnGenStatus,
+      customerRSStatus: returnRSStatus,
+      customerActive: returnActiveStatus,
       customerNote: `${customerToAdd.customerNote}`
     };
 
     console.log('add customer object to be sent', mainIPCRequest);
 
-  //   ipcRenderer.send('asynchronous-message', mainIPCRequest);
-  //   dispatch(customerPending());
-  //   ipcRenderer.on('asynchronous-reply', (event, resp) => {
-  //     console.log('customer search data ', resp);
-  //     console.log('customer search data event', event);
-  //     if (resp.list.length > 0){
-  //       // Reusing the customer list display for displaying single customer
-  //       dispatch(customerListRecieved(resp));
-  //     } else if (resp.error.name === 'RequestError') {
-  //       // If request isn't in the server
-  //       dispatch(
-  //         customerError({
-  //           list: [],
-  //           error: {
-  //             customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
-  //           }
-  //         })
-  //       );
-  //     } else {
-  //       // If errors are not specified above, then pass whole error
-  //       dispatch(customerError(resp));
-  //     }
-  //   });
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', (event, resp) => {
+      console.log('customer search data ', resp);
+      console.log('customer search data event', event);
+      if (resp){
+        // TODO: Setup response function here:
+        console.log("Customer Was ADDED!", resp)
+
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+    });
   };
 }

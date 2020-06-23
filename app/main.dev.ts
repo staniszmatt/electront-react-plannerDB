@@ -15,6 +15,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
+import postNewCustomer from './api/postNewCustomer';
 
 // require('mssql/msnodesqlv8');
 
@@ -135,6 +136,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     case 'getSearchCustomer':
       requestToSend = getSingleCustomer;
       break;
+    case 'postAddCustomer':
+      requestToSend = postNewCustomer;
+      break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
       swtichFail = true;
@@ -142,7 +146,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   }
   if (swtichFail) {
     event.sender.send('asynchronous-reply', {
-      list: [],
       error: {
         switchFail: `No Request found for ${arg.request}`
       }
