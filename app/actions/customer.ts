@@ -154,8 +154,7 @@ export function handleCustomerAddForm(customerToAdd: {}) {
       console.log('customer search data event', event);
       if (resp){
         // TODO: Setup response function here:
-        console.log("Customer Was ADDED!", resp)
-
+        console.log('Customer Was ADDED!', resp);
       } else {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
