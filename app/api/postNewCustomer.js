@@ -6,9 +6,8 @@ async function postNewCustomer(request) {
   let returnData = {};
   try {
     const db = await pool.connect();
-    const query = `DECLARE @ReturnID TABLE ([id] INT)
-      INSERT INTO customer (customerName, customerCodeName, customerGenStd, customerRsStd, customerActive)
-      OUTPUT inserted.id INTO @ReturnID
+    const query = `INSERT INTO customer (customerName, customerCodeName, customerGenStd, customerRsStd, customerActive)
+      OUTPUT inserted.id
         VALUES (
           '${request.customerName}', '${request.customerCodeName}', ${request.customerGenStatus}, ${request.customerRSStatus}, ${request.customerActive}
           )`;
@@ -17,8 +16,9 @@ async function postNewCustomer(request) {
     const data = await db.query(query);
 
     console.log('config data request data', data);
-
-    if (data) {
+    console.log('test id ', data.recordset[0].id);
+debugger;
+    if (data.recordset[0].id) {
       returnData = {
         data,
         error: {}
@@ -35,7 +35,7 @@ async function postNewCustomer(request) {
   } catch (err) {
     returnData = {
       error: err
-    }
+    };
     return returnData;
   }
 }

@@ -1,0 +1,42 @@
+.main-table {
+  width: 100%;
+}
+
+.main-table caption {
+  font-size: 25px;
+}
+
+.main-table thead tr {
+  font-size: 18px;
+  display: block;
+  max-width: 1025px;
+}
+
+.main-table thead tr th {
+  width: 15%;
+}
+
+.main-table thead tr th {
+  font-weight: unset;
+}
+
+.t-body {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 550px;
+  text-align: center;
+  /* display: flex;
+  flex-wrap: wrap;
+  height: 600px;
+  overflow: auto; */
+}
+
+/* .t-body tr {
+  width: 100%;
+  display: block;
+} */
+
+.t-body tr td {
+  width: 15%;
+}

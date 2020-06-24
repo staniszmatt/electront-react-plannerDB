@@ -12,6 +12,10 @@ interface DispatchProps {
   // ...
 }
 
+function toUpperCase(value) {
+  return value && value.toUpperCase();
+}
+
 const CustomerAddFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
@@ -28,12 +32,14 @@ const CustomerAddFormComponent = (
           component={FormInput}
           name="customerName"
           type="text"
+          format={toUpperCase}
         />
         <Field
           label="Customer Code Name:"
           component={FormInput}
           name="customerCodeName"
           type="text"
+          format={toUpperCase}
         />
         <label className={styles["radio-form"]}>
           General Standards Approved:

@@ -23,4 +23,4 @@ export default function FormField(props: Props) {
       <p className="red-text darken-2">{touched && error} </p>
     </div>
   );
-};
+}
