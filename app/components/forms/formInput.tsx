@@ -12,7 +12,9 @@ export default function FormField(props: Props) {
   } = props;
   return (
     <div className={styles['form-container']}>
-      <label className={styles["form-label-input"]} id="input-label"> {label} </label>
+      <label className={styles['form-label-input']} id="input-label">
+        {label}
+      </label>
       <input
         className={styles['form-field']}
         {...input}
@@ -21,4 +23,4 @@ export default function FormField(props: Props) {
       <p className="red-text darken-2">{touched && error} </p>
     </div>
   );
-};
+}

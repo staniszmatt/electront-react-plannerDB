@@ -1,5 +1,6 @@
 import React from 'react';
 import CustomerRow from './customerRow';
+import styles from './customerlist.css'
 
 export default function CustomerHeadTable(props){
   console.log("cust header component props", props);
@@ -19,10 +20,10 @@ export default function CustomerHeadTable(props){
   };
 
   return (
-    <table /*className="customerListTbl"*/>
+    <table className={styles["main-table"]}>
       <caption>Customer List</caption>
-      <tbody>
-        <tr /*className="customerTableHeader*/>
+      <thead>
+        <tr>
           <th>Customer Name</th>
           <th>Customer Code</th>
           <th>General Standards Approved</th>
@@ -30,6 +31,8 @@ export default function CustomerHeadTable(props){
           <th>Active Customer</th>
           <th>Edit Customer</th>
         </tr>
+      </thead>
+      <tbody className={styles["t-body"]}>
         {renderRows()}
       </tbody>
     </table>

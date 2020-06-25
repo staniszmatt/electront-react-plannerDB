@@ -11,6 +11,7 @@ form {
 
 .form-field {
   margin: auto;
+  text-transform: uppercase;
 }
 
 .form-label-input {
@@ -29,8 +30,7 @@ label.form-label {
   padding: 4px;
 }
 
-.form-container p {
-  padding-left: 50px;
+.form-container > p {
   font-size: 18px;
   margin: 0px;
   color: red;

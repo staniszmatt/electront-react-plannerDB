@@ -45,7 +45,7 @@ export default function Customer(props: Props) {
         </div>
         <CustomerSearchForm onSubmit={handleCustomerSearchForm} />
       </div>
-      <div className="customerData" data-tid="customerData">
+      <div className={styles["customer-data"]}>
         {props.customer.customer.loadingState && <div>LOADING</div>}
         {props.customer.customer.errorState && <CustomerErrorDisplay props={props.customer.customer.error} />}
         {props.customer.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customer.customerList} />}
