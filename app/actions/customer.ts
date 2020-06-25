@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron';
+import { reset } from 'redux-form';
 import { GetCustomerState, Dispatch } from '../reducers/types';
+import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_LIST_REQUEST';
 export const CUSTOMER_ERROR = 'CUSTOMER_LIST_ERROR';
@@ -150,11 +152,18 @@ export function handleCustomerAddForm(customerToAdd: {}) {
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(customerPending());
     ipcRenderer.on('asynchronous-reply', (event, resp) => {
-      console.log('customer search data ', resp);
-      console.log('customer search data event', event);
-      if (resp){
+      console.log('customer add data ', resp);
+      console.log('customer add data event', event);
+
+      console.log('Test for empty error', isObjEmpty(resp.error));
+
+      if (isObjEmpty(resp.error)) {
         // TODO: Setup response function here:
+        dispatch(reset('customerSearchForm'));
         console.log('Customer Was ADDED!', resp);
+      } else if (resp.error.number === 2627) {
+        console.log("Error Customer or code already name already used!", resp);
+        dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));

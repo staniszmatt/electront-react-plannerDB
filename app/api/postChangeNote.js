@@ -2,8 +2,9 @@ import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 
 async function postNewChangeNote(request) {
-  console.log("Post New Change Note: ", request);
-  let returnData = {};
+  let returnData = {
+    error: {}
+  };
   // Post to add a new change note
   try {
     const db = await pool.connect();
@@ -22,30 +23,26 @@ async function postNewChangeNote(request) {
           '${request.userId}',
           '${request.changeNoteDateStamp}'
           )`;
-
-    console.log("Data query for changeNote request ", query);
-    const data = await db.query(query);
-
-    console.log('config data changeNote', data);
-    console.log('changeNote ', data.recordset[0].id);
+    const changeNoteData = await db.query(query);
     // If customer add worked, then create the change note to show when customer was created
-    if (data.recordset[0].id) {
-      returnData.data = data;
-      returnData.error = {};
-    } else {
-      returnData.data = {
-        success: 'Failed to create change note',
-        returnedData: data,
+    if (changeNoteData.recordset[0].id) {
+      returnData.changeNoteData = {
+        success: 'Success',
+        changeNoteID: changeNoteData.recordset[0].id,
+        changeNoteData
       };
-      returnData.error = {};
+    } else {
+      returnData.changeNoteData = {
+        success: 'Failed to create change note',
+        returnedData: changeNoteData
+      };
     }
-    return returnData;
   } catch (err) {
     returnData = {
       error: err
     };
-    return returnData;
   }
+  return returnData;
 }
 
 module.exports = postNewChangeNote;

@@ -160,3 +160,11 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log('ipcMain ERROR ****************************', err);
   }
 });
+// try {
+//   const data = await requestToSend(arg);
+//   console.log('main request data', data);
+//   event.sender.send('asynchronous-reply', data);
+// } catch (err) {
+//   console.log('ipcMain ERROR ****************************', err);
+//   event.sender.send('asynchronous-reply', err);
+// }

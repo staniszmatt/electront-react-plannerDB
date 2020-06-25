@@ -145,5 +145,6 @@ function validate(values) {
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerSearchForm',
-  validate
+  validate,
+  destroyOnUnmount: false
 })(CustomerAddFormComponent);

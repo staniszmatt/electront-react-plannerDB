@@ -5,8 +5,9 @@ import postNewChangeNote from './postChangeNote';
 import { requests } from 'sinon';
 
 async function postNewCustomer(request) {
-  console.log("Add Customer API, Request: ", request);
-  let returnData = {};
+  let returnData = {
+    error: {}
+  };
   // Post to add new customer
   try {
     const db = await pool.connect();
@@ -15,12 +16,7 @@ async function postNewCustomer(request) {
         VALUES (
           '${request.customerName}', '${request.customerCodeName}', ${request.customerGenStatus}, ${request.customerRSStatus}, ${request.customerActive}
           )`;
-
-    console.log("Data query for customer request ", query);
     const data = await db.query(query);
-
-    console.log('config data request data', data);
-    console.log('test id ', data.recordset[0].id);
     // If customer add worked, then create the change note to show when customer was created
     if (data.recordset[0].id) {
       // Setup to add change note for adding customer.
@@ -33,36 +29,55 @@ async function postNewCustomer(request) {
           userId: `${data.recordset[0].LoggedInUser}`,
           changeNoteDateStamp: `${data.recordset[0].dateStamp}`
         };
-        console.log("Request Object for Add Customer Note", requestData);
         const changeNoteData = await postNewChangeNote(requestData);
-        console.log("Return Change Note post request", changeNoteData);
-        returnData.customerNotePost = changeNoteData;
-        // TODO: Add CustomerNote post here
-        console.log("ChangeNOte ID is : ", changeNoteData.recordset[0].id)
         // If changenote passes, then finally add a customer note if it has any text
-        if (changeNoteData.recordset[0].id) {
+        if (changeNoteData.changeNoteData.success === 'Success') {
+          returnData.changeNotePost = {
+            success: 'Success',
+            changeNoteData
+          };
           if (request.customerNote !== 'undefined') {
             try {
               const requestCustomerNoteData = {
-                customerNote: request.customerNote
+                customerNote: request.customerNote,
+                customerID: data.recordset[0].id,
+                // eslint-disable-next-line prettier/prettier
+                changeNoteDescription: "Added customer note with adding a new customer."
               };
-              const customerNoteData = postCustomerNote(requestCustomerNoteData);
-              console.log("Return Customer Note Request:", customerNoteData);
+              // eslint-disable-next-line prettier/prettier
+              const customerNoteData = await postCustomerNote(requestCustomerNoteData);
+              if (customerNoteData.customerNoteData.success === 'Success') {
+                returnData.customerNote = {
+                  success: 'Success',
+                  customerNoteData
+                };
+              } else {
+                returnData.customerNote = {
+                  success: 'Failed to add customer note!',
+                  customerNoteData
+                };
+              }
             } catch (error) {
-              console.log("ERROR ON Customer Note Post", error)
-            };
+              returnData.error = error;
+            }
           }
+        } else {
+          returnData.changeNotePost = {
+            success: 'Failed to add change note!',
+            changeNoteData
+          };
         }
-
       } catch (error) {
         returnData.error = error;
       }
-      returnData.data = data;
-      returnData.timeStamp = data.recordset[0].customerTimeStamp;
-      returnData.error = {};
+      returnData.newCustomer = {
+        success: 'Success',
+        newCustomerData: data
+      };
     } else {
       returnData = {
-        data,
+        success: 'Failed to add customer!',
+        newCustomerData: data,
         error: {
           empty: `Something went wrong on adding customer`
         }
