@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
+import FormBtn from '../../buttonFunctions/buttonClickHandler'
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
 
@@ -121,9 +122,7 @@ const CustomerAddFormComponent = (
           </div>
         </label>
       </div>
-      <button type="button" onClick={handleSubmit(onSubmit)}>
-        Submit
-      </button>
+      <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
   );
 };

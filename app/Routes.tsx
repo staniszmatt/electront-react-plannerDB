@@ -11,13 +11,13 @@ import ErrorModal from './components/modals/ErrorModalPage';
 export default function Routes() {
   return (
     <App>
+      <ErrorModal />
       <Nav />
       <Switch>
         <Route path={routes.CUSTOMER} component={CustomerPage} />
         <Route path={routes.HOME} component={HomePage} />
         {/**   <Route path={routes.COUNTER} component={CounterPage} />  */}
       </Switch>
-      <ErrorModal />
     </App>
   );
 }

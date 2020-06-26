@@ -157,6 +157,7 @@ export function handleCustomerAddForm(customerToAdd: {}) {
         // TODO: Setup response function here to chagne to the customer dispaly page once setup:
         dispatch(reset('customerSearchForm'));
       } else if (arg.error.number === 2627) {
+        debugger;
         dispatch(
           toggleOpenModalState('Error Customer or code name already used!')
         );

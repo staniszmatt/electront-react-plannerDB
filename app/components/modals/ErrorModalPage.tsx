@@ -37,16 +37,19 @@ function AlartModal(props: Props) {
   const { toggleOpenModalState } = props;
 
   return (
-    <div className={styles["modal-container"]}>
-      <ReactModal
-        isOpen={props.errorModal.errorModal.errorOpenState}
-        onRequestClose={toggleOpenModalState}
-        contentLabel="ERROR"
-        ariaHideApp={false}
-      >
-        <h5>{props.errorModal.errorModal.modalMessage}</h5>
-        <ModalBtn buttonName="CLOSE" ClickHandler={toggleOpenModalState} />
-      </ReactModal>
+    <div>
+      {props.errorModal.errorModal.errorOpenState &&
+        <ReactModal
+          isOpen={props.errorModal.errorModal.errorOpenState}
+          onRequestClose={toggleOpenModalState}
+          contentLabel="ERROR: "
+          ariaHideApp={false}
+          className={styles["error-modal-container"]}
+        >
+          <h5>{props.errorModal.errorModal.modalMessage}</h5>
+          <ModalBtn buttonName="CLOSE" ClickHandler={toggleOpenModalState} />
+        </ReactModal>
+      }
     </div>
   )
 }
