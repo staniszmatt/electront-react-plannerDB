@@ -4,7 +4,10 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 //   counter: number;
 // };
 
-export type errorModalStateType = { errorOpenState: boolean };
+export type errorModalStateType = {
+  errorOpenState: boolean;
+  modalMessage: string;
+};
 
 export type customerStateType = {
   loadingState: boolean;

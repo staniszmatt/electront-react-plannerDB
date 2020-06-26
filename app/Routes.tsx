@@ -6,6 +6,7 @@ import App from './containers/App';
 import HomePage from './containers/HomePage';
 // import CounterPage from './containers/CounterPage';
 import Nav from './components/navBar';
+import ErrorModal from './components/modals/ErrorModalPage';
 
 export default function Routes() {
   return (
@@ -13,9 +14,10 @@ export default function Routes() {
       <Nav />
       <Switch>
         <Route path={routes.CUSTOMER} component={CustomerPage} />
-        {/**   <Route path={routes.COUNTER} component={CounterPage} />  */}
         <Route path={routes.HOME} component={HomePage} />
+        {/**   <Route path={routes.COUNTER} component={CounterPage} />  */}
       </Switch>
+      <ErrorModal />
     </App>
   );
 }

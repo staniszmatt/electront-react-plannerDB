@@ -1,9 +1,10 @@
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
 import { GetCustomerState, Dispatch } from '../reducers/types';
+import { toggleOpenModalState } from './errorModal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
-export const CUSTOMER_PENDING = 'CUSTOMER_LIST_REQUEST';
+export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
 export const CUSTOMER_ERROR = 'CUSTOMER_LIST_ERROR';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
@@ -45,8 +46,8 @@ export function customerError(resp: {}) {
 
 // Call to electron main with ipcRenderer to get server data for customer list
 export function pullRequestCustomerListData() {
+  debugger;
   return (dispatch: Dispatch) => {
-
     const mainRequest = {
       request: 'getCustomerList'
     };
@@ -67,6 +68,7 @@ export function pullRequestCustomerListData() {
 
 // Setup for customer list call
 export function requestCustomerList() {
+  debugger
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     console.log('action request customer list state', state);
@@ -80,6 +82,7 @@ export function requestCustomerList() {
 }
 
 export function handleCustomerSearchForm(customerName: {}) {
+  debugger;
   console.log('handle customer search action, check name: ', customerName);
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
@@ -123,8 +126,6 @@ export function handleCustomerSearchForm(customerName: {}) {
 }
 
 export function handleCustomerAddForm(customerToAdd: {}) {
-  console.log("Handle customer Add Submit ", customerToAdd);
-
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     // Setting yes no values as a boolean number 1 or 0
@@ -147,26 +148,22 @@ export function handleCustomerAddForm(customerToAdd: {}) {
       customerNote: `${customerToAdd.customerNote}`
     };
 
-    console.log('add customer object to be sent', mainIPCRequest);
-
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(customerPending());
-    ipcRenderer.on('asynchronous-reply', (event, resp) => {
-      console.log('customer add data ', resp);
-      console.log('customer add data event', event);
 
-      console.log('Test for empty error', isObjEmpty(resp.error));
-
-      if (isObjEmpty(resp.error)) {
-        // TODO: Setup response function here:
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      console.log('return event', event);
+      if (isObjEmpty(arg.error)) {
+        // TODO: Setup response function here to chagne to the customer dispaly page once setup:
         dispatch(reset('customerSearchForm'));
-        console.log('Customer Was ADDED!', resp);
-      } else if (resp.error.number === 2627) {
-        console.log("Error Customer or code already name already used!", resp);
+      } else if (arg.error.number === 2627) {
+        dispatch(
+          toggleOpenModalState('Error Customer or code name already used!')
+        );
         dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error
-        dispatch(customerError(resp));
+        dispatch(customerError(arg));
       }
     });
   };

@@ -18,7 +18,7 @@ const CustomerSearchFormComponent = (
   console.log('Feild Props', props);
   const { handleSubmit, onSubmit } = props;
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
       <div className={styles['form-main-container']}>
         <Field
           label="Search For Customer"
@@ -35,5 +35,5 @@ const CustomerSearchFormComponent = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddForm'
+  form: 'customerSearchForm'
 })(CustomerSearchFormComponent);

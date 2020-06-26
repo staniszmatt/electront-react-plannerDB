@@ -3,12 +3,13 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 import { reducer as fromReducer } from 'redux-form';
+// import {  } from 'react-modal';
 // import counter from './counter';
-import customerCombineForReducer from './customer';
-import errorModalCombineForReducer from './errorModal';
+import customer from './customer';
+import errorModal from './errorModal';
 
-const { customer } = customerCombineForReducer;
-const { errorModal } = errorModalCombineForReducer;
+// const { customer } = customerCombineForReducer;
+// const { errorModal } = errorModalCombineForReducer;
 
 export default function createRootReducer(history: History) {
   return combineReducers({

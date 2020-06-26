@@ -32,6 +32,7 @@ function configureStore(
         errorModal?:
           | {
               errorOpenState: boolean;
+              modalMessage: string;
             }
           | errorModalStateType;
         // counter?: number | counterStateType;
