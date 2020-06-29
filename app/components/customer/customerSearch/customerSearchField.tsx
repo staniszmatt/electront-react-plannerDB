@@ -15,7 +15,6 @@ interface DispatchProps {
 const CustomerSearchFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-  console.log('Feild Props', props);
   const { handleSubmit, onSubmit } = props;
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

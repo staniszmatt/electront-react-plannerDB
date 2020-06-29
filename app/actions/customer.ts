@@ -8,6 +8,7 @@ export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
 export const CUSTOMER_ERROR = 'CUSTOMER_LIST_ERROR';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
+export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
@@ -16,8 +17,13 @@ function returnOneZeroFromString(stringToCheck: string) {
   }
   return 0;
 }
-
 // Reducer function calls
+export function customerSinglePageSelected() {
+  return {
+    type: CUSTOMER_SINGLE_PAGE
+  };
+}
+
 export function customerPending() {
   return {
     type: CUSTOMER_PENDING
@@ -50,10 +56,7 @@ export function pullRequestCustomerListData() {
     const mainRequest = {
       request: 'getCustomerList'
     };
-
     const handdlePullCustomerListData = (event, resp) => {
-      console.log('customer data ', resp);
-      console.log('custoemr data event', event);
       if (resp.list.length > 0){
         dispatch(customerListRecieved(resp));
       } else {
@@ -72,7 +75,6 @@ export function pullRequestCustomerListData() {
 export function requestCustomerList() {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
-    console.log('action request customer list state', state);
     if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }
@@ -83,8 +85,6 @@ export function requestCustomerList() {
 }
 
 export function handleCustomerSearchForm(customerName: {}) {
-  console.log('handle customer search action, check name: ', customerName);
-
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     // Stop repeating searches here
@@ -97,16 +97,9 @@ export function handleCustomerSearchForm(customerName: {}) {
       request: 'getSearchCustomer',
       customerName: `${customerName.customerSearch}`
     };
-
-
     const handleCustomerSearchFormResp = (event, resp) => {
-      console.log('customer search data ', resp);
-      console.log('customer search data event', event);
       if (resp.list.length > 0){
-        // Reusing the customer list display for displaying single customer
-        // TODO: need to setup for a seperate customer display page to include notes and change history
-        dispatch(customerListRecieved(resp));
-      } else if (resp.error.name === 'RequestError') {
+        dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
         dispatch(
           customerError({
@@ -120,6 +113,7 @@ export function handleCustomerSearchForm(customerName: {}) {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
       }
+      // Remove Listenter to prevent adding one every time this mehtode is called
       ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
     };
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
@@ -152,16 +146,10 @@ export function handleCustomerAddForm(customerToAdd: {}) {
     };
     // Function needs to be inside the return dispatch scope of handleCustomerAddForm
     const handleAddCustomerResp = (event, resp) => {
-      console.log('customer add data ', resp);
-      console.log('customer add data event', event);
-      console.log('Test for empty error', isObjEmpty(resp.error));
-
       if (isObjEmpty(resp.error)) {
         // TODO: Setup response function here:
         dispatch(reset('customerSearchForm'));
-        console.log('Customer Was ADDED!', resp);
       } else if (resp.error.number === 2627) {
-        console.log("Error Customer or code already name already used!", resp);
         dispatch(toggleOpenModalState("Error Customer or code already name already used!"));
         dispatch(customerAddPageSelected());
       } else {

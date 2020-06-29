@@ -38,6 +38,7 @@ const configureStore = (
               loadedCustomerListState: boolean;
               loadedCustomerAddState: boolean;
               loadCustomerAddPage: boolean;
+              loadCustomerSinglePage: boolean;
               customerList: [];
               error: [];
             }
