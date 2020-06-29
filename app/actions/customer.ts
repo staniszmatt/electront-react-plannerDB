@@ -5,7 +5,7 @@ import { toggleOpenModalState } from './errorModal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
-export const CUSTOMER_ERROR = 'CUSTOMER_LIST_ERROR';
+export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
 export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
@@ -18,9 +18,10 @@ function returnOneZeroFromString(stringToCheck: string) {
   return 0;
 }
 // Reducer function calls
-export function customerSinglePageSelected() {
+export function customerSinglePageSelected(resp: {}) {
   return {
-    type: CUSTOMER_SINGLE_PAGE
+    type: CUSTOMER_SINGLE_PAGE,
+    resp
   };
 }
 
@@ -97,8 +98,11 @@ export function handleCustomerSearchForm(customerName: {}) {
       request: 'getSearchCustomer',
       customerName: `${customerName.customerSearch}`
     };
+
     const handleCustomerSearchFormResp = (event, resp) => {
-      if (resp.list.length > 0){
+      console.log('HandleCustomer Search Resp: ', resp);
+      if (!isObjEmpty(resp.customer)) {
+        console.log("Handle customer search form resp: ", resp);
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
         dispatch(

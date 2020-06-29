@@ -16,6 +16,7 @@ const IState = {
   loadCustomerAddPage: false,
   loadCustomerSinglePage: false,
   customerList: [],
+  singleCustomerInfor: {},
   error: []
 };
 
@@ -31,6 +32,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadCustomerAddPage: false,
         loadCustomerSinglePage: true,
         customerList: [],
+        singleCustomerInfor: action.resp,
         error: {}
       };
     case CUSTOMER_PENDING:

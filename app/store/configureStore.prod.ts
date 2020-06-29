@@ -27,6 +27,7 @@ function configureStore(
               loadCustomerAddPage: boolean;
               loadCustomerSinglePage: boolean;
               customerList: [];
+              singleCustomerInfor: {};
               error: [];
             }
           | customerStateType;

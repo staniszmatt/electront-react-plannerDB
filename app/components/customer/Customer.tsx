@@ -19,6 +19,7 @@ interface Props {
   loadCustomerAddPage: boolean;
   loadCustomerSinglePage: boolean;
   customerList: [];
+  singleCustomerInfor: {};
   error: [];
 }
 
@@ -49,7 +50,7 @@ export default function Customer(props: Props) {
         {props.customer.customer.errorState && <CustomerErrorDisplay props={props.customer.customer.error} />}
         {props.customer.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customer.customerList} />}
         {props.customer.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
-        {props.customer.customer.loadCustomerSinglePage && <CustomerSingleDisplay /> }
+        {props.customer.customer.loadCustomerSinglePage && <CustomerSingleDisplay props={props.customer.customer.singleCustomerInfor}/> }
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export type customerStateType = {
   loadCustomerAddPage: boolean;
   loadCustomerSinglePage: boolean;
   customerList: [];
+  singleCustomerInfor: {};
   error: [];
 };
 

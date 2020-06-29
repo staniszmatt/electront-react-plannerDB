@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from './customerSingle.css';
 
-export default function CustomerHeadTable(props){
+interface Props {
+  resp: {};
+}
+
+export default function CustomerHeadTable(props: Props){
   console.log('Single Customer Display Component props', props);
   return <div>Test Single Customer Display</div>;
 }
