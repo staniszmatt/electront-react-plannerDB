@@ -23,7 +23,7 @@ const CustomerAddFormComponent = (
   console.log("Add Customer Props", props);
   const { handleSubmit, onSubmit } = props;
   return (
-    <form className={styles['form-main-container']}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
       <div>
         <Field
           label="Customer Name:"

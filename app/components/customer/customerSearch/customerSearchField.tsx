@@ -18,7 +18,7 @@ const CustomerSearchFormComponent = (
   console.log('Feild Props', props);
   const { handleSubmit, onSubmit } = props;
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['form-main-container']}>
         <Field
           label="Search For Customer"

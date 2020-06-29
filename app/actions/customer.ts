@@ -65,7 +65,6 @@ export function pullRequestCustomerListData() {
     ipcRenderer.send('asynchronous-message', mainRequest);
     dispatch(customerPending());
     ipcRenderer.on('asynchronous-reply', handdlePullCustomerListData);
-    alert('customerlist check')
   };
 }
 
@@ -130,7 +129,6 @@ export function handleCustomerSearchForm(customerName: {}) {
 }
 
 export function handleCustomerAddForm(customerToAdd: {}) {
-  alert("Button Handler");
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     // Setting yes no values as a boolean number 1 or 0
@@ -163,8 +161,6 @@ export function handleCustomerAddForm(customerToAdd: {}) {
         dispatch(reset('customerSearchForm'));
         console.log('Customer Was ADDED!', resp);
       } else if (resp.error.number === 2627) {
-
-        alert('Error Modal check');
         console.log("Error Customer or code already name already used!", resp);
         dispatch(toggleOpenModalState("Error Customer or code already name already used!"));
         dispatch(customerAddPageSelected());
