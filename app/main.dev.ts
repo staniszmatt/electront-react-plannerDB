@@ -164,6 +164,7 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     console.log('number check : ', data.error.number);
     console.log('state check :', data.error.state);
     console.log('*************** request error', data.error);
+
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
     console.log('ipcMain ERROR ****************************', err);

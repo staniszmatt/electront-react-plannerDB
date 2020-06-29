@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, ipcMain } from 'electron';
 import { reset } from 'redux-form';
 import { GetCustomerState, Dispatch } from '../reducers/types';
 import { toggleOpenModalState } from './errorModal';
@@ -46,15 +46,12 @@ export function customerError(resp: {}) {
 
 // Call to electron main with ipcRenderer to get server data for customer list
 export function pullRequestCustomerListData() {
-  debugger;
   return (dispatch: Dispatch) => {
     const mainRequest = {
       request: 'getCustomerList'
     };
 
-    ipcRenderer.send('asynchronous-message', mainRequest);
-    dispatch(customerPending());
-    ipcRenderer.on('asynchronous-reply', (event, resp) => {
+    const handdlePullCustomerListData = (event, resp) => {
       console.log('customer data ', resp);
       console.log('custoemr data event', event);
       if (resp.list.length > 0){
@@ -62,13 +59,18 @@ export function pullRequestCustomerListData() {
       } else {
         dispatch(customerError(resp));
       }
-    });
+      ipcRenderer.removeListener('asynchronous-reply', handdlePullCustomerListData);
+    };
+
+    ipcRenderer.send('asynchronous-message', mainRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handdlePullCustomerListData);
+    alert('customerlist check')
   };
 }
 
 // Setup for customer list call
 export function requestCustomerList() {
-  debugger
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     console.log('action request customer list state', state);
@@ -82,7 +84,6 @@ export function requestCustomerList() {
 }
 
 export function handleCustomerSearchForm(customerName: {}) {
-  debugger;
   console.log('handle customer search action, check name: ', customerName);
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
@@ -98,9 +99,8 @@ export function handleCustomerSearchForm(customerName: {}) {
       customerName: `${customerName.customerSearch}`
     };
 
-    ipcRenderer.send('asynchronous-message', mainIPCRequest);
-    dispatch(customerPending());
-    ipcRenderer.on('asynchronous-reply', (event, resp) => {
+
+    const handleCustomerSearchFormResp = (event, resp) => {
       console.log('customer search data ', resp);
       console.log('customer search data event', event);
       if (resp.list.length > 0){
@@ -121,11 +121,16 @@ export function handleCustomerSearchForm(customerName: {}) {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
       }
-    });
+      ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleCustomerSearchFormResp);
   };
 }
 
 export function handleCustomerAddForm(customerToAdd: {}) {
+  alert("Button Handler");
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     // Setting yes no values as a boolean number 1 or 0
@@ -147,25 +152,31 @@ export function handleCustomerAddForm(customerToAdd: {}) {
       customerActive: returnActiveStatus,
       customerNote: `${customerToAdd.customerNote}`
     };
+    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    const handleAddCustomerResp = (event, resp) => {
+      console.log('customer add data ', resp);
+      console.log('customer add data event', event);
+      console.log('Test for empty error', isObjEmpty(resp.error));
 
-    ipcRenderer.send('asynchronous-message', mainIPCRequest);
-    dispatch(customerPending());
-
-    ipcRenderer.on('asynchronous-reply', (event, arg) => {
-      console.log('return event', event);
-      if (isObjEmpty(arg.error)) {
-        // TODO: Setup response function here to chagne to the customer dispaly page once setup:
+      if (isObjEmpty(resp.error)) {
+        // TODO: Setup response function here:
         dispatch(reset('customerSearchForm'));
-      } else if (arg.error.number === 2627) {
-        debugger;
-        dispatch(
-          toggleOpenModalState('Error Customer or code name already used!')
-        );
+        console.log('Customer Was ADDED!', resp);
+      } else if (resp.error.number === 2627) {
+
+        alert('Error Modal check');
+        console.log("Error Customer or code already name already used!", resp);
+        dispatch(toggleOpenModalState("Error Customer or code already name already used!"));
         dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error
-        dispatch(customerError(arg));
+        dispatch(customerError(resp));
       }
-    });
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleAddCustomerResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleAddCustomerResp);
   };
 }
