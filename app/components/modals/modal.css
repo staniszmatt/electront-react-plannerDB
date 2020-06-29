@@ -1,0 +1,48 @@
+.error-modal-container  {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  display: flex;
+  flex-flow: column;
+  background-color: #ffdfdf;
+}
+
+.error-modal-container > h5 {
+  margin: auto;
+  font-size: 25px;
+}
+
+.error-modal-container > button {
+  font-size: 20px;
+  margin: auto;
+  font-family: serif;
+  border-radius: 3px;
+  filter: drop-shadow(1.5px 1.5px 1.5px black);
+  background-color: white;
+}
+
+.error-modal-container > button:hover {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+.error-modal-container > button:active {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.2);
+  transform: scale(0.97);
+  outline: 1px black;
+}
+
+.error-modal-container > button:focus {
+  outline: thin;
+}

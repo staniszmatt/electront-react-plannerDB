@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+
 import {
   CUSTOMER_PENDING,
   CUSTOMER_ERROR,
@@ -16,7 +17,7 @@ const IState = {
   error: []
 };
 
-function customer(state = IState, action: Action<string>) {
+export default function customer(state = IState, action: Action<string>) {
   switch (action.type) {
     case CUSTOMER_PENDING:
       return {
@@ -67,9 +68,9 @@ function customer(state = IState, action: Action<string>) {
   }
 }
 
-const customerCombineForReducer = {
-  // Can add another state managment here and shows as a seperate object in props
-  customer
-};
+// const customerCombineForReducer = {
+//   // Can add another state managment here and shows as a seperate object in props
+//   customer
+// };
 
-export default customerCombineForReducer;
+// export default customerCombineForReducer;

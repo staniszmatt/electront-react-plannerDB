@@ -6,7 +6,8 @@ import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 // import * as counterActions from '../actions/counter';
 import * as customerActions from '../actions/customer';
-import { customerStateType } from '../reducers/types';
+import * as errorModalActions from '../actions/errorModal';
+import { customerStateType, errorModalStateType } from '../reducers/types';
 // import { counterStateType, customerStateType } from '../reducers/types';
 
 declare global {
@@ -41,6 +42,12 @@ const configureStore = (
               error: [];
             }
           | customerStateType;
+        errorModal?:
+          | {
+              errorOpenState: boolean;
+              modalMessage: string;
+            }
+          | errorModalStateType;
         // counter?: number | counterStateType;
       }
     | undefined
@@ -70,6 +77,7 @@ const configureStore = (
   // Redux DevTools Configuration
   const actionCreators = {
     ...customerActions,
+    ...errorModalActions,
     // ...counterActions,
     ...routerActions
   };

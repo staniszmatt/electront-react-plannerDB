@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
+import FormBtn from '../../buttonFunctions/buttonClickHandler'
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
 
@@ -22,10 +23,7 @@ const CustomerAddFormComponent = (
   console.log("Add Customer Props", props);
   const { handleSubmit, onSubmit } = props;
   return (
-    <form
-      className={styles['form-main-container']}
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
       <div>
         <Field
           label="Customer Name:"
@@ -46,24 +44,44 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="customerGenStatus" component={FormInput} type="radio" value="yes" />
+              <Field
+                name="customerGenStatus"
+                component={FormInput}
+                type="radio"
+                value="yes"
+              />
             </label>
             <label>
               No
-              <Field name="customerGenStatus" component={FormInput} type="radio" value="no" />
+              <Field
+                name="customerGenStatus"
+                component={FormInput}
+                type="radio"
+                value="no"
+              />
             </label>
           </div>
         </label>
         <label className={styles["radio-form"]}>
           RS Standards Approved:
-          <div className={styles["radio-container"]}>
+          <div className={styles['radio-container']}>
             <label>
               Yes
-              <Field name="customerRSStatus" component={FormInput} type="radio" value="yes" />
+              <Field
+                name="customerRSStatus"
+                component={FormInput}
+                type="radio"
+                value="yes"
+              />
             </label>
             <label>
               No
-              <Field name="customerRSStatus" component={FormInput} type="radio" value="no" />
+              <Field
+                name="customerRSStatus"
+                component={FormInput}
+                type="radio"
+                value="no"
+              />
             </label>
           </div>
         </label>
@@ -72,11 +90,21 @@ const CustomerAddFormComponent = (
           <div className={styles["radio-container"]}>
             <label>
               Yes
-              <Field name="customerActive" component={FormInput} type="radio" value="yes" />
+              <Field
+                name="customerActive"
+                component={FormInput}
+                type="radio"
+                value="yes"
+              />
             </label>
             <label>
               No
-              <Field name="customerActive" component={FormInput} type="radio" value="no" />
+              <Field
+                name="customerActive"
+                component={FormInput}
+                type="radio"
+                value="no"
+              />
             </label>
           </div>
         </label>
@@ -94,9 +122,7 @@ const CustomerAddFormComponent = (
           </div>
         </label>
       </div>
-      <button type="button" onClick={handleSubmit(onSubmit)}>
-        Submit
-      </button>
+      <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
   );
 };
@@ -144,7 +170,7 @@ function validate(values) {
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerSearchForm',
+  form: 'customerAddForm',
   validate,
   destroyOnUnmount: false
 })(CustomerAddFormComponent);

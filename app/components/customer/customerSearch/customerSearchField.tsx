@@ -35,5 +35,5 @@ const CustomerSearchFormComponent = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddForm'
+  form: 'customerSearchForm'
 })(CustomerSearchFormComponent);

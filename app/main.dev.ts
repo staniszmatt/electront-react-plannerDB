@@ -16,6 +16,8 @@ import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
+import isObjEmpty from '../app/helpFunctions/isObjEmpty';
+import { devTools } from 'electron-debug';
 
 // require('mssql/msnodesqlv8');
 
@@ -153,18 +155,19 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     return;
   }
   try {
+    // let returnData = {};
     const data = await requestToSend(arg);
-    console.log('main request data', data);
+    // console.log('main request data', data);
+
+    console.log('error empty check is: ', isObjEmpty(data.error));
+    console.log('Name Check ', data.error.name);
+    console.log('number check : ', data.error.number);
+    console.log('state check :', data.error.state);
+    console.log('*************** request error', data.error);
+
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
     console.log('ipcMain ERROR ****************************', err);
+    event.sender.send('asynchronous-reply', err);
   }
 });
-// try {
-//   const data = await requestToSend(arg);
-//   console.log('main request data', data);
-//   event.sender.send('asynchronous-reply', data);
-// } catch (err) {
-//   console.log('ipcMain ERROR ****************************', err);
-//   event.sender.send('asynchronous-reply', err);
-// }

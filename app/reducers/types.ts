@@ -4,6 +4,11 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 //   counter: number;
 // };
 
+export type errorModalStateType = {
+  errorOpenState: boolean;
+  modalMessage: string;
+};
+
 export type customerStateType = {
   loadingState: boolean;
   errorState: boolean;
@@ -16,10 +21,13 @@ export type customerStateType = {
 
 // export type GetState = () => counterStateType;
 export type GetCustomerState = () => customerStateType;
+export type GetErrorModalState = () => errorModalStateType;
 
-export type Dispatch = ReduxDispatch<Action<string>>;
-
-export type Store = ReduxStore<customerStateType, Action<string>>;
+export type Store =
+  | ReduxStore<customerStateType, Action<string>>
+  | ReduxStore<errorModalStateType, Action<string>>;
 // Original setup for both counter and customer
 // | ReduxStore<counterStateType, Action<string>>
 // | ReduxStore<customerStateType, Action<string>>;
+
+export type Dispatch = ReduxDispatch<Action<string>>;
