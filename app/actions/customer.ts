@@ -57,12 +57,13 @@ export function pullRequestCustomerListData() {
     const mainRequest = {
       request: 'getCustomerList'
     };
-    const handdlePullCustomerListData = (event, resp) => {
-      if (resp.list.length > 0){
+    const handdlePullCustomerListData = (_event: {}, resp: {}) => {
+      if (resp.list.length > 0) {
         dispatch(customerListRecieved(resp));
       } else {
         dispatch(customerError(resp));
       }
+      // eslint-disable-next-line prettier/prettier
       ipcRenderer.removeListener('asynchronous-reply', handdlePullCustomerListData);
     };
 
@@ -99,7 +100,7 @@ export function handleCustomerSearchForm(customerName: {}) {
       customerName: `${customerName.customerSearch}`
     };
 
-    const handleCustomerSearchFormResp = (event, resp) => {
+    const handleCustomerSearchFormResp = (_event, resp) => {
       console.log('HandleCustomer Search Resp: ', resp);
       if (!isObjEmpty(resp.customer)) {
         console.log("Handle customer search form resp: ", resp);
@@ -126,7 +127,14 @@ export function handleCustomerSearchForm(customerName: {}) {
   };
 }
 
-export function handleCustomerAddForm(customerToAdd: {}) {
+export function handleCustomerAddForm(customerToAdd: {
+  customerGenStatus: number;
+  customerRSStatus: number;
+  customerActive: number;
+  customerName: string;
+  customerCodeName: string;
+  customerNote: string;
+}) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
     // Setting yes no values as a boolean number 1 or 0
@@ -149,12 +157,16 @@ export function handleCustomerAddForm(customerToAdd: {}) {
       customerNote: `${customerToAdd.customerNote}`
     };
     // Function needs to be inside the return dispatch scope of handleCustomerAddForm
-    const handleAddCustomerResp = (event, resp) => {
+    const handleAddCustomerResp = (
+      _event: {},
+      resp: { error: { number: number } }
+    ) => {
       if (isObjEmpty(resp.error)) {
         // TODO: Setup response function here:
         dispatch(reset('customerSearchForm'));
       } else if (resp.error.number === 2627) {
-        dispatch(toggleOpenModalState("Error Customer or code already name already used!"));
+        // eslint-disable-next-line prettier/prettier
+        dispatch(toggleOpenModalState('Error Customer or code already name already used!'));
         dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error

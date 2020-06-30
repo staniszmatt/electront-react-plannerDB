@@ -1,0 +1,150 @@
+/* Main single customer display wrapper */
+.main-single-customer > div:first-child {
+  display: flex;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.main-single-customer > div:first-child > button {
+  margin: auto;
+
+}
+
+.single-main-customer-info {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.single-main-customer-info > div > div {
+  padding: 5px;
+  display: flex;
+}
+
+.single-main-customer-info > div > div:not(:nth-child(3)) > div:first-child {
+  width: 125px;
+}
+
+/* Function renderBooleanData wrapper */
+.single-customer-status > div {
+  padding: 5px 0px;
+}
+
+.single-customer-status > div:first-child {
+  text-align: center;
+  font-size: 20px;
+  display: flex;
+}
+
+.single-customer-status > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-customer-status > div:not(:first-child) {
+  display: flex;
+}
+
+.single-customer-status > div:not(:first-child) > div:first-child {
+  width: 205px;
+}
+
+/* Notes Info Section */
+.single-customer-notes {
+  padding-right: 10px;
+}
+
+.single-customer-notes > div {
+  width: 100%;
+  display: flex;
+  text-align: left;
+  overflow: auto;
+  height: 430px;
+}
+
+.single-customer-notes > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px;
+  width: 100%;
+  border: 1px solid;
+  padding: 10px 15px;
+}
+
+.single-customer-notes > div > div:last-child {
+  height: fit-content;
+}
+
+.single-customer-notes > div > div > div {
+  width: 100%;
+  display: flex;
+}
+
+.single-customer-notes > div > div > div:not(:first-child) {
+  flex-wrap: wrap;
+}
+
+.single-customer-notes > div > div > div:first-child {
+  margin-bottom: 15px;
+}
+
+.single-customer-notes > div > div > div > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-customer-notes > div > div > div:not(:first-child) > div {
+  width: 100%;
+  border: none;
+}
+
+/* Customer Notes Wrapper */
+.single-customer-note-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.single-customer-note-wrapper > div:first-child {
+  display: flex;
+  width: 100%;
+}
+
+.single-customer-note-wrapper > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid blue;
+}
+
+.single-customer-note-wrapper > div:last-child {
+  width: 100%
+}
+
+/* Customer Single Note Styling */
+.single-customer-note {
+  display: flex;
+  margin: 10px 5px;
+}
+
+.single-customer-note > div:first-child {
+  font-size: 12px;
+  width: unset;
+  margin-right: 10px;
+}
+
+.single-customer-note > div:first-child > div:not(:last-child) {
+  display: flex;
+}
+
+.single-customer-note > div:first-child > div:not(:last-child) > div:first-child {
+  padding-right: 10px;
+  width: unset;
+}
+
+.single-customer-note > div:last-child {
+  width: 75%;
+}
+
+.single-customer-note div:last-child > div > textarea {
+  min-height: 115px;
+  resize: vertical;
+  width: 100%;
+}

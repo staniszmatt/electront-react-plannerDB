@@ -26,6 +26,7 @@ async function singleCustomer(request) {
         customerActive: data.recordset[0].customerActive,
         customerCodeName: data.recordset[0].customerCodeName,
         customerGenStd: data.recordset[0].customerGenStd,
+        customerRsStd: data.recordset[0].customerRsStd,
         changeNoteList: {
           typeCategory: data.recordset[0].typeCategory,
           list: []

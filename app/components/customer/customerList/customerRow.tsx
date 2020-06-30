@@ -1,5 +1,6 @@
 import * as React from 'react';
 import EditButton from '../../buttonFunctions/buttonClickHandler';
+import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 
 export default function CustomerRow(props) {
   const { id, customerName, customerCodeName, customerGenStd, customerRsStd, customerActive } = props.props
@@ -26,11 +27,4 @@ export default function CustomerRow(props) {
       </td>
     </tr>
   )
-}
-// Funciton to setup returns of yes or no based on boolean data recieved
-function booleanToStringYesNo(varToCheck){
-  if (varToCheck) {
-    return 'YES';
-  }
-  return 'NO';
 }

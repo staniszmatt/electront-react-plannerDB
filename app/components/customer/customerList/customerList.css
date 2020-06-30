@@ -26,16 +26,7 @@
   overflow: auto;
   height: 550px;
   text-align: center;
-  /* display: flex;
-  flex-wrap: wrap;
-  height: 600px;
-  overflow: auto; */
 }
-
-/* .t-body tr {
-  width: 100%;
-  display: block;
-} */
 
 .t-body tr td {
   width: 15%;
