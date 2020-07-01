@@ -2,7 +2,6 @@ import * as React from 'react';
 import styles from './customerSingle.css'
 
 export default function CustomerNoteRow(props) {
-  console.log('Note Row single customer props:', props);
   const {
     changeNoteDateStamp,
     changeNoteDescription,

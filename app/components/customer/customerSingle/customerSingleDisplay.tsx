@@ -131,7 +131,6 @@ export default function CustomerHeadTable(props: Props) {
     );
   };
 
-  console.log('Single Customer Display Component props', props);
   return (
     <div className={styles["main-single-customer"]}>
       <div>

@@ -89,8 +89,9 @@ export function requestCustomerList() {
 export function handleCustomerSearchForm(customerName: {}) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
-    // Stop repeating searches here
+
     if (state.customer.customerList.length === 1) {
+      // eslint-disable-next-line prettier/prettier
       if (state.customer.customerList[0].customerName === customerName.customerSearch){
         return;
       }
@@ -101,9 +102,7 @@ export function handleCustomerSearchForm(customerName: {}) {
     };
 
     const handleCustomerSearchFormResp = (_event, resp) => {
-      console.log('HandleCustomer Search Resp: ', resp);
       if (!isObjEmpty(resp.customer)) {
-        console.log("Handle customer search form resp: ", resp);
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
         dispatch(
@@ -162,8 +161,13 @@ export function handleCustomerAddForm(customerToAdd: {
       resp: { error: { number: number } }
     ) => {
       if (isObjEmpty(resp.error)) {
-        // TODO: Setup response function here:
-        dispatch(reset('customerSearchForm'));
+        const searchFormObj = {
+          customerSearch: mainIPCRequest.customerName
+        };
+
+        dispatch(reset('customerAddForm'));
+        dispatch(handleCustomerSearchForm(searchFormObj));
+
       } else if (resp.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
         dispatch(toggleOpenModalState('Error Customer or code already name already used!'));
