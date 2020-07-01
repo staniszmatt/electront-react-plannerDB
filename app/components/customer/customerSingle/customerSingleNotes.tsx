@@ -1,7 +1,18 @@
 import * as React from 'react';
-import styles from './customerSingle.css'
+import styles from './customerSingle.css';
 
-export default function CustomerNoteRow(props) {
+interface Props {
+  props: {
+    changeNoteDateStamp: string;
+    changeNoteDescription: string;
+    changeNoteID: number;
+    typeCategory: string;
+    userID: string;
+  }
+
+}
+
+export default function CustomerNoteRow(props: Props) {
   const {
     changeNoteDateStamp,
     changeNoteDescription,

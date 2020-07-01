@@ -9,7 +9,7 @@ interface NewButton {
 export default function ButtonHandle(props: NewButton) {
 
   return (
-    <button onClick={props.ClickHandler} type="button">
+    <button props={event} onClick={props.ClickHandler} type="button">
       {props.buttonName}
     </button>
   )

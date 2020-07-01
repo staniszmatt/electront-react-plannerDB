@@ -1,9 +1,9 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
-import FormBtn from '../../buttonFunctions/buttonClickHandler'
+import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
-import styles from './customerAdd.css';
+import styles from '../customerAdd/customerAdd.css';
 
 interface FormProps {
   // Need to set this up yet!
@@ -16,10 +16,12 @@ function toUpperCase(value: string) {
   return value && value.toUpperCase();
 }
 
-const CustomerAddFormComponent = (
+const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
+  console.log('Edit customer page props: ', props);
+  console.log('********* Customer name ********', props.props.customer.customerName);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
       <div>
@@ -29,7 +31,9 @@ const CustomerAddFormComponent = (
           name="customerName"
           type="text"
           format={toUpperCase}
+          defaultValue={props.props.customer.customerName}
         />
+        {/**
         <Field
           label="Customer Code Name:"
           component={FormInput}
@@ -119,55 +123,56 @@ const CustomerAddFormComponent = (
             />
           </div>
         </label>
+        */}
       </div>
       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
   );
 };
 
-function validate(values) {
-  const {
-    customerName,
-    customerCodeName,
-    customerGenStatus,
-    customerRSStatus,
-    customerActive
-  } = values;
+// function validate(values) {
+//   const {
+//     customerName,
+//     customerCodeName,
+//     customerGenStatus,
+//     customerRSStatus,
+//     customerActive
+//   } = values;
 
-  const errors = {};
+//   const errors = {};
 
-  if (!customerName) {
-    errors.customerName = 'Please Enter a Customer Name!';
-  }
-  if (customerName) {
-    if (customerName.length > 32) {
-      errors.customerName = 'Customer name is to long!';
-    }
-  }
-  if (!customerCodeName) {
-    errors.customerCodeName = 'Please Enter a Customer Name!';
-  }
-  if (customerCodeName) {
-    if (customerCodeName.length > 6) {
-      errors.customerCodeName = 'Code name is too long!';
-    }
-  }
-  if (!customerGenStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
-  }
-  if (!customerRSStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
-  }
-  if (!customerActive) {
-    errors.customerActive = 'Please Select if Customer is Active!';
-  }
-  return errors;
-};
+//   if (!customerName) {
+//     errors.customerName = 'Please Enter a Customer Name!';
+//   }
+//   if (customerName) {
+//     if (customerName.length > 32) {
+//       errors.customerName = 'Customer name is to long!';
+//     }
+//   }
+//   if (!customerCodeName) {
+//     errors.customerCodeName = 'Please Enter a Customer Name!';
+//   }
+//   if (customerCodeName) {
+//     if (customerCodeName.length > 6) {
+//       errors.customerCodeName = 'Code name is too long!';
+//     }
+//   }
+//   if (!customerGenStatus) {
+//     // eslint-disable-next-line prettier/prettier
+//     errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
+//   }
+//   if (!customerRSStatus) {
+//     // eslint-disable-next-line prettier/prettier
+//     errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
+//   }
+//   if (!customerActive) {
+//     errors.customerActive = 'Please Select if Customer is Active!';
+//   }
+//   return errors;
+// };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddForm',
-  validate,
+  form: 'customerEditForm',
+  // validate,
   destroyOnUnmount: false
-})(CustomerAddFormComponent);
+})(CustomerEditFormComponent);

@@ -16,8 +16,9 @@ export type customerStateType = {
   loadedCustomerAddState: boolean;
   loadCustomerAddPage: boolean;
   loadCustomerSinglePage: boolean;
+  loadCustomerEditPage: boolean;
   customerList: [];
-  singleCustomerInfor: {};
+  singleCustomerInfo: {};
   error: [];
 };
 
@@ -28,8 +29,6 @@ export type GetErrorModalState = () => errorModalStateType;
 export type Store =
   | ReduxStore<customerStateType, Action<string>>
   | ReduxStore<errorModalStateType, Action<string>>;
-// Original setup for both counter and customer
 // | ReduxStore<counterStateType, Action<string>>
-// | ReduxStore<customerStateType, Action<string>>;
 
 export type Dispatch = ReduxDispatch<Action<string>>;
