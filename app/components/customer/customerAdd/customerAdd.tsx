@@ -8,7 +8,6 @@ import styles from './customerAdd.css';
 interface FormProps {
   // Need to set this up yet!
 }
-
 interface DispatchProps {
   // ...
 }
@@ -20,7 +19,6 @@ function toUpperCase(value) {
 const CustomerAddFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-  console.log("Add Customer Props", props);
   const { handleSubmit, onSubmit } = props;
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
@@ -128,7 +126,6 @@ const CustomerAddFormComponent = (
 };
 
 function validate(values) {
-  console.log("initial validate customer add value", values);
   const {
     customerName,
     customerCodeName,

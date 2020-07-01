@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
-import { toggleOpenModalState, openErrorModal } from '../../actions/errorModal';
+import { toggleOpenModalState } from '../../actions/errorModal';
 import { errorModalStateType } from '../../reducers/types';
 import ModalBtn from '../buttonFunctions/buttonClickHandler';
 import styles from './modal.css';
@@ -24,21 +24,17 @@ function mapStateToProps(state: errorModalStateType) {
 function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
     {
-      toggleOpenModalState,
-      openErrorModal
+      toggleOpenModalState
     },
     dispatch
   );
 }
 
 function AlartModal(props: Props) {
-  console.log("Modal Component", props);
-
   const { toggleOpenModalState } = props;
-
   return (
     <div>
-      {props.errorModal.errorModal.errorOpenState &&
+      {props.errorModal.errorModal.errorOpenState && (
         <ReactModal
           isOpen={props.errorModal.errorModal.errorOpenState}
           onRequestClose={toggleOpenModalState}
@@ -49,7 +45,7 @@ function AlartModal(props: Props) {
           <h5>{props.errorModal.errorModal.modalMessage}</h5>
           <ModalBtn buttonName="CLOSE" ClickHandler={toggleOpenModalState} />
         </ReactModal>
-      }
+      )}
     </div>
   )
 }

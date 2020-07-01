@@ -1,0 +1,209 @@
+/* Main single customer display wrapper */
+.main-single-customer > div:first-child {
+  display: flex;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.main-single-customer > div:first-child > button {
+  margin: auto;
+}
+
+/* Single customer display main header info */
+.single-main-customer-info {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.single-main-customer-info > div:first-child {
+  width: 270px;
+}
+
+.single-main-customer-info > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  height: 185px;
+  width: 80%;
+}
+
+.single-main-customer-info > div:last-child > div:first-child {
+  width: 100%;
+}
+
+.single-main-customer-info > div:last-child > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-main-customer-info > div:last-child > div:last-child {
+  height: 150px;
+  width: 100%;
+}
+
+.single-main-customer-info > div:last-child > div:last-child > div > div > div > div:first-child > div:first-child {
+  width: 67px;
+}
+
+.single-main-customer-info > div:last-child > div:last-child > div > div > div > div:nth-child(2) > div:first-child {
+  width: 56px;
+}
+
+.single-main-customer-info > div:last-child > div:last-child > div > div > div > div:nth-child(3) > div:first-child {
+  width: 88px;
+}
+
+.single-main-customer-info > div:last-child > div:last-child > div > div > div > div:nth-child(4) > div:first-child {
+  width: 97px;
+}
+
+.single-main-customer-info > div > div {
+  padding: 5px;
+  display: flex;
+  font-size: 14px;
+}
+
+.single-main-customer-info > div:last-child > div:last-child > div {
+  overflow: auto;
+  border: 1px solid black;
+  width: 100%;
+}
+
+.single-main-customer-info > div:first-child > div:not(:nth-child(3)) > div:first-child {
+  width: 125px;
+}
+
+/* Function renderBooleanData wrapper */
+.single-customer-status > div {
+  padding: 5px 0px;
+}
+
+.single-customer-status > div:first-child {
+  text-align: center;
+  font-size: 16x;
+  display: flex;
+}
+
+.single-customer-status > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-customer-status > div:not(:first-child) {
+  display: flex;
+}
+
+.single-customer-status > div:not(:first-child) > div:first-child {
+  width: 205px;
+}
+
+/* Notes Info Section */
+.single-customer-notes {
+  padding-right: 10px;
+}
+
+.single-customer-notes > div {
+  width: 100%;
+  display: flex;
+  text-align: left;
+  height: 430px;
+}
+
+.single-customer-notes > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px;
+  width: 100%;
+  border: 1px solid;
+  padding: 10px 15px;
+}
+
+.single-customer-notes > div > div:last-child {
+  height: fit-content;
+}
+
+.single-customer-notes > div > div > div:last-child {
+  width: 100%;
+  display: flex;
+  height: 360px;
+  overflow-y: scroll;
+}
+
+.single-customer-notes > div > div > div:not(:first-child) {
+  flex-wrap: wrap;
+}
+
+.single-customer-notes > div > div > div:first-child {
+  display: flex;
+  width: 100%;
+}
+
+.single-customer-notes > div > div > div:first-child > div {
+  margin: auto;
+}
+
+.single-customer-notes > div > div > div > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-customer-notes > div > div > div:not(:first-child) > div {
+  width: 100%;
+  border: none;
+}
+
+/* Customer Notes Wrapper */
+.single-customer-note-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px 0px;
+}
+
+.single-customer-note-wrapper > div:first-child {
+  display: flex;
+  width: 100%;
+  padding-bottom: 10px;
+}
+
+.single-customer-note-wrapper > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid black;
+}
+
+.single-customer-note-wrapper > div:last-child {
+  width: 100%
+}
+
+.single-customer-note-wrapper > div:nth-child(2) {
+  width: 100%;
+}
+
+.single-customer-note-wrapper > div:nth-child(2) > div > textarea {
+  width: 98%;
+  resize: vertical;
+  min-height: 125px;
+}
+
+/* Customer Single Note Styling */
+.single-customer-note {
+  display: flex;
+  margin: 5px;
+}
+
+.single-customer-note > div:first-child {
+  font-size: 12px;
+  width: 100%;
+  display: flex;
+}
+
+.single-customer-note > div:first-child > div {
+  display: flex;
+}
+
+.single-customer-note > div:first-child > div > div:first-child {
+  margin-right: 5px;
+}
+
+.single-customer-note > div:first-child > div > div:last-child {
+  margin-right: 10px;
+}

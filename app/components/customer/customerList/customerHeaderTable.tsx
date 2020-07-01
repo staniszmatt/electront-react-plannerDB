@@ -3,8 +3,6 @@ import CustomerRow from './customerRow';
 import styles from './customerlist.css'
 
 export default function CustomerHeadTable(props){
-  console.log("cust header component props", props);
-
   // Stop running if nothing was passed
   if (props.props === undefined || props.props.length === 0) {
     return null;
@@ -13,7 +11,6 @@ export default function CustomerHeadTable(props){
   const renderRows = () => {
     const data = props.props;
     const customerRow = data.map(customer => {
-      console.log(`Render Row data ${customer}`);
       return <CustomerRow key={customer.id} props={customer} />;
     });
     return customerRow;
@@ -32,9 +29,7 @@ export default function CustomerHeadTable(props){
           <th>Edit Customer</th>
         </tr>
       </thead>
-      <tbody className={styles["t-body"]}>
-        {renderRows()}
-      </tbody>
+      <tbody className={styles['t-body']}>{renderRows()}</tbody>
     </table>
   );
 }

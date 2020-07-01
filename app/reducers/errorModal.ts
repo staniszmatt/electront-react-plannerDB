@@ -7,9 +7,6 @@ const IState = {
 };
 
 export default function errorModal(state = IState, action: Action<string>) {
-  console.log("Error modal reducer action.resp: ", action);
-  console.log("********************************************error message", action.resp);
-
   switch (action.type) {
     case TOGGLE_MODAL_OPEN_STATE:
       return {

@@ -5,6 +5,7 @@ import CustomerHeadTable from './customerList/customerHeaderTable';
 import CustomerErrorDisplay from '../../errorComponents/ErrorComponent';
 import CustomerSearchForm from './customerSearch/customerSearchField';
 import CustomerAddFormComponent from './customerAdd/customerAdd';
+import CustomerSingleDisplay from './customerSingle/customerSingleDisplay';
 
 interface Props {
   requestCustomerList: () => {};
@@ -16,20 +17,19 @@ interface Props {
   loadedCustomerListState: boolean;
   loadedCustomerAddState: boolean;
   loadCustomerAddPage: boolean;
+  loadCustomerSinglePage: boolean;
   customerList: [];
+  singleCustomerInfor: {};
   error: [];
 }
 
 export default function Customer(props: Props) {
-  console.log("customer component props", props);
-
   const {
     requestCustomerList,
     handleCustomerSearchForm,
     customerAddPageSelected,
     handleCustomerAddForm
   } = props;
-
   return (
     <div className={styles.container}>
       <div className={styles['customer-head-container']}>
@@ -50,6 +50,7 @@ export default function Customer(props: Props) {
         {props.customer.customer.errorState && <CustomerErrorDisplay props={props.customer.customer.error} />}
         {props.customer.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customer.customerList} />}
         {props.customer.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
+        {props.customer.customer.loadCustomerSinglePage && <CustomerSingleDisplay props={props.customer.customer.singleCustomerInfor}/> }
       </div>
     </div>
   );
