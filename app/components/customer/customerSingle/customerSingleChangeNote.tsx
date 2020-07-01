@@ -1,8 +1,18 @@
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import styles from './customerSingle.css'
 
-export default function CustomerNoteRow(props) {
-  console.log('Note Row single customer props:', props);
+interface Props {
+  props: {
+    changeNoteDateStamp: string;
+    changeNoteDescription: string;
+    changeNoteID: number;
+    typeCategory: string;
+    userID: number;
+  }
+}
+
+export default function CustomerChangeNoteRow(props: Props) {
   const {
     changeNoteDateStamp,
     changeNoteDescription,
@@ -12,7 +22,10 @@ export default function CustomerNoteRow(props) {
   } = props.props;
 
   return (
-    <div className={styles["single-customer-note"]} id={`ChangeNoteID-${changeNoteID}`}>
+    <div
+      className={styles['single-customer-note']}
+      id={`ChangeNoteID-${changeNoteID}`}
+    >
       <div>
         <div>
           <div>Modified By:</div>

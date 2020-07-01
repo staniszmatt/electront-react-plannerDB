@@ -1,8 +1,12 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-boolean-value */
 import React from 'react';
 import CustomerNoteRow from './customerSingleNotes';
 import EditCustomerBtn from '../../buttonFunctions/buttonClickHandler';
 import styles from './customerSingle.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
+import CustomerChangeNoteRow from './customerSingleChangeNote';
 
 interface Props {
   props: {
@@ -12,6 +16,9 @@ interface Props {
       customerGenStd: boolean;
       customerRsStd: boolean;
       customerActive: boolean;
+      changeNoteList: {
+        list: [];
+      }
     };
     customerNotes: {
       noteList: [];
@@ -25,7 +32,24 @@ function editCustomer() {
 }
 
 export default function CustomerHeadTable(props: Props) {
-  const renderRow = noteArray => {
+
+  const renderChangeNoteRow = () => {
+    const returnNotes: JSX.Element[] = [];
+
+    props.props.customer.changeNoteList.list.forEach((note: {}, arrIndex: number) => {
+        returnNotes.push(
+          <CustomerChangeNoteRow
+            // eslint-disable-next-line react/no-array-index-key
+            key={`customerChangeNote${arrIndex}`}
+            props={note}
+          />
+        );
+      }
+    );
+    return returnNotes;
+  };
+
+  const renderRow = (noteArray: []) => {
     const returnNotes: JSX.Element[] = [];
 
     noteArray.forEach((note: {}, arrIndex: number) => {
@@ -48,14 +72,25 @@ export default function CustomerHeadTable(props: Props) {
       const returnNotes = (
         // eslint-disable-next-line react/no-array-index-key
         <div
+          // eslint-disable-next-line react/no-array-index-key
           key={`customerNotes${objIndex}`}
           className={styles['single-customer-note-wrapper']}
         >
           <div>
             <div>{`Note:${objIndex + 1}`}</div>
           </div>
-
-          <div>{renderRow(customerNoteList[key])}</div>
+          <div>
+            <div>
+              <textarea disabled={true}>
+                {customerNoteList[key].customerNoteText}
+              </textarea>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div>{renderRow(customerNoteList[key].changeNoteList)}</div>
+            </div>
+          </div>
         </div>
       );
       returnNoteLists.push(returnNotes);
@@ -65,6 +100,7 @@ export default function CustomerHeadTable(props: Props) {
 
   const renderBooleanData = () => {
     const {
+      // eslint-disable-next-line react/prop-types
       customerGenStd,
       customerRsStd,
       customerActive
@@ -104,9 +140,6 @@ export default function CustomerHeadTable(props: Props) {
           ClickHandler={editCustomer}
         />
       </div>
-
-
-
       <div className={styles["single-main-customer-info"]}>
         <div>
           <div>
@@ -121,15 +154,13 @@ export default function CustomerHeadTable(props: Props) {
         </div>
         <div>
           <div>
-            <div>Change Note History:</div>
+            <div>Change History:</div>
           </div>
-          <div>display data here!</div>
+          <div>
+            <div>{renderChangeNoteRow()}</div>
+          </div>
         </div>
       </div>
-
-
-
-
       <div className={styles["single-customer-notes"]}>
         <div>
           <div>
@@ -140,10 +171,6 @@ export default function CustomerHeadTable(props: Props) {
           </div>
         </div>
       </div>
-
-
-
-
     </div>
   );
 }

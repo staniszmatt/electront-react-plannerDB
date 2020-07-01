@@ -36,8 +36,9 @@ async function singleCustomer(request) {
 
       data.recordset.forEach(item => {
         const listItem = {
-          timeStamp: item.changeNoteDateStamp,
+          changeNoteDateStamp: item.changeNoteDateStamp,
           changeNoteID: item.changeNoteID,
+          typeCategory: item.typeCategory,
           userID: item.userID,
           changeNoteDescription: item.changeNoteDescription
         };
@@ -63,8 +64,7 @@ async function singleCustomer(request) {
 
           customerNoteData.recordset.forEach(item => {
             const objId = item.customerNoteID.toString();
-            const newArrayObjItem = {
-              customerNoteText: item.customerNoteText,
+            const changeNoteItem = {
               changeNoteDateStamp: item.changeNoteDateStamp,
               changeNoteID: item.changeNoteID,
               typeCategory: item.typeCategory,
@@ -72,11 +72,18 @@ async function singleCustomer(request) {
               changeNoteDescription: item.changeNoteDescription
             };
 
+            const customerNote = {
+              customerNoteText: item.customerNoteText,
+              changeNoteList: []
+            };
+
             if (returnData.customerNotes.noteList.hasOwnProperty(objId)) {
-              returnData.customerNotes.noteList[objId].push(newArrayObjItem);
+              // eslint-disable-next-line prettier/prettier
+              returnData.customerNotes.noteList[objId].changeNoteList.push(changeNoteItem);
             } else {
-              returnData.customerNotes.noteList[objId] = [];
-              returnData.customerNotes.noteList[objId].push(newArrayObjItem);
+              returnData.customerNotes.noteList[objId] = customerNote;
+              // eslint-disable-next-line prettier/prettier
+              returnData.customerNotes.noteList[objId].changeNoteList.push(changeNoteItem);
             }
           });
           returnData.customerNotes.success = 'Success';
