@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
@@ -12,16 +12,65 @@ interface DispatchProps {
   // ...
 }
 
+interface CheckRadioState {
+  customerGenStd: boolean;
+  customerRsStd: boolean;
+  customerActive: boolean;
+}
+
 function toUpperCase(value: string) {
   return value && value.toUpperCase();
 }
 
+
 const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
+  const [
+    checkRadioState,
+    setcheckRadioState
+  ] = useState<CheckRadioState | null>(props.props.customer);
+
   const { handleSubmit, onSubmit } = props;
-  console.log('Edit customer page props: ', props);
-  console.log('********* Customer name ********', props.props.customer.customerName);
+
+  const radioButtonCheck = (event, field) => {
+
+    console.log('Pre customer Getn Std change Check: ', props.props.customer.customerGenStd);
+    console.log("Feild Change, event : ", event);
+    console.log('Feild Yes/No: ', field);
+
+
+    let setBoolean = false;
+
+    if (field === 'yes') setBoolean = true;
+
+    switch (event.target.name) {
+      case 'customerGenStatus':
+        setcheckRadioState({
+          ...checkRadioState,
+          customerGenStd: setBoolean
+        })
+        break;
+      case 'customerRSStatus':
+        setcheckRadioState({
+          ...checkRadioState,
+          customerRsStd: setBoolean
+        })
+        break
+      case 'customerActive':
+        setcheckRadioState({
+          ...checkRadioState,
+          customerActive: setBoolean
+        })
+        break
+      default:
+    }
+  };
+
+  function handleCheck (event) {
+    console.log('handle check, event: ', event);
+    debugger;
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
       <div>
@@ -33,13 +82,13 @@ const CustomerEditFormComponent = (
           format={toUpperCase}
           defaultValue={props.props.customer.customerName}
         />
-        {/**
         <Field
           label="Customer Code Name:"
           component={FormInput}
           name="customerCodeName"
           type="text"
           format={toUpperCase}
+          defaultValue={props.props.customer.customerCodeName}
         />
         <label className={styles["radio-form"]}>
           General Standards Approved:
@@ -51,6 +100,8 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="yes"
+                checkedValue={checkRadioState.customerGenStd}
+                onChange={radioButtonCheck}
               />
             </label>
             <label>
@@ -60,6 +111,8 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="no"
+                checkedValue={!checkRadioState.customerGenStd}
+                onChange={radioButtonCheck}
               />
             </label>
           </div>
@@ -74,6 +127,8 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="yes"
+                checkedValue={checkRadioState.customerRsStd}
+                onChange={radioButtonCheck}
               />
             </label>
             <label>
@@ -83,6 +138,8 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="no"
+                checkedValue={!checkRadioState.customerRsStd}
+                onChange={radioButtonCheck}
               />
             </label>
           </div>
@@ -97,6 +154,8 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="yes"
+                checkedValue={checkRadioState.customerActive}
+                onChange={radioButtonCheck}
               />
             </label>
             <label>
@@ -106,73 +165,44 @@ const CustomerEditFormComponent = (
                 component={FormInput}
                 type="radio"
                 value="no"
+                checkedValue={!checkRadioState.customerActive}
+                onChange={radioButtonCheck}
               />
             </label>
           </div>
         </label>
-        <label className={styles['customer-notes-form']}>
-          Customer Notes:
-          <div>
-            <Field
-              label="Customer Notes:"
-              component="textarea"
-              name="customerNote"
-              type="textarea"
-              aria-multiline
-              rows="15"
-            />
-          </div>
-        </label>
-        */}
       </div>
       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
   );
 };
 
-// function validate(values) {
-//   const {
-//     customerName,
-//     customerCodeName,
-//     customerGenStatus,
-//     customerRSStatus,
-//     customerActive
-//   } = values;
+function validate(values) {
+  const { customerName, customerCodeName } = values;
 
-//   const errors = {};
+  const errors = {};
 
-//   if (!customerName) {
-//     errors.customerName = 'Please Enter a Customer Name!';
-//   }
-//   if (customerName) {
-//     if (customerName.length > 32) {
-//       errors.customerName = 'Customer name is to long!';
-//     }
-//   }
-//   if (!customerCodeName) {
-//     errors.customerCodeName = 'Please Enter a Customer Name!';
-//   }
-//   if (customerCodeName) {
-//     if (customerCodeName.length > 6) {
-//       errors.customerCodeName = 'Code name is too long!';
-//     }
-//   }
-//   if (!customerGenStatus) {
-//     // eslint-disable-next-line prettier/prettier
-//     errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
-//   }
-//   if (!customerRSStatus) {
-//     // eslint-disable-next-line prettier/prettier
-//     errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
-//   }
-//   if (!customerActive) {
-//     errors.customerActive = 'Please Select if Customer is Active!';
-//   }
-//   return errors;
-// };
+  if (!customerName) {
+    errors.customerName = 'Please Enter a Customer Name!';
+  }
+  if (customerName) {
+    if (customerName.length > 32) {
+      errors.customerName = 'Customer name is to long!';
+    }
+  }
+  if (!customerCodeName) {
+    errors.customerCodeName = 'Please Enter a Customer Name!';
+  }
+  if (customerCodeName) {
+    if (customerCodeName.length > 6) {
+      errors.customerCodeName = 'Code name is too long!';
+    }
+  }
+  return errors;
+};
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerEditForm',
-  // validate,
+  validate,
   destroyOnUnmount: false
 })(CustomerEditFormComponent);

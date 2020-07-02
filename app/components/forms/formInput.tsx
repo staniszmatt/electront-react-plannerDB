@@ -3,6 +3,7 @@ import styles from './formInput.css';
 
 interface Props {
   defaultValue: string;
+  checkedValue: boolean;
   input: string;
   label: string;
   type: string;
@@ -15,6 +16,7 @@ interface Props {
 export default function FormField(props: Props) {
   const {
     defaultValue,
+    checkedValue,
     input,
     label,
     type = 'text',
@@ -22,6 +24,7 @@ export default function FormField(props: Props) {
   } = props;
 
   console.log('form field  props: ', props);
+  console.log('FORM  Check Value: ', checkedValue);
 
   return (
     <div className={styles['form-container']}>
@@ -31,8 +34,10 @@ export default function FormField(props: Props) {
       <input
         className={styles['form-field']}
         {...input}
-        defaultValue={defaultValue}
         type={type || 'text'}
+        defaultValue={defaultValue}
+        checked={checkedValue}
+        // onChange={handleChecked}
       />
       <p className="red-text darken-2">{touched && error} </p>
     </div>
