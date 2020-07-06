@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
+
 import { GetCustomerState, Dispatch } from '../reducers/types';
 import { toggleOpenModalState } from './errorModal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
@@ -202,15 +203,15 @@ export function handleCustomerAddForm(customerToAdd: {
 
 export function handleEditCustomerForm(customerInfo: string) {
   console.log('edit customer action start, props', customerInfo);
-  return (dispatch: Dispatch) => {
 
+  return (dispatch: Dispatch) => {
     const mainIPCRequest = {
       request: 'getSearchCustomer',
       customerName: `${customerInfo}`
     };
-
     const handleCustomerSearchFormResp = (_event: {}, resp: {}) => {
       if (!isObjEmpty(resp.customer)) {
+        dispatch(reset('customerEditForm'));
         dispatch(customerEditPageSelected(resp));
       } else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
@@ -227,7 +228,10 @@ export function handleEditCustomerForm(customerInfo: string) {
         dispatch(customerError(resp));
       }
       // Remove Listener to prevent adding one every time this method is called
-      ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
+      ipcRenderer.removeListener(
+        'asynchronous-reply',
+        handleCustomerSearchFormResp
+      );
     };
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(customerPending());
@@ -237,4 +241,13 @@ export function handleEditCustomerForm(customerInfo: string) {
 
 export function handleEditCustomerSubmit(editCustomer: {}) {
   console.log('Edit customer submit function, obj sent: ', editCustomer);
+
+
+
+  return (dispatch: Dispatch) => {
+    // const mainIPCRequest = {
+    //   request: 'updateCustomer',
+    //   customerName: `${customerInfo}`
+    // };
+  };
 }

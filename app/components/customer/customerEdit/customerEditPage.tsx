@@ -41,6 +41,10 @@ function toUpperCase(value: string) {
 const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
+  // Preset the values for the customer name inputs.
+  props.initialValues.customerName = props.props.customer.customerName;
+  props.initialValues.customerCodeName = props.props.customer.customerCodeName;
+
   const [
     checkRadioState,
     setCheckRadioState
@@ -96,7 +100,6 @@ const CustomerEditFormComponent = (
           component={FormInput}
           name="customerName"
           type="text"
-          defaultValue={props.props.customer.customerName}
         />
         <Field
           label="Customer Code Name:"
@@ -104,7 +107,6 @@ const CustomerEditFormComponent = (
           component={FormInput}
           name="customerCodeName"
           type="text"
-          defaultValue={props.props.customer.customerCodeName}
         />
         <label>
           General Standards Approved:
@@ -192,12 +194,9 @@ const CustomerEditFormComponent = (
     </form>
   );
 };
-// event: React.ChangeEvent<HTMLInputElement>
-// values: { customerName: string; customerCodeName: string }
-function validate(values: FormProps) {
-  // console.log("Form Props: ", fromProps);
-  const { customerName, customerCodeName } = values;
 
+function validate(values: FormProps, props) {
+  const { customerName, customerCodeName } = values;
   const errors = {
     customerName: '',
     customerCodeName: ''
@@ -225,5 +224,9 @@ function validate(values: FormProps) {
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerEditForm',
   validate,
-  destroyOnUnmount: false
+  destroyOnUnmount: false,
+  initialValues: {
+    customerName: '',
+    customerCodeName: ''
+  }
 })(CustomerEditFormComponent);
