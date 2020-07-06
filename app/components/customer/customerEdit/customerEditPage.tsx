@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
@@ -6,10 +8,24 @@ import '../../forms/formInput.css';
 import styles from '../customerAdd/customerAdd.css';
 
 interface FormProps {
-  // Need to set this up yet!
+  props: {
+    customer: {};
+  };
+  customerName: string;
+  customerCodeName: string;
 }
+
 interface DispatchProps {
-  // ...
+  onSubmit: () => {};
+  props: {
+    customer: {
+      customerName: string;
+      customerCodeName: string;
+      customerGenStd: boolean;
+      customerRsStd: boolean;
+      customerActive: boolean;
+    };
+  };
 }
 
 interface CheckRadioState {
@@ -22,77 +38,77 @@ function toUpperCase(value: string) {
   return value && value.toUpperCase();
 }
 
-
 const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const [
     checkRadioState,
-    setcheckRadioState
-  ] = useState<CheckRadioState | null>(props.props.customer);
+    setCheckRadioState
+    // eslint-disable-next-line react/destructuring-assignment
+  ] = useState<
+    | CheckRadioState
+    | {
+        customerGenStd: boolean;
+        customerRsStd: boolean;
+        customerActive: boolean;
+      }
+  >(props.props.customer);
 
   const { handleSubmit, onSubmit } = props;
 
-  const radioButtonCheck = (event, field) => {
-
-    console.log('Pre customer Getn Std change Check: ', props.props.customer.customerGenStd);
-    console.log("Feild Change, event : ", event);
-    console.log('Feild Yes/No: ', field);
-
-
+  const radioButtonCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     let setBoolean = false;
 
-    if (field === 'yes') setBoolean = true;
+    if (event.target.value === 'yes') setBoolean = true;
 
     switch (event.target.name) {
       case 'customerGenStatus':
-        setcheckRadioState({
+        setCheckRadioState({
           ...checkRadioState,
           customerGenStd: setBoolean
-        })
+        });
         break;
       case 'customerRSStatus':
-        setcheckRadioState({
+        setCheckRadioState({
           ...checkRadioState,
           customerRsStd: setBoolean
-        })
-        break
+        });
+        break;
       case 'customerActive':
-        setcheckRadioState({
+        setCheckRadioState({
           ...checkRadioState,
           customerActive: setBoolean
-        })
-        break
+        });
+        break;
       default:
     }
   };
 
-  function handleCheck (event) {
-    console.log('handle check, event: ', event);
-    debugger;
-  }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles['form-main-container']}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={styles['form-main-container']}
+    >
       <div>
         <Field
           label="Customer Name:"
+          format={toUpperCase}
           component={FormInput}
           name="customerName"
           type="text"
-          format={toUpperCase}
           defaultValue={props.props.customer.customerName}
         />
         <Field
           label="Customer Code Name:"
+          format={toUpperCase}
           component={FormInput}
           name="customerCodeName"
           type="text"
-          format={toUpperCase}
           defaultValue={props.props.customer.customerCodeName}
         />
-        <label className={styles["radio-form"]}>
+        <label>
           General Standards Approved:
-          <div className={styles["radio-container"]}>
+          <div>
             <label>
               Yes
               <Field
@@ -117,9 +133,9 @@ const CustomerEditFormComponent = (
             </label>
           </div>
         </label>
-        <label className={styles["radio-form"]}>
+        <label>
           RS Standards Approved:
-          <div className={styles['radio-container']}>
+          <div>
             <label>
               Yes
               <Field
@@ -144,9 +160,9 @@ const CustomerEditFormComponent = (
             </label>
           </div>
         </label>
-        <label className={styles["radio-form"]}>
+        <label>
           Customer Active:
-          <div className={styles["radio-container"]}>
+          <div>
             <label>
               Yes
               <Field
@@ -176,11 +192,16 @@ const CustomerEditFormComponent = (
     </form>
   );
 };
-
-function validate(values) {
+// event: React.ChangeEvent<HTMLInputElement>
+// values: { customerName: string; customerCodeName: string }
+function validate(values: FormProps) {
+  // console.log("Form Props: ", fromProps);
   const { customerName, customerCodeName } = values;
 
-  const errors = {};
+  const errors = {
+    customerName: '',
+    customerCodeName: ''
+  };
 
   if (!customerName) {
     errors.customerName = 'Please Enter a Customer Name!';
@@ -199,7 +220,7 @@ function validate(values) {
     }
   }
   return errors;
-};
+}
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerEditForm',

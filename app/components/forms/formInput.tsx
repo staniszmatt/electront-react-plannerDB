@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import styles from './formInput.css';
 
@@ -10,7 +12,7 @@ interface Props {
   meta: {
     error: {};
     touched: {};
-  }
+  };
 }
 
 export default function FormField(props: Props) {
@@ -23,9 +25,6 @@ export default function FormField(props: Props) {
     meta: { error, touched }
   } = props;
 
-  console.log('form field  props: ', props);
-  console.log('FORM  Check Value: ', checkedValue);
-
   return (
     <div className={styles['form-container']}>
       <label className={styles['form-label-input']} id="input-label">
@@ -37,9 +36,8 @@ export default function FormField(props: Props) {
         type={type || 'text'}
         defaultValue={defaultValue}
         checked={checkedValue}
-        // onChange={handleChecked}
       />
-      <p className="red-text darken-2">{touched && error} </p>
+      <p className="red-text darken-2">{touched && error}</p>
     </div>
   );
 }

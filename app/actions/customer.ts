@@ -66,7 +66,7 @@ export function pullRequestCustomerListData() {
     const mainRequest = {
       request: 'getCustomerList'
     };
-    const handlePullCustomerListData = (_event: {}, resp: {}) => {
+    const handlePullCustomerListData = (_event: {}, resp: { list: [] }) => {
       if (resp.list.length > 0) {
         dispatch(customerListReceived(resp));
       } else {
@@ -110,7 +110,15 @@ export function handleCustomerSearchForm(customerName: {}) {
       customerName: `${customerName.customerSearch}`
     };
 
-    const handleCustomerSearchFormResp = (_event: {}, resp: {}) => {
+    const handleCustomerSearchFormResp = (
+      _event: {},
+      resp: {
+        customer: {};
+        error: {
+          name: string;
+        };
+      }
+    ) => {
       if (!isObjEmpty(resp.customer)) {
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
@@ -126,7 +134,7 @@ export function handleCustomerSearchForm(customerName: {}) {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
       }
-      // Remove Listenter to prevent adding one every time this mehtode is called
+      // Remove Listener to prevent adding one every time this mehtode is called
       ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
     };
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
@@ -136,9 +144,9 @@ export function handleCustomerSearchForm(customerName: {}) {
 }
 
 export function handleCustomerAddForm(customerToAdd: {
-  customerGenStatus: number;
-  customerRSStatus: number;
-  customerActive: number;
+  customerGenStatus: string;
+  customerRSStatus: string;
+  customerActive: string;
   customerName: string;
   customerCodeName: string;
   customerNote: string;
