@@ -41,9 +41,8 @@ function toUpperCase(value: string) {
 const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-  // Preset the values for the customer name inputs.
+  // Preset the value for the customer name only.
   props.initialValues.customerName = props.props.customer.customerName;
-  props.initialValues.customerCodeName = props.props.customer.customerCodeName;
 
   const [
     checkRadioState,
@@ -66,13 +65,13 @@ const CustomerEditFormComponent = (
     if (event.target.value === 'yes') setBoolean = true;
 
     switch (event.target.name) {
-      case 'customerGenStatus':
+      case 'customerGenStd':
         setCheckRadioState({
           ...checkRadioState,
           customerGenStd: setBoolean
         });
         break;
-      case 'customerRSStatus':
+      case 'customerRsStd':
         setCheckRadioState({
           ...checkRadioState,
           customerRsStd: setBoolean
@@ -100,6 +99,8 @@ const CustomerEditFormComponent = (
           component={FormInput}
           name="customerName"
           type="text"
+          defaultValue={props.props.customer.customerName}
+          disabled={true}
         />
         <Field
           label="Customer Code Name:"
@@ -107,6 +108,7 @@ const CustomerEditFormComponent = (
           component={FormInput}
           name="customerCodeName"
           type="text"
+          defaultValue={props.props.customer.customerCodeName}
         />
         <label>
           General Standards Approved:
@@ -114,7 +116,7 @@ const CustomerEditFormComponent = (
             <label>
               Yes
               <Field
-                name="customerGenStatus"
+                name="customerGenStd"
                 component={FormInput}
                 type="radio"
                 value="yes"
@@ -125,7 +127,7 @@ const CustomerEditFormComponent = (
             <label>
               No
               <Field
-                name="customerGenStatus"
+                name="customerGenStd"
                 component={FormInput}
                 type="radio"
                 value="no"
@@ -141,7 +143,7 @@ const CustomerEditFormComponent = (
             <label>
               Yes
               <Field
-                name="customerRSStatus"
+                name="customerRsStd"
                 component={FormInput}
                 type="radio"
                 value="yes"
@@ -152,7 +154,7 @@ const CustomerEditFormComponent = (
             <label>
               No
               <Field
-                name="customerRSStatus"
+                name="customerRsStd"
                 component={FormInput}
                 type="radio"
                 value="no"
@@ -195,12 +197,16 @@ const CustomerEditFormComponent = (
   );
 };
 
-function validate(values: FormProps, props) {
+function validate(values: FormProps) {
   const { customerName, customerCodeName } = values;
   const errors = {
     customerName: '',
     customerCodeName: ''
   };
+
+  if (customerName === null || customerCodeName === null) {
+    return;
+  }
 
   if (!customerName) {
     errors.customerName = 'Please Enter a Customer Name!';
@@ -226,7 +232,10 @@ export default reduxForm<FormProps, DispatchProps>({
   validate,
   destroyOnUnmount: false,
   initialValues: {
-    customerName: '',
-    customerCodeName: ''
+    customerName: null,
+    customerCodeName: null,
+    customerGenStd: null,
+    customerRsStd: null,
+    customerActive: null
   }
 })(CustomerEditFormComponent);

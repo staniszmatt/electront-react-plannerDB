@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
 
@@ -14,6 +15,9 @@ export const CUSTOMER_EDIT_PAGE = 'CUSTOMER_EDIT_PAGE';
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
+  if (stringToCheck === null) {
+    return null;
+  }
   if (stringToCheck === 'yes') {
     return 1;
   }
@@ -154,15 +158,10 @@ export function handleCustomerAddForm(customerToAdd: {
 }) {
   return (dispatch: Dispatch) => {
     // Setting yes no values as a boolean number 1 or 0
-    const returnGenStatus = returnOneZeroFromString(
-      customerToAdd.customerGenStatus
-    );
-    const returnRSStatus = returnOneZeroFromString(
-      customerToAdd.customerRSStatus
-    );
-    const returnActiveStatus = returnOneZeroFromString(
-      customerToAdd.customerActive
-    );
+    const returnGenStatus = returnOneZeroFromString(customerToAdd.customerGenStatus);
+    const returnRSStatus = returnOneZeroFromString(customerToAdd.customerRSStatus);
+    const returnActiveStatus = returnOneZeroFromString(customerToAdd.customerActive);
+
     const mainIPCRequest = {
       request: 'postAddCustomer',
       customerName: `${customerToAdd.customerName}`,
@@ -239,15 +238,59 @@ export function handleEditCustomerForm(customerInfo: string) {
   };
 }
 
-export function handleEditCustomerSubmit(editCustomer: {}) {
+
+
+
+
+/////////////////////////////////////////////////////////////
+
+export function handleEditCustomerSubmit(editCustomer: {
+  customerGenStd: string;
+  customerRsStd: string;
+  customerActive: string;
+  customerName: string;
+  customerCodeName: string;
+}) {
   console.log('Edit customer submit function, obj sent: ', editCustomer);
-
-
+    // Setup to set all values and filter out null values.
+  const checkForChange = {
+    customerGenStd: returnOneZeroFromString(editCustomer.customerGenStd),
+    customerActive: returnOneZeroFromString(editCustomer.customerActive),
+    customerRsStd: returnOneZeroFromString(editCustomer.customerRsStd),
+    customerCodeName: editCustomer.customerCodeName
+  }
 
   return (dispatch: Dispatch) => {
-    // const mainIPCRequest = {
-    //   request: 'updateCustomer',
-    //   customerName: `${customerInfo}`
-    // };
+
+
+    if (checkForChange.customerGenStd === null && checkForChange.customerActive === null && checkForChange.customerRsStd === null && checkForChange.customerCodeName == null){
+      dispatch(toggleOpenModalState('Error No Changes Where Made!'));
+      dispatch(handleEditCustomerForm(editCustomer.customerName));
+    } else {
+      const mainIPCRequest = {
+        request: 'updateCustomer',
+        customerName: editCustomer.customerName
+      };
+      Object.keys(checkForChange).map(key => {
+        // console.log('key', key)
+        // console.log("value", checkForChange[key]);
+        if (checkForChange[key] !== null){
+          mainIPCRequest[key] = checkForChange[key]
+        }
+      })
+
+
+      const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
+        console.log("Customer Update resp:", resp);
+        ipcRenderer.removeListener('asynchronous-reply',handleUpdateCustomerFormResp);
+      }
+      ipcRenderer.send('asynchronous-message', mainIPCRequest);
+      dispatch(customerPending());
+      ipcRenderer.on('asynchronous-reply', handleUpdateCustomerFormResp);
+
+    }
+
+
+
   };
 }

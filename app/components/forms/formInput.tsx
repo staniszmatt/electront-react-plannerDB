@@ -5,6 +5,8 @@ import styles from './formInput.css';
 
 interface Props {
   checkedValue: boolean;
+  defaultValue: string;
+  disabled: boolean;
   input: string;
   label: string;
   type: string;
@@ -17,6 +19,8 @@ interface Props {
 export default function FormField(props: Props) {
   const {
     checkedValue,
+    defaultValue,
+    disabled,
     input,
     label,
     type = 'text',
@@ -33,6 +37,8 @@ export default function FormField(props: Props) {
         {...input}
         type={type || 'text'}
         checked={checkedValue}
+        defaultValue={defaultValue}
+        disabled={disabled}
       />
       <p className="red-text darken-2">{touched && error}</p>
     </div>
