@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
 
 import { GetCustomerState, Dispatch } from '../reducers/types';
-import { toggleOpenModalState } from './errorModal';
+import { toggleErrorModalState, toggleSuccessModalState } from './modal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
@@ -185,7 +185,7 @@ export function handleCustomerAddForm(customerToAdd: {
         dispatch(handleCustomerSearchForm(searchFormObj));
       } else if (resp.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
-        dispatch(toggleOpenModalState('Error Customer or code already name already used!'));
+        dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
         dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error
@@ -201,8 +201,6 @@ export function handleCustomerAddForm(customerToAdd: {
 }
 
 export function handleEditCustomerForm(customerInfo: string) {
-  console.log('edit customer action start, props', customerInfo);
-
   return (dispatch: Dispatch) => {
     const mainIPCRequest = {
       request: 'getSearchCustomer',
@@ -238,12 +236,6 @@ export function handleEditCustomerForm(customerInfo: string) {
   };
 }
 
-
-
-
-
-/////////////////////////////////////////////////////////////
-
 export function handleEditCustomerSubmit(editCustomer: {
   customerGenStd: string;
   customerRsStd: string;
@@ -251,46 +243,42 @@ export function handleEditCustomerSubmit(editCustomer: {
   customerName: string;
   customerCodeName: string;
 }) {
-  console.log('Edit customer submit function, obj sent: ', editCustomer);
     // Setup to set all values and filter out null values.
-  const checkForChange = {
+  const mainIPCRequest = {
+    request: 'updateCustomer',
+    customerName: editCustomer.customerName,
+    customerCodeName: editCustomer.customerCodeName,
     customerGenStd: returnOneZeroFromString(editCustomer.customerGenStd),
     customerActive: returnOneZeroFromString(editCustomer.customerActive),
-    customerRsStd: returnOneZeroFromString(editCustomer.customerRsStd),
-    customerCodeName: editCustomer.customerCodeName
+    customerRsStd: returnOneZeroFromString(editCustomer.customerRsStd)
   }
 
   return (dispatch: Dispatch) => {
 
-
-    if (checkForChange.customerGenStd === null && checkForChange.customerActive === null && checkForChange.customerRsStd === null && checkForChange.customerCodeName == null){
-      dispatch(toggleOpenModalState('Error No Changes Where Made!'));
+    if (mainIPCRequest.customerGenStd === null
+      && mainIPCRequest.customerActive === null
+      && mainIPCRequest.customerRsStd === null
+      && mainIPCRequest.customerCodeName == null){
+      dispatch(toggleErrorModalState('No Changes Where Made!'));
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
-      const mainIPCRequest = {
-        request: 'updateCustomer',
-        customerName: editCustomer.customerName
-      };
-      Object.keys(checkForChange).map(key => {
-        // console.log('key', key)
-        // console.log("value", checkForChange[key]);
-        if (checkForChange[key] !== null){
-          mainIPCRequest[key] = checkForChange[key]
-        }
-      })
-
-
       const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
-        console.log("Customer Update resp:", resp);
+        if (resp.newCustomer.success === 'Success') {
+          // *******************************************************
+          // *******************************************************
+          // *******************************************************
+
+          // TODO: ADD SUCCESS MODAL HERE!!
+          dispatch(toggleSuccessModalState('Customer Update Complete!'))
+          dispatch(handleEditCustomerForm(editCustomer.customerName));
+        } else {
+          dispatch(customerError(resp));
+        }
         ipcRenderer.removeListener('asynchronous-reply',handleUpdateCustomerFormResp);
       }
       ipcRenderer.send('asynchronous-message', mainIPCRequest);
       dispatch(customerPending());
       ipcRenderer.on('asynchronous-reply', handleUpdateCustomerFormResp);
-
     }
-
-
-
   };
 }

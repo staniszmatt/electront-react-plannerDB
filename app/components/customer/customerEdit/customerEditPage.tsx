@@ -5,7 +5,7 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
-import styles from '../customerAdd/customerAdd.css';
+import styles from './customerEditPage.css';
 
 interface FormProps {
   props: {
@@ -90,7 +90,7 @@ const CustomerEditFormComponent = (
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={styles['form-main-container']}
+      className={styles["form-main-container"]}
     >
       <div>
         <Field
@@ -192,7 +192,9 @@ const CustomerEditFormComponent = (
           </div>
         </label>
       </div>
-      <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+      <div>
+        <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+      </div>
     </form>
   );
 };

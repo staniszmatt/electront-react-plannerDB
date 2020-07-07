@@ -6,7 +6,7 @@ import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 // import * as counterActions from '../actions/counter';
 import * as customerActions from '../actions/customer';
-import * as errorModalActions from '../actions/errorModal';
+import * as errorModalActions from '../actions/modal';
 import { customerStateType, errorModalStateType } from '../reducers/types';
 // import { counterStateType, customerStateType } from '../reducers/types';
 
