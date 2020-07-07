@@ -259,18 +259,18 @@ export function handleEditCustomerSubmit(editCustomer: {
       && mainIPCRequest.customerActive === null
       && mainIPCRequest.customerRsStd === null
       && mainIPCRequest.customerCodeName == null){
+
       dispatch(toggleErrorModalState('No Changes Where Made!'));
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
       const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
-        if (resp.newCustomer.success === 'Success') {
-          // *******************************************************
-          // *******************************************************
-          // *******************************************************
-
-          // TODO: ADD SUCCESS MODAL HERE!!
-          dispatch(toggleSuccessModalState('Customer Update Complete!'))
-          dispatch(handleEditCustomerForm(editCustomer.customerName));
+        console.log("Action Edit Customer Response", resp);
+        if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
+          const searchFormObj = {
+            customerSearch: editCustomer.customerName
+          };
+          dispatch(toggleSuccessModalState('Customer Update Complete!'));
+          dispatch(handleCustomerSearchForm(searchFormObj));
         } else {
           dispatch(customerError(resp));
         }
