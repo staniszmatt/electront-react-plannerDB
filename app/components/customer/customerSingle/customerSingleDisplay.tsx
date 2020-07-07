@@ -1,13 +1,18 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-boolean-value */
-import React from 'react';
+import React, { useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { handleEditCustomerForm } from '../../../actions/customer';
+import {
+  handleEditCustomerForm,
+  handleAddCustomerNote
+} from '../../../actions/customer';
 import { customerStateType } from '../../../reducers/types';
+import AddCustomerNote from '../customerNotes/addCustomerNote';
+import EditCustomerNote from '../customerNotes/editCustomerNote';
 import CustomerNoteRow from './customerSingleNotes';
-import EditCustomerBtn from '../../buttonFunctions/buttonClickHandler';
+import Btn from '../../buttonFunctions/buttonClickHandler';
 import styles from './customerSingle.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 import CustomerChangeNoteRow from './customerSingleChangeNote';
@@ -20,7 +25,10 @@ function mapStateToProps(state: customerStateType) {
 }
 // Mapping actions to component without having to pass it through the parents.
 function mapDispatchToProps(dispatch: Dispatch) {
-  return bindActionCreators({ handleEditCustomerForm }, dispatch);
+  return bindActionCreators(
+    { handleEditCustomerForm, handleAddCustomerNote },
+    dispatch
+  );
 }
 interface Props {
   handleEditCustomerForm: () => {};
@@ -41,8 +49,29 @@ interface Props {
   }
 }
 
-function CustomerHeadTable(props: Props) {
-  const { handleEditCustomerForm } = props;
+interface NoteDisplayState {
+  listNotes: boolean;
+  addNote: boolean;
+  editNote: boolean;
+  notesList: []
+}
+
+function CustomerHeadTable(props: Props, state: NoteDisplayState) {
+  const { handleEditCustomerForm, handleAddCustomerNote } = props;
+
+  const [noteDisplayState, setNoteDisplayState] = useState<
+    | NoteDisplayState
+    | {
+        listNotes: boolean;
+        addNote: boolean;
+        editNote: boolean;
+      }
+  >({
+    listNotes: true,
+    addNote: false,
+    editNote: false
+  });
+
   const renderChangeNoteRow = () => {
     const returnNotes: JSX.Element[] = [];
 
@@ -88,6 +117,7 @@ function CustomerHeadTable(props: Props) {
         >
           <div>
             <div>{`Note:${objIndex + 1}`}</div>
+            /{/** ??????????????????????????????????????????? */}
           </div>
           <div>
             <div>
@@ -145,13 +175,28 @@ function CustomerHeadTable(props: Props) {
     handleEditCustomerForm(props.props.customer.customerName);
   };
 
+  const addCustomerNote = () => {
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: false,
+      addNote: true,
+      editNote: false
+    });
+  };
+
+  const cancelNote = () => {
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: true,
+      addNote: false,
+      editNote: false
+    });
+  };
+
   return (
     <div className={styles["main-single-customer"]}>
       <div>
-        <EditCustomerBtn
-          buttonName="Edit Customer"
-          ClickHandler={editCustomer}
-        />
+        <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
       </div>
       <div className={styles["single-main-customer-info"]}>
         <div>
@@ -179,8 +224,22 @@ function CustomerHeadTable(props: Props) {
           <div>
             <div>
               <div>Customer Notes:</div>
+              <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
             </div>
-            <div>{renderCustomerNotes()}</div>
+            {noteDisplayState.listNotes && <div>{renderCustomerNotes()}</div>}
+            {noteDisplayState.addNote && (
+              <div className={styles["add-customer-note-wrapper"]}>
+                <div>
+                  <AddCustomerNote
+                    props={props.props.customer.customerName}
+                    onSubmit={handleAddCustomerNote}
+                  />
+                </div>
+                <div>
+                  <Btn buttonName="Cancel" ClickHandler={cancelNote} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

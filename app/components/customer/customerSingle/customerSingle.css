@@ -213,3 +213,19 @@
 .single-customer-note > div:first-child > div > div:last-child {
   margin-right: 10px;
 }
+
+/* Add Customer Note Wrapper */
+div.add-customer-note-wrapper > div:first-child > form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div.add-customer-note-wrapper > div:first-child > form > div {
+  width: 100%;
+}
+
+div.add-customer-note-wrapper > div:first-child > form > div > textarea {
+  width: 98%;
+  resize: vertical;
+  min-height: 125px;
+}

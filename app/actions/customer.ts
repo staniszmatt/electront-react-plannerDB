@@ -12,6 +12,7 @@ export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
 export const CUSTOMER_EDIT_PAGE = 'CUSTOMER_EDIT_PAGE';
+// export const CUSTOMER_ADD_NOTE = 'CUSTOMER_ADD_NOTE';
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
@@ -65,7 +66,18 @@ export function customerEditPageSelected(resp: {}) {
   };
 }
 
+// export function customerAddNoteSelected(resp: {}) {
+//   return {
+//     type: CUSTOMER_ADD_NOTE,
+//     resp
+//   };
+// }
+
 // Call to electron main with ipcRenderer to get server data for customer list
+export function handleAddCustomerNote() {
+  console.log("Handle Add Customer Note Clicked!")
+}
+
 export function pullRequestCustomerListData() {
   return (dispatch: Dispatch) => {
     const mainRequest = {
@@ -126,6 +138,7 @@ export function handleCustomerSearchForm(customerName: {}) {
     ) => {
       if (!isObjEmpty(resp.customer)) {
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
+          debugger;
         // If request isn't in the server
         dispatch(
           customerError({
