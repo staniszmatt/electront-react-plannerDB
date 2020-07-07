@@ -17,7 +17,9 @@ async function updateCustomer(request) {
     customerRsStd: request.customerRsStd,
     customerCodeName: request.customerCodeName
   };
-
+  // Setup Change note info to submit
+  let changeNoteString = '';
+  // Setup dbRequest with only changed information, none null
   const dbRequest = {};
   // Load only non-null values into new object
   Object.keys(modifyRequest).map(key => {
@@ -30,27 +32,69 @@ async function updateCustomer(request) {
     const keyLastIndex = Object.keys(dbRequest).length - 1;
     if (index !== keyLastIndex) {
       requestList += `${key} = '${dbRequest[key]}', `;
+      changeNoteString += `${key}, `;
     } else {
       // Remove comma on last indexed key for query
       requestList += `${key} = '${modifyRequest[key]}'`;
+      changeNoteString += `${key}`;
     }
   });
 
-  // Updated new customer
+  // Add Change Note History
   try {
     const db = await pool.connect();
     const query = `UPDATE customer
       SET ${requestList}
-        WHERE customerName = '${request.customerName}'`;
+        OUTPUT INSERTED.id, GETDATE() as dateStamp, CURRENT_USER as UserName, HOST_NAME() AS HostName, SUSER_NAME() LoggedInUser
+          WHERE customerName = '${request.customerName}'`;
 
     const data = await db.query(query);
 
     // If customer add worked, then create the change note to show when customer was created
-    if (data.rowsAffected[0] === 1) {
-      returnData.newCustomer = {
+    console.log("Returned Updated Data: ", data);
+
+    if (data.recordset[0].id) {
+      returnData.editCustomer = {
         success: 'Success',
         updatedCustomerData: data
       };
+
+
+
+
+
+
+      // Setup to add change note for adding customer.
+      try {
+
+        console.log("Change Note String: ", changeNoteString)
+
+        const postChangeNote = {
+          typeID: data.recordset[0].id,
+          typeCategory: 'customer',
+          changeNoteDescription: `Edited Customer: ${changeNoteString} `,
+          // Store as a comma seperated string for now.
+          userId: `${data.recordset[0].LoggedInUser}`,
+          changeNoteDateStamp: `${data.recordset[0].dateStamp}`
+        };
+
+        const changeNoteData = await postNewChangeNote(postChangeNote);
+
+        // If changeNote passes, then finally add a customer note if it has any text
+        if (changeNoteData.changeNoteData.success === 'Success') {
+          returnData.changeNotePost = {
+            success: 'Success',
+            changeNoteData
+          };
+        } else {
+          returnData.changeNotePost = {
+            success: 'Failed to add change note!',
+            changeNoteData
+          };
+        }
+      } catch (error) {
+        returnData.error = error;
+      }
     } else {
       returnData = {
         success: 'Failed to update customer!',

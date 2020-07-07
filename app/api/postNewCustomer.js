@@ -29,7 +29,7 @@ async function postNewCustomer(request) {
           changeNoteDateStamp: `${data.recordset[0].dateStamp}`
         };
         const changeNoteData = await postNewChangeNote(requestData);
-        // If changenote passes, then finally add a customer note if it has any text
+        // If changeNote passes, then finally add a customer note if it has any text
         if (changeNoteData.changeNoteData.success === 'Success') {
           returnData.changeNotePost = {
             success: 'Success',
