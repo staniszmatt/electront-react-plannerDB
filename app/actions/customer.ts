@@ -1,17 +1,23 @@
-import { ipcRenderer, ipcMain } from 'electron';
+/* eslint-disable prettier/prettier */
+import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
+
 import { GetCustomerState, Dispatch } from '../reducers/types';
-import { toggleOpenModalState } from './errorModal';
+import { toggleErrorModalState, toggleSuccessModalState } from './modal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
 export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
-export const CUSTOMER_LIST_RECIEVED = 'CUSTOMER_LIST_RECIEVED';
+export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
+export const CUSTOMER_EDIT_PAGE = 'CUSTOMER_EDIT_PAGE';
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
+  if (stringToCheck === null) {
+    return null;
+  }
   if (stringToCheck === 'yes') {
     return 1;
   }
@@ -36,10 +42,11 @@ export function customerAddPageSelected() {
     type: CUSTOMER_ADD_PAGE
   };
 }
-// Setup resp:{} for typescript instead of making a how seperate file and folder
-export function customerListRecieved(resp: {}) {
+
+// Setup resp:{} for typescript.
+export function customerListReceived(resp: {}) {
   return {
-    type: CUSTOMER_LIST_RECIEVED,
+    type: CUSTOMER_LIST_RECEIVED,
     resp
   };
 }
@@ -51,25 +58,32 @@ export function customerError(resp: {}) {
   };
 }
 
+export function customerEditPageSelected(resp: {}) {
+  return {
+    type: CUSTOMER_EDIT_PAGE,
+    resp
+  };
+}
+
 // Call to electron main with ipcRenderer to get server data for customer list
 export function pullRequestCustomerListData() {
   return (dispatch: Dispatch) => {
     const mainRequest = {
       request: 'getCustomerList'
     };
-    const handdlePullCustomerListData = (_event: {}, resp: {}) => {
+    const handlePullCustomerListData = (_event: {}, resp: { list: [] }) => {
       if (resp.list.length > 0) {
-        dispatch(customerListRecieved(resp));
+        dispatch(customerListReceived(resp));
       } else {
         dispatch(customerError(resp));
       }
       // eslint-disable-next-line prettier/prettier
-      ipcRenderer.removeListener('asynchronous-reply', handdlePullCustomerListData);
+      ipcRenderer.removeListener('asynchronous-reply', handlePullCustomerListData);
     };
 
     ipcRenderer.send('asynchronous-message', mainRequest);
     dispatch(customerPending());
-    ipcRenderer.on('asynchronous-reply', handdlePullCustomerListData);
+    ipcRenderer.on('asynchronous-reply', handlePullCustomerListData);
   };
 }
 
@@ -101,7 +115,15 @@ export function handleCustomerSearchForm(customerName: {}) {
       customerName: `${customerName.customerSearch}`
     };
 
-    const handleCustomerSearchFormResp = (_event, resp) => {
+    const handleCustomerSearchFormResp = (
+      _event: {},
+      resp: {
+        customer: {};
+        error: {
+          name: string;
+        };
+      }
+    ) => {
       if (!isObjEmpty(resp.customer)) {
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
@@ -117,7 +139,7 @@ export function handleCustomerSearchForm(customerName: {}) {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
       }
-      // Remove Listenter to prevent adding one every time this mehtode is called
+      // Remove Listener to prevent adding one every time this mehtode is called
       ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
     };
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
@@ -127,25 +149,19 @@ export function handleCustomerSearchForm(customerName: {}) {
 }
 
 export function handleCustomerAddForm(customerToAdd: {
-  customerGenStatus: number;
-  customerRSStatus: number;
-  customerActive: number;
+  customerGenStatus: string;
+  customerRSStatus: string;
+  customerActive: string;
   customerName: string;
   customerCodeName: string;
   customerNote: string;
 }) {
-  return (dispatch: Dispatch, getState: GetCustomerState) => {
-    const state = getState();
+  return (dispatch: Dispatch) => {
     // Setting yes no values as a boolean number 1 or 0
-    const returnGenStatus = returnOneZeroFromString(
-      customerToAdd.customerGenStatus
-    );
-    const returnRSStatus = returnOneZeroFromString(
-      customerToAdd.customerRSStatus
-    );
-    const returnActiveStatus = returnOneZeroFromString(
-      customerToAdd.customerActive
-    );
+    const returnGenStatus = returnOneZeroFromString(customerToAdd.customerGenStatus);
+    const returnRSStatus = returnOneZeroFromString(customerToAdd.customerRSStatus);
+    const returnActiveStatus = returnOneZeroFromString(customerToAdd.customerActive);
+
     const mainIPCRequest = {
       request: 'postAddCustomer',
       customerName: `${customerToAdd.customerName}`,
@@ -167,10 +183,9 @@ export function handleCustomerAddForm(customerToAdd: {
 
         dispatch(reset('customerAddForm'));
         dispatch(handleCustomerSearchForm(searchFormObj));
-
       } else if (resp.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
-        dispatch(toggleOpenModalState('Error Customer or code already name already used!'));
+        dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
         dispatch(customerAddPageSelected());
       } else {
         // If errors are not specified above, then pass whole error
@@ -182,5 +197,88 @@ export function handleCustomerAddForm(customerToAdd: {
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(customerPending());
     ipcRenderer.on('asynchronous-reply', handleAddCustomerResp);
+  };
+}
+
+export function handleEditCustomerForm(customerInfo: string) {
+  return (dispatch: Dispatch) => {
+    const mainIPCRequest = {
+      request: 'getSearchCustomer',
+      customerName: `${customerInfo}`
+    };
+    const handleCustomerSearchFormResp = (_event: {}, resp: {}) => {
+      if (!isObjEmpty(resp.customer)) {
+        dispatch(reset('customerEditForm'));
+        dispatch(customerEditPageSelected(resp));
+      } else if (resp.error.name === 'RequestError') {
+        // If request isn't in the server
+        dispatch(
+          customerError({
+            list: [],
+            error: {
+              customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
+            }
+          })
+        );
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // Remove Listener to prevent adding one every time this method is called
+      ipcRenderer.removeListener(
+        'asynchronous-reply',
+        handleCustomerSearchFormResp
+      );
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleCustomerSearchFormResp);
+  };
+}
+
+export function handleEditCustomerSubmit(editCustomer: {
+  customerGenStd: string;
+  customerRsStd: string;
+  customerActive: string;
+  customerName: string;
+  customerCodeName: string;
+}) {
+    // Setup to set all values and filter out null values.
+  const mainIPCRequest = {
+    request: 'updateCustomer',
+    customerName: editCustomer.customerName,
+    customerCodeName: editCustomer.customerCodeName,
+    customerGenStd: returnOneZeroFromString(editCustomer.customerGenStd),
+    customerActive: returnOneZeroFromString(editCustomer.customerActive),
+    customerRsStd: returnOneZeroFromString(editCustomer.customerRsStd)
+  }
+
+  return (dispatch: Dispatch) => {
+
+    if (mainIPCRequest.customerGenStd === null
+      && mainIPCRequest.customerActive === null
+      && mainIPCRequest.customerRsStd === null
+      && mainIPCRequest.customerCodeName == null){
+      dispatch(toggleErrorModalState('No Changes Where Made!'));
+      dispatch(handleEditCustomerForm(editCustomer.customerName));
+    } else {
+      const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
+        if (resp.newCustomer.success === 'Success') {
+          // *******************************************************
+          // *******************************************************
+          // *******************************************************
+
+          // TODO: ADD SUCCESS MODAL HERE!!
+          dispatch(toggleSuccessModalState('Customer Update Complete!'))
+          dispatch(handleEditCustomerForm(editCustomer.customerName));
+        } else {
+          dispatch(customerError(resp));
+        }
+        ipcRenderer.removeListener('asynchronous-reply',handleUpdateCustomerFormResp);
+      }
+      ipcRenderer.send('asynchronous-message', mainIPCRequest);
+      dispatch(customerPending());
+      ipcRenderer.on('asynchronous-reply', handleUpdateCustomerFormResp);
+    }
   };
 }

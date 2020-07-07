@@ -16,10 +16,8 @@ import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
+import updateCustomer from './api/updateCustomer';
 import isObjEmpty from '../app/helpFunctions/isObjEmpty';
-import { devTools } from 'electron-debug';
-
-// require('mssql/msnodesqlv8');
 
 export default class AppUpdater {
   constructor() {
@@ -141,6 +139,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     case 'postAddCustomer':
       requestToSend = postNewCustomer;
       break;
+    case 'updateCustomer':
+      requestToSend = updateCustomer;
+      break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
       swtichFail = true;
@@ -157,7 +158,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   try {
     // let returnData = {};
     const data = await requestToSend(arg);
-    // console.log('main request data', data);
 
     console.log('error empty check is: ', isObjEmpty(data.error));
     console.log('Name Check ', data.error.name);

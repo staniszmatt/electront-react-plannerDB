@@ -3,12 +3,12 @@ import styles from './modal.css';
 
 interface Props {}
 
-export default function AlarmModal(props: Props) {
-  console.log("ERROR Modal Component", props);
+export default function SuccessModal(props: Props) {
+  console.log("SUCCESS Modal Component", props);
   return (
-    <div className={styles["error-modal-container"]}>
+    <div className={styles["success-modal-container"]}>
       <div>
-        <p>ERROR!</p>
+        <p>SUCCESS!</p>
       </div>
       <div>
         <p>{props.props}</p>

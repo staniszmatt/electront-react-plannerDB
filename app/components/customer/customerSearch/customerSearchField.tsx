@@ -4,13 +4,9 @@ import styles from './customerSearch.css';
 import FormInput from '../../forms/formInput';
 import '../../forms/formInput.css';
 
-interface FormProps {
-  // Need to set this up yet!
-}
+interface FormProps {}
 
-interface DispatchProps {
-  // ...
-}
+interface DispatchProps {}
 
 const CustomerSearchFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>

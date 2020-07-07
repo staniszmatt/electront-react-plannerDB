@@ -2,13 +2,28 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-boolean-value */
 import React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { handleEditCustomerForm } from '../../../actions/customer';
+import { customerStateType } from '../../../reducers/types';
 import CustomerNoteRow from './customerSingleNotes';
 import EditCustomerBtn from '../../buttonFunctions/buttonClickHandler';
 import styles from './customerSingle.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 import CustomerChangeNoteRow from './customerSingleChangeNote';
 
+// Has to be mapped in order for dispatch to work.
+function mapStateToProps(state: customerStateType) {
+  return {
+    customer: state
+  };
+}
+// Mapping actions to component without having to pass it through the parents.
+function mapDispatchToProps(dispatch: Dispatch) {
+  return bindActionCreators({ handleEditCustomerForm }, dispatch);
+}
 interface Props {
+  handleEditCustomerForm: () => {};
   props: {
     customer: {
       customerName: string;
@@ -26,13 +41,8 @@ interface Props {
   }
 }
 
-// TODO: REMOVE AFTER TESTING, pre-setup for calling edit customer page
-function editCustomer() {
-  console.log('Display Single Customer');
-}
-
-export default function CustomerHeadTable(props: Props) {
-
+function CustomerHeadTable(props: Props) {
+  const { handleEditCustomerForm } = props;
   const renderChangeNoteRow = () => {
     const returnNotes: JSX.Element[] = [];
 
@@ -130,6 +140,10 @@ export default function CustomerHeadTable(props: Props) {
       </div>
     );
   };
+  // Setup so Action isn't called until the button is clicked.
+  const editCustomer = () => {
+    handleEditCustomerForm(props.props.customer.customerName);
+  };
 
   return (
     <div className={styles["main-single-customer"]}>
@@ -173,3 +187,5 @@ export default function CustomerHeadTable(props: Props) {
     </div>
   );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerHeadTable);

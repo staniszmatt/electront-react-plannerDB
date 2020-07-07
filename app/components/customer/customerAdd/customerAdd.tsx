@@ -12,7 +12,7 @@ interface DispatchProps {
   // ...
 }
 
-function toUpperCase(value) {
+function toUpperCase(value: string) {
   return value && value.toUpperCase();
 }
 

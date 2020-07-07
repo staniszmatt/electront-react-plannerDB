@@ -2,7 +2,6 @@ import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 import postCustomerNote from './postCustomerNote';
 import postNewChangeNote from './postChangeNote';
-import { requests } from 'sinon';
 
 async function postNewCustomer(request) {
   let returnData = {

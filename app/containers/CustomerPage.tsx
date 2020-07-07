@@ -5,7 +5,9 @@ import {
   requestCustomerList,
   customerAddPageSelected,
   handleCustomerSearchForm,
-  handleCustomerAddForm
+  handleCustomerAddForm,
+  handleEditCustomerForm,
+  handleEditCustomerSubmit
 } from '../actions/customer';
 import { customerStateType } from '../reducers/types';
 
@@ -21,7 +23,9 @@ function mapDispatchToProps(dispatch: Dispatch) {
       requestCustomerList,
       customerAddPageSelected,
       handleCustomerSearchForm,
-      handleCustomerAddForm
+      handleCustomerAddForm,
+      handleEditCustomerForm,
+      handleEditCustomerSubmit
     },
     dispatch
   );

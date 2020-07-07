@@ -3,9 +3,10 @@ import { Action } from 'redux';
 import {
   CUSTOMER_PENDING,
   CUSTOMER_ERROR,
-  CUSTOMER_LIST_RECIEVED,
+  CUSTOMER_LIST_RECEIVED,
   CUSTOMER_ADD_PAGE,
-  CUSTOMER_SINGLE_PAGE
+  CUSTOMER_SINGLE_PAGE,
+  CUSTOMER_EDIT_PAGE
 } from '../actions/customer';
 
 const IState = {
@@ -15,8 +16,9 @@ const IState = {
   loadedCustomerAddState: false,
   loadCustomerAddPage: false,
   loadCustomerSinglePage: false,
+  loadCustomerEditPage: false,
   customerList: [],
-  singleCustomerInfor: {},
+  singleCustomerInfo: {},
   error: []
 };
 
@@ -31,8 +33,9 @@ export default function customer(state = IState, action: Action<string>) {
         loadedCustomerAddState: false,
         loadCustomerAddPage: false,
         loadCustomerSinglePage: true,
+        loadCustomerEditPage: false,
         customerList: [],
-        singleCustomerInfor: action.resp,
+        singleCustomerInfo: action.resp,
         error: {}
       };
     case CUSTOMER_PENDING:
@@ -44,10 +47,11 @@ export default function customer(state = IState, action: Action<string>) {
         loadedCustomerAddState: false,
         loadCustomerAddPage: false,
         loadCustomerSinglePage: false,
+        loadCustomerEditPage: false,
         customerList: [],
         error: {}
       };
-    case CUSTOMER_LIST_RECIEVED:
+    case CUSTOMER_LIST_RECEIVED:
       return {
         ...state,
         loadingState: false,
@@ -56,6 +60,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadedCustomerAddState: false,
         loadCustomerAddPage: false,
         loadCustomerSinglePage: false,
+        loadCustomerEditPage: false,
         customerList: action.resp.list,
         error: {}
       };
@@ -68,6 +73,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadedCustomerAddState: false,
         loadCustomerAddPage: false,
         loadCustomerSinglePage: false,
+        loadCustomerEditPage: false,
         customerList: [],
         error: action.resp.error
       };
@@ -80,7 +86,22 @@ export default function customer(state = IState, action: Action<string>) {
         loadedCustomerAddState: false,
         loadCustomerAddPage: true,
         loadCustomerSinglePage: false,
+        loadCustomerEditPage: false,
         customerList: [],
+        error: {}
+      };
+    case CUSTOMER_EDIT_PAGE:
+      return {
+        ...state,
+        loadingState: false,
+        errorState: false,
+        loadedCustomerListState: false,
+        loadedCustomerAddState: false,
+        loadCustomerAddPage: false,
+        loadCustomerSinglePage: false,
+        loadCustomerEditPage: true,
+        customerList: [],
+        singleCustomerInfo: action.resp,
         error: {}
       };
     default:
