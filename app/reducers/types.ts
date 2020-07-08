@@ -19,6 +19,7 @@ export type customerStateType = {
   loadCustomerEditPage: boolean;
   customerList: [];
   singleCustomerInfo: {};
+  singleCustomerNoteID: number;
   error: [];
 };
 

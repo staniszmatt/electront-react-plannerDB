@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
-
 import { GetCustomerState, Dispatch } from '../reducers/types';
 import { toggleErrorModalState, toggleSuccessModalState } from './modal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
@@ -12,7 +11,6 @@ export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
 export const CUSTOMER_EDIT_PAGE = 'CUSTOMER_EDIT_PAGE';
-// export const CUSTOMER_ADD_NOTE = 'CUSTOMER_ADD_NOTE';
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
@@ -66,16 +64,65 @@ export function customerEditPageSelected(resp: {}) {
   };
 }
 
-// export function customerAddNoteSelected(resp: {}) {
-//   return {
-//     type: CUSTOMER_ADD_NOTE,
-//     resp
-//   };
-// }
-
 // Call to electron main with ipcRenderer to get server data for customer list
-export function handleAddCustomerNote() {
-  console.log("Handle Add Customer Note Clicked!")
+export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string}) {
+
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+    const state = getState()
+    console.log("handleAddCustomerNote customerNoteRequest: ", customerNoteRequest);
+    console.log("Event : ", event)
+    console.log("current customer state: ", state);
+
+
+    const mainIPCRequest = {
+      request: 'postCustomerNote',
+      customerID: `${state.customer.singleCustomerInfo.customer.id}`,
+      customerNote: `${customerNoteRequest.addCustomerNote}`,
+      changeNoteDescription: 'Added customer note to current customer.'
+    };
+
+    console.log("mainIPCRequest for customer note:", mainIPCRequest);
+
+
+    debugger;
+
+
+    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    const handleAddCustomerNoteResp = (
+      _event: {},
+      resp: { error: { number: number } }
+    ) => {
+
+      console.log("handleAddCustomerNoteResp, resp:", resp);
+
+
+      if (isObjEmpty(resp.error)) {
+
+
+        const searchFormObj = {
+          customerSearch: state.customer.singleCustomerInfo.customer.customerName
+        };
+        dispatch(reset('customerAddNote'));
+        dispatch(toggleSuccessModalState('Customer Update Complete!'));
+        dispatch(handleCustomerSearchForm(searchFormObj));
+
+
+
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleAddCustomerNoteResp);
+    };
+
+
+
+
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleAddCustomerNoteResp);
+  };
 }
 
 export function pullRequestCustomerListData() {

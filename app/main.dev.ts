@@ -17,7 +17,8 @@ import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
 import updateCustomer from './api/updateCustomer';
-import isObjEmpty from '../app/helpFunctions/isObjEmpty';
+import postCustomerNote from './api/postCustomerNote';
+import isObjEmpty from './helpFunctions/isObjEmpty';
 
 export default class AppUpdater {
   constructor() {
@@ -130,15 +131,21 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   console.log('ipcMain arg: ', arg);
 
   switch (arg.request) {
+    // Get Requests Here.
     case 'getCustomerList':
       requestToSend = getCustomerList;
       break;
     case 'getSearchCustomer':
       requestToSend = getSingleCustomer;
       break;
+    // Post Requests Here.
     case 'postAddCustomer':
       requestToSend = postNewCustomer;
       break;
+    case 'postCustomerNote':
+      requestToSend = postCustomerNote;
+      break;
+    // Update Requests Here.
     case 'updateCustomer':
       requestToSend = updateCustomer;
       break;

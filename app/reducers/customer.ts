@@ -36,6 +36,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadCustomerEditPage: false,
         customerList: [],
         singleCustomerInfo: action.resp,
+        // singleCustomerNoteID: null,
         error: {}
       };
     case CUSTOMER_PENDING:

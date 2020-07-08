@@ -7,9 +7,12 @@ interface NewButton {
 }
 
 export default function ButtonHandle(props: NewButton) {
-
+  const handleClick = (event) => {
+    event.preventDefault();
+    props.ClickHandler(event, props)
+  }
   return (
-    <button props={event} onClick={props.ClickHandler} type="button">
+    <button props={event} onClick={(event) => {handleClick(event)}} type="button">
       {props.buttonName}
     </button>
   )

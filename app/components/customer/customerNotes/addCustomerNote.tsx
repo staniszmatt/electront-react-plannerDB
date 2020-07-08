@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormInput from '../../forms/formInput';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 
 interface FormProps {
@@ -10,12 +9,34 @@ interface DispatchProps {
   // ...
 }
 
+interface CustomerNoteState {
+  customerNoteDataCheck: boolean;
+}
+
 
 const CustomerAddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
-  console.log('Add Customer Note Props: ', props)
+  const [customerNoteState, setCustomerNoteState] = useState<
+    CustomerNoteState | { customerNoteDataCheck: boolean }
+  >({ customerNoteDataCheck: false });
+
+  const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.data !== null) {
+      setCustomerNoteState({
+        ...customerNoteState,
+        customerNoteDataCheck: true
+      });
+    } else {
+      setCustomerNoteState({
+        ...customerNoteState,
+        customerNoteDataCheck: false
+      });
+    }
+  };
+
+  console.log('Add Customer Note Props: ', props);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
@@ -26,9 +47,14 @@ const CustomerAddNote = (
           type="textarea"
           aria-multiline
           rows="15"
+          onChange={checkTextArea}
         />
       </div>
-      <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+      <div>
+        {customerNoteState.customerNoteDataCheck && (
+          <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+        )}
+      </div>
     </form>
   );
 };

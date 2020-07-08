@@ -45,7 +45,8 @@ interface Props {
     };
     customerNotes: {
       noteList: [];
-    }
+    };
+    singleCustomerNoteID: number;
   }
 }
 
@@ -53,10 +54,14 @@ interface NoteDisplayState {
   listNotes: boolean;
   addNote: boolean;
   editNote: boolean;
-  notesList: []
+  customerNote: {
+    noteID: number;
+    noteText: string;
+  };
 }
 
-function CustomerHeadTable(props: Props, state: NoteDisplayState) {
+function CustomerHeadTable(props: Props) {
+  console.log("Single Customer Props: ", props);
   const { handleEditCustomerForm, handleAddCustomerNote } = props;
 
   const [noteDisplayState, setNoteDisplayState] = useState<
@@ -65,12 +70,59 @@ function CustomerHeadTable(props: Props, state: NoteDisplayState) {
         listNotes: boolean;
         addNote: boolean;
         editNote: boolean;
+        customerNote: {
+          noteID: number;
+          noteText: string;
+        };
       }
   >({
     listNotes: true,
     addNote: false,
-    editNote: false
+    editNote: false,
+    customerNote: {
+      noteID: null,
+      noteText: ''
+    }
   });
+
+  const addCustomerNote = () => {
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: false,
+      addNote: true,
+      editNote: false,
+      customerNote: {
+        noteID: null,
+        noteText: ''
+      }
+    });
+  };
+
+  const editCustomerNote = (_event, props) => {
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: false,
+      addNote: false,
+      editNote: true,
+      customerNote: {
+        noteID: props.props.noteID,
+        noteText: props.props.noteText
+      }
+    });
+  };
+
+  const cancelNote = () => {
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: true,
+      addNote: false,
+      editNote: false,
+      customerNote: {
+        noteID: null,
+        noteText: ''
+      }
+    });
+  };
 
   const renderChangeNoteRow = () => {
     const returnNotes: JSX.Element[] = [];
@@ -108,16 +160,30 @@ function CustomerHeadTable(props: Props, state: NoteDisplayState) {
     const returnNoteLists: JSX.Element[] = [];
 
     Object.keys(customerNoteList).forEach((key, objIndex) => {
+
       const returnNotes = (
         // eslint-disable-next-line react/no-array-index-key
         <div
           // eslint-disable-next-line react/no-array-index-key
           key={`customerNotes${objIndex}`}
+          id={`customerNoteID-${key}`}
           className={styles['single-customer-note-wrapper']}
         >
           <div>
             <div>{`Note:${objIndex + 1}`}</div>
-            /{/** ??????????????????????????????????????????? */}
+            {/** ???????????????????????????????????????????
+            TODO: Add Edit Note Button HERE!
+            */}
+            <div>
+              <Btn
+                props={{
+                  noteID: key,
+                  noteText: customerNoteList[key].customerNoteText
+                }}
+                buttonName="Edit Note"
+                ClickHandler={editCustomerNote}
+              />
+            </div>
           </div>
           <div>
             <div>
@@ -175,24 +241,6 @@ function CustomerHeadTable(props: Props, state: NoteDisplayState) {
     handleEditCustomerForm(props.props.customer.customerName);
   };
 
-  const addCustomerNote = () => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: false,
-      addNote: true,
-      editNote: false
-    });
-  };
-
-  const cancelNote = () => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: true,
-      addNote: false,
-      editNote: false
-    });
-  };
-
   return (
     <div className={styles["main-single-customer"]}>
       <div>
@@ -221,26 +269,49 @@ function CustomerHeadTable(props: Props, state: NoteDisplayState) {
       </div>
       <div className={styles["single-customer-notes"]}>
         <div>
-          <div>
-            <div>
-              <div>Customer Notes:</div>
-              <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
-            </div>
-            {noteDisplayState.listNotes && <div>{renderCustomerNotes()}</div>}
-            {noteDisplayState.addNote && (
-              <div className={styles["add-customer-note-wrapper"]}>
-                <div>
-                  <AddCustomerNote
-                    props={props.props.customer.customerName}
-                    onSubmit={handleAddCustomerNote}
-                  />
-                </div>
-                <div>
-                  <Btn buttonName="Cancel" ClickHandler={cancelNote} />
-                </div>
+
+          {noteDisplayState.listNotes && (
+            <div className={styles["list-customer-note-wrapper"]}>
+              <div>
+                <div>Customer Notes:</div>
+                <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
               </div>
-            )}
-          </div>
+              <div>{renderCustomerNotes()}</div>
+            </div>
+          )}
+
+          {noteDisplayState.addNote && (
+            <div className={styles["add-customer-note-wrapper"]}>
+
+              <div>
+                <AddCustomerNote
+                  props={props.props.customer}
+                  onSubmit={handleAddCustomerNote}
+                />
+              </div>
+              <div>
+                <Btn buttonName="Cancel" ClickHandler={cancelNote} />
+              </div>
+
+            </div>
+          )}
+
+          {noteDisplayState.editNote && (
+            <div className={styles["add-customer-note-wrapper"]}>
+
+              <div>
+                <EditCustomerNote
+                  props={noteDisplayState.customerNote}
+                  onSubmit={handleAddCustomerNote}
+                />
+              </div>
+              <div>
+                <Btn buttonName="Cancel" ClickHandler={cancelNote} />
+              </div>
+
+            </div>
+          )}
+
         </div>
       </div>
     </div>
