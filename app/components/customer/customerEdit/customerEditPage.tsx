@@ -59,6 +59,10 @@ const CustomerEditFormComponent = (
 
   const { handleSubmit, onSubmit } = props;
 
+  // const handleDelete = () => {
+
+  // }
+
   const radioButtonCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     let setBoolean = false;
 
@@ -195,6 +199,11 @@ const CustomerEditFormComponent = (
       <div>
         <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
       </div>
+      {/**
+      <div>
+        <FormBtn buttonName="DELETE" ClickHandler={handleDelete} />
+      </div>
+      */}
     </form>
   );
 };

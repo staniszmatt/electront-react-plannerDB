@@ -8,9 +8,7 @@ async function updateCustomer(request) {
   let returnData = {
     error: {}
   };
-
   let requestList = '';
-
   const modifyRequest = {
     customerGenStd: request.customerGenStd,
     customerActive: request.customerActive,
@@ -51,24 +49,13 @@ async function updateCustomer(request) {
     const data = await db.query(query);
 
     // If customer add worked, then create the change note to show when customer was created
-    console.log("Returned Updated Data: ", data);
-
     if (data.recordset[0].id) {
       returnData.editCustomer = {
         success: 'Success',
         updatedCustomerData: data
       };
-
-
-
-
-
-
       // Setup to add change note for adding customer.
       try {
-
-        console.log("Change Note String: ", changeNoteString)
-
         const postChangeNote = {
           typeID: data.recordset[0].id,
           typeCategory: 'customer',

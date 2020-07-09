@@ -56,3 +56,16 @@ a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+
+button:hover {
+  cursor: pointer;
+  background-color: cornflowerblue;
+  transform: scale(1.01);
+}
+
+button:active {
+  cursor: pointer;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.2);
+  transform: scale(0.97);
+  outline: 1px black;
+}

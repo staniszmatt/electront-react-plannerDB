@@ -16,8 +16,11 @@ import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
+import postCustomerNote from './api/postCustomerNote';
 import updateCustomer from './api/updateCustomer';
-import isObjEmpty from '../app/helpFunctions/isObjEmpty';
+import updateCustomerNote from './api/updateCustomerNote';
+import deleteCustomerNote from './api/deleteCustomerNote';
+import isObjEmpty from './helpFunctions/isObjEmpty';
 
 export default class AppUpdater {
   constructor() {
@@ -130,17 +133,31 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   console.log('ipcMain arg: ', arg);
 
   switch (arg.request) {
+    // Get Requests Here.
     case 'getCustomerList':
       requestToSend = getCustomerList;
       break;
     case 'getSearchCustomer':
       requestToSend = getSingleCustomer;
       break;
+    // Post Requests Here.
     case 'postAddCustomer':
       requestToSend = postNewCustomer;
       break;
+    case 'postCustomerNote':
+      requestToSend = postCustomerNote;
+      break;
+    // Update Requests Here.
     case 'updateCustomer':
       requestToSend = updateCustomer;
+      break;
+    case 'updateCustomerNote':
+      requestToSend = updateCustomerNote;
+      break;
+    // Delete Requests Here
+    case 'deleteCustomerNote':
+      console.log("*** delete sent delete function ***")
+      requestToSend = deleteCustomerNote;
       break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
@@ -167,7 +184,7 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
 
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
-    console.log('ipcMain ERROR ****************************', err);
+    console.log('**********************  ipcMain ERROR  ****************************', err);
     event.sender.send('asynchronous-reply', err);
   }
 });

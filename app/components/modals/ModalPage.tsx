@@ -6,14 +6,17 @@ import { toggleModalState } from '../../actions/modal';
 import { errorModalStateType } from '../../reducers/types';
 import ErrorModal from './ErrorModal';
 import SuccessModal from './SuccessModal';
+import WarningModal from './warningModal';
 import ModalBtn from '../buttonFunctions/buttonClickHandler';
 import styles from './modal.css';
 
 interface Props {
   toggleModalState: () => {};
   state: {
-    errorOpenState: boolean;
+    modalState: boolean;
+    errorModalState: boolean;
     successModalState: boolean;
+    warningModalState: boolean;
     modalMessage: string;
   };
 }
@@ -50,12 +53,21 @@ function AlarmModal(props: Props) {
           ariaHideApp={false}
           className={styles["modal-container"]}
         >
-
           {props.state.modal.errorModalState && <ErrorModal props={props.state.modal.modalMessage} />}
           {props.state.modal.successModalState && <SuccessModal props={props.state.modal.modalMessage} />}
-          <div>
-            <ModalBtn buttonName="CLOSE" ClickHandler={toggleModalState} />
-          </div>
+          {props.state.modal.warningModalState && <WarningModal props={props.state.modal.modalMessage} />}
+
+          {!props.state.modal.warningModalState && (
+            <div>
+              <ModalBtn buttonName="CLOSE" ClickHandler={toggleModalState} />
+            </div>
+          )}
+          {props.state.modal.warningModalState && (
+            <div>
+              <ModalBtn buttonName="CANCEL" ClickHandler={toggleModalState} />
+            </div>
+          )}
+
         </ReactModal>
       )}
     </div>
