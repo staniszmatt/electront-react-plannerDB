@@ -174,8 +174,7 @@ function CustomerHeadTable(props: Props) {
   };
 
   const handleDeleteNoteClick = (_event, props) => {
-
-    handleDeleteCustomerNote(props)
+    handleDeleteCustomerNote(props);
   }
 
   const renderCustomerNotes = () => {

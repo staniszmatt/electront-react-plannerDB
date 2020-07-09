@@ -16,9 +16,10 @@ import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
-import updateCustomer from './api/updateCustomer';
 import postCustomerNote from './api/postCustomerNote';
+import updateCustomer from './api/updateCustomer';
 import updateCustomerNote from './api/updateCustomerNote';
+import deleteCustomerNote from './api/deleteCustomerNote';
 import isObjEmpty from './helpFunctions/isObjEmpty';
 
 export default class AppUpdater {
@@ -153,6 +154,11 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     case 'updateCustomerNote':
       requestToSend = updateCustomerNote;
       break;
+    // Delete Requests Here
+    case 'deleteCustomerNote':
+      console.log("*** delete sent delete function ***")
+      requestToSend = deleteCustomerNote;
+      break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
       swtichFail = true;
@@ -178,7 +184,7 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
 
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
-    console.log('ipcMain ERROR ****************************', err);
+    console.log('**********************  ipcMain ERROR  ****************************', err);
     event.sender.send('asynchronous-reply', err);
   }
 });

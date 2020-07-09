@@ -4,6 +4,7 @@ import { reset } from 'redux-form';
 import { GetCustomerState, Dispatch } from '../reducers/types';
 import { toggleErrorModalState, toggleSuccessModalState } from './modal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
+import { ProgressPlugin } from 'webpack';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
 export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
@@ -65,41 +66,42 @@ export function customerEditPageSelected(resp: {}) {
 }
 
 // Call to electron main with ipcRenderer to get server data for customer list
-export function handleDeleteCustomerNote(customerID: number) {
+export function handleDeleteCustomerNote(customerID: { props: number }) {
   console.log("Delete Customer Note Clicked, ", customerID);
-  // return (dispatch: Dispatch, getState: GetCustomerState) => {
-  //   const state = getState()
-  //   const mainIPCRequest = {
-  //     request: 'updateCustomerNote',
-  //     customerNoteID: `${props.props.noteID}`,
-  //     customerNoteText: `${customerNoteRequest.updateCustomerNote}`,
-  //     changeNoteDescription: 'Modified customer note.'
-  //   };
 
-  //   // Function needs to be inside the return dispatch scope of handleCustomerAddForm
-  //   const handleUpdateCustomerNoteResp = (
-  //     _event: {},
-  //     resp: { error: { number: number } }
-  //   ) => {
-  //     debugger;
-  //     if (isObjEmpty(resp.error)) {
-  //       const searchFormObj = {
-  //         customerSearch: state.customer.singleCustomerInfo.customer.customerName
-  //       };
-  //       dispatch(reset('customerEditNote'));
-  //       dispatch(toggleSuccessModalState('Customer Note Updated!'));
-  //       dispatch(handleCustomerSearchForm(searchFormObj));
-  //     } else {
-  //       // If errors are not specified above, then pass whole error
-  //       dispatch(customerError(resp));
-  //     }
-  //     // This prevents adding a listener every time this function is called on ipcRenderOn
-  //     ipcRenderer.removeListener('asynchronous-reply', handleUpdateCustomerNoteResp);
-  //   };
-  //   ipcRenderer.send('asynchronous-message', mainIPCRequest);
-  //   dispatch(customerPending());
-  //   ipcRenderer.on('asynchronous-reply', handleUpdateCustomerNoteResp);
-  // };
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+    const state = getState()
+
+    const mainIPCRequest = {
+      request: 'deleteCustomerNote',
+      customerNoteID: customerID.props,
+      customerID: state.customer.singleCustomerInfo.customer.id,
+      changeNoteDescription: `Deleted Customer Note: ${customerID.props}`
+    };
+
+    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    const handleDeleteCustomerNoteResp = (
+      _event: {},
+      resp: { error: {} }
+    ) => {
+      if (isObjEmpty(resp.error)) {
+        const searchFormObj = {
+          customerSearch: state.customer.singleCustomerInfo.customer.customerName
+        };
+        console.log("Delete Customer Response: ", resp)
+        dispatch(toggleSuccessModalState('Customer Note Deleted!'));
+        dispatch(handleCustomerSearchForm(searchFormObj));
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleDeleteCustomerNoteResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleDeleteCustomerNoteResp);
+  };
 }
 
 export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _: any, props: any) {
@@ -116,7 +118,7 @@ export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote:
     // Function needs to be inside the return dispatch scope of handleCustomerAddForm
     const handleUpdateCustomerNoteResp = (
       _event: {},
-      resp: { error: { number: number } }
+      resp: { error: {} }
     ) => {
       debugger;
       if (isObjEmpty(resp.error)) {
