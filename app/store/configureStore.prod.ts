@@ -34,7 +34,10 @@ function configureStore(
           | customerStateType;
         errorModal?:
           | {
-              errorOpenState: boolean;
+              modalState: boolean;
+              errorModalState: boolean;
+              successModalState: boolean;
+              warningModalState: boolean;
               modalMessage: string;
             }
           | errorModalStateType;

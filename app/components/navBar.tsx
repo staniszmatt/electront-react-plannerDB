@@ -9,6 +9,8 @@ export default function Nav() {
       <Link to={routes.CUSTOMER}>
         <button type="button">CUSTOMER</button>
       </Link>
+      {/**
+        TODO: Hiding for now until next page setup is ready.
       <Link to={routes.HOME}>
         <button type="button">HOME</button>
       </Link>
@@ -24,6 +26,7 @@ export default function Nav() {
       <Link to={routes.HOME}>
         <button type="button">HOME</button>
       </Link>
+      */}
     </div>
   );
 }

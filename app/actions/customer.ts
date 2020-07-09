@@ -2,9 +2,11 @@
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
 import { GetCustomerState, Dispatch } from '../reducers/types';
-import { toggleErrorModalState, toggleSuccessModalState } from './modal';
+import {
+  toggleErrorModalState,
+  toggleSuccessModalState
+} from './modal';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
-import { ProgressPlugin } from 'webpack';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
 export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';

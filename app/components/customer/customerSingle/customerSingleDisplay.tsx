@@ -11,6 +11,10 @@ import {
   handleEditCustomerNote,
   handleDeleteCustomerNote
 } from '../../../actions/customer';
+import {
+  toggleWarningModalState,
+  toggleModalState
+} from '../../../actions/modal';
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
 import EditCustomerNote from '../customerNotes/editCustomerNote';
@@ -34,6 +38,8 @@ function mapDispatchToProps(dispatch: Dispatch) {
       handleAddCustomerNote,
       handleEditCustomerNote,
       handleDeleteCustomerNote,
+      toggleWarningModalState,
+      toggleModalState,
       reset
     },
     dispatch
@@ -75,7 +81,9 @@ function CustomerHeadTable(props: Props) {
     handleEditCustomerForm,
     handleAddCustomerNote,
     handleEditCustomerNote,
-    handleDeleteCustomerNote
+    handleDeleteCustomerNote,
+    toggleWarningModalState,
+    toggleModalState
   } = props;
 
   const [noteDisplayState, setNoteDisplayState] = useState<
@@ -174,8 +182,19 @@ function CustomerHeadTable(props: Props) {
   };
 
   const handleDeleteNoteClick = (_event, props) => {
-    handleDeleteCustomerNote(props);
-  }
+    const warningModalResp = {
+      warningMsg: 'Do you really want to delete this customer note?',
+      handleDeleteCustomerNote: () => {
+        handleDeleteCustomerNote(props);
+      },
+      closeModal: () => {
+        toggleModalState();
+      }
+    };
+
+    toggleWarningModalState(warningModalResp);
+    // handleDeleteCustomerNote(props);
+  };
 
   const renderCustomerNotes = () => {
     const customerNoteList = props.props.customerNotes.noteList;

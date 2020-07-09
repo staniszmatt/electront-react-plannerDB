@@ -5,7 +5,10 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 // };
 
 export type errorModalStateType = {
-  errorOpenState: boolean;
+  modalState: boolean;
+  errorModalState: boolean;
+  successModalState: boolean;
+  warningModalState: boolean;
   modalMessage: string;
 };
 

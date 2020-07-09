@@ -89,3 +89,43 @@
   margin: 20px 0px;
   text-decoration: underline;
 }
+
+/* Warning Modal Styling */
+.warning-modal-container {
+  text-align: center;
+  background-color: yellow;
+  color: red;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 18px #000160;
+  height: 240px;
+}
+
+.warning-modal-container > div:first-child > p {
+  font-size: 25px;
+  margin: 25px 0px;
+}
+
+
+.warning-modal-container > div:nth-child(2) > p {
+  font-size: 18px;
+  margin: 20px 0px;
+  text-decoration: underline;
+}
+
+.warning-modal-container > div:last-child > button {
+  font-weight: bold;
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  10% {
+    opacity: 0;
+  }
+}

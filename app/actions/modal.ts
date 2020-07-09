@@ -26,7 +26,7 @@ export function toggleSuccessModalState(resp: string) {
   };
 }
 
-export function toggleWarningModalState(resp: string) {
+export function toggleWarningModalState(resp: {}) {
   return {
     type: TOGGLE_WARNING_MODAL_STATE,
     resp
