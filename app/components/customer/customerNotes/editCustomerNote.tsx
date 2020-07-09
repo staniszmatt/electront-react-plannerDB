@@ -25,7 +25,7 @@ const CustomerAddNote = (
   >({ customerNoteDataCheck: false });
 
   const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.nativeEvent.data !== null) {
+    if (event.target.value !== "") {
       setCustomerNoteState({
         ...customerNoteState,
         customerNoteDataCheck: true
@@ -63,6 +63,5 @@ const CustomerAddNote = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customeEditNote',
-  destroyOnUnmount: false
+  form: 'customerEditNote'
 })(CustomerAddNote);

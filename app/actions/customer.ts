@@ -65,15 +65,46 @@ export function customerEditPageSelected(resp: {}) {
 }
 
 // Call to electron main with ipcRenderer to get server data for customer list
+export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}) {
+console.log("Handle Edit Customer Note Action, customerNoteRequest", customerNoteRequest)
+  // return (dispatch: Dispatch, getState: GetCustomerState) => {
+  //   const state = getState()
+  //   const mainIPCRequest = {
+  //     request: 'postCustomerNote',
+  //     customerID: `${state.customer.singleCustomerInfo.customer.id}`,
+  //     customerNote: `${customerNoteRequest.addCustomerNote}`,
+  //     changeNoteDescription: 'Added customer note to current customer.'
+  //   };
+
+  //   // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+  //   const handleAddCustomerNoteResp = (
+  //     _event: {},
+  //     resp: { error: { number: number } }
+  //   ) => {
+  //     if (isObjEmpty(resp.error)) {
+  //       const searchFormObj = {
+  //         customerSearch: state.customer.singleCustomerInfo.customer.customerName
+  //       };
+  //       dispatch(reset('customerAddNote'));
+  //       dispatch(toggleSuccessModalState('Customer Update Complete!'));
+  //       dispatch(handleCustomerSearchForm(searchFormObj));
+  //     } else {
+  //       // If errors are not specified above, then pass whole error
+  //       dispatch(customerError(resp));
+  //     }
+  //     // This prevents adding a listener every time this function is called on ipcRenderOn
+  //     ipcRenderer.removeListener('asynchronous-reply', handleAddCustomerNoteResp);
+  //   };
+  //   ipcRenderer.send('asynchronous-message', mainIPCRequest);
+  //   dispatch(customerPending());
+  //   ipcRenderer.on('asynchronous-reply', handleAddCustomerNoteResp);
+  // };
+}
+
 export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string}) {
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
-    console.log("handleAddCustomerNote customerNoteRequest: ", customerNoteRequest);
-    console.log("Event : ", event)
-    console.log("current customer state: ", state);
-
-
     const mainIPCRequest = {
       request: 'postCustomerNote',
       customerID: `${state.customer.singleCustomerInfo.customer.id}`,
@@ -81,33 +112,18 @@ export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: str
       changeNoteDescription: 'Added customer note to current customer.'
     };
 
-    console.log("mainIPCRequest for customer note:", mainIPCRequest);
-
-
-    debugger;
-
-
     // Function needs to be inside the return dispatch scope of handleCustomerAddForm
     const handleAddCustomerNoteResp = (
       _event: {},
       resp: { error: { number: number } }
     ) => {
-
-      console.log("handleAddCustomerNoteResp, resp:", resp);
-
-
       if (isObjEmpty(resp.error)) {
-
-
         const searchFormObj = {
           customerSearch: state.customer.singleCustomerInfo.customer.customerName
         };
         dispatch(reset('customerAddNote'));
         dispatch(toggleSuccessModalState('Customer Update Complete!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
-
-
-
       } else {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
@@ -115,10 +131,6 @@ export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: str
       // This prevents adding a listener every time this function is called on ipcRenderOn
       ipcRenderer.removeListener('asynchronous-reply', handleAddCustomerNoteResp);
     };
-
-
-
-
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(customerPending());
     ipcRenderer.on('asynchronous-reply', handleAddCustomerNoteResp);

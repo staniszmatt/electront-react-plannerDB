@@ -3,10 +3,12 @@
 /* eslint-disable react/jsx-boolean-value */
 import React, { useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
+import { reset } from 'redux-form';
 import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
-  handleAddCustomerNote
+  handleAddCustomerNote,
+  handleEditCustomerNote
 } from '../../../actions/customer';
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
@@ -26,7 +28,12 @@ function mapStateToProps(state: customerStateType) {
 // Mapping actions to component without having to pass it through the parents.
 function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
-    { handleEditCustomerForm, handleAddCustomerNote },
+    {
+      handleEditCustomerForm,
+      handleAddCustomerNote,
+      handleEditCustomerNote,
+      reset
+    },
     dispatch
   );
 }
@@ -62,7 +69,11 @@ interface NoteDisplayState {
 
 function CustomerHeadTable(props: Props) {
   console.log("Single Customer Props: ", props);
-  const { handleEditCustomerForm, handleAddCustomerNote } = props;
+  const {
+    handleEditCustomerForm,
+    handleAddCustomerNote,
+    handleEditCustomerNote
+  } = props;
 
   const [noteDisplayState, setNoteDisplayState] = useState<
     | NoteDisplayState
@@ -111,7 +122,11 @@ function CustomerHeadTable(props: Props) {
     });
   };
 
-  const cancelNote = () => {
+  const cancelNote = (event, props) => {
+    // Clear forms if canceled.
+    reset('customerEditNote');
+    reset('customerAddNote');
+
     setNoteDisplayState({
       ...noteDisplayState,
       listNotes: true,
@@ -160,7 +175,6 @@ function CustomerHeadTable(props: Props) {
     const returnNoteLists: JSX.Element[] = [];
 
     Object.keys(customerNoteList).forEach((key, objIndex) => {
-
       const returnNotes = (
         // eslint-disable-next-line react/no-array-index-key
         <div
@@ -302,7 +316,7 @@ function CustomerHeadTable(props: Props) {
               <div>
                 <EditCustomerNote
                   props={noteDisplayState.customerNote}
-                  onSubmit={handleAddCustomerNote}
+                  onSubmit={handleEditCustomerNote}
                 />
               </div>
               <div>
