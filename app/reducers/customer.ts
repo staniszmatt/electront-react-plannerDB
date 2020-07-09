@@ -2,6 +2,7 @@ import { Action } from 'redux';
 
 import {
   CUSTOMER_PENDING,
+  CUSTOMER_PENDING_OFF,
   CUSTOMER_ERROR,
   CUSTOMER_LIST_RECEIVED,
   CUSTOMER_ADD_PAGE,
@@ -43,6 +44,19 @@ export default function customer(state = IState, action: Action<string>) {
       return {
         ...state,
         loadingState: true,
+        errorState: false,
+        loadedCustomerListState: false,
+        loadedCustomerAddState: false,
+        loadCustomerAddPage: false,
+        loadCustomerSinglePage: false,
+        loadCustomerEditPage: false,
+        customerList: [],
+        error: {}
+      };
+    case CUSTOMER_PENDING_OFF:
+      return {
+        ...state,
+        loadingState: false,
         errorState: false,
         loadedCustomerListState: false,
         loadedCustomerAddState: false,
