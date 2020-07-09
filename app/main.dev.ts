@@ -18,6 +18,7 @@ import getSingleCustomer from './api/getSingleCustomer';
 import postNewCustomer from './api/postNewCustomer';
 import updateCustomer from './api/updateCustomer';
 import postCustomerNote from './api/postCustomerNote';
+import updateCustomerNote from './api/updateCustomerNote';
 import isObjEmpty from './helpFunctions/isObjEmpty';
 
 export default class AppUpdater {
@@ -148,6 +149,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     // Update Requests Here.
     case 'updateCustomer':
       requestToSend = updateCustomer;
+      break;
+    case 'updateCustomerNote':
+      requestToSend = updateCustomerNote;
       break;
     default:
       console.log('ERROR, Request does not match allowed requests!');

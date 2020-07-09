@@ -65,40 +65,78 @@ export function customerEditPageSelected(resp: {}) {
 }
 
 // Call to electron main with ipcRenderer to get server data for customer list
-export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}) {
-console.log("Handle Edit Customer Note Action, customerNoteRequest", customerNoteRequest)
+export function handleDeleteCustomerNote(customerID: number) {
+  console.log("Delete Customer Note Clicked, ", customerID);
   // return (dispatch: Dispatch, getState: GetCustomerState) => {
   //   const state = getState()
   //   const mainIPCRequest = {
-  //     request: 'postCustomerNote',
-  //     customerID: `${state.customer.singleCustomerInfo.customer.id}`,
-  //     customerNote: `${customerNoteRequest.addCustomerNote}`,
-  //     changeNoteDescription: 'Added customer note to current customer.'
+  //     request: 'updateCustomerNote',
+  //     customerNoteID: `${props.props.noteID}`,
+  //     customerNoteText: `${customerNoteRequest.updateCustomerNote}`,
+  //     changeNoteDescription: 'Modified customer note.'
   //   };
 
   //   // Function needs to be inside the return dispatch scope of handleCustomerAddForm
-  //   const handleAddCustomerNoteResp = (
+  //   const handleUpdateCustomerNoteResp = (
   //     _event: {},
   //     resp: { error: { number: number } }
   //   ) => {
+  //     debugger;
   //     if (isObjEmpty(resp.error)) {
   //       const searchFormObj = {
   //         customerSearch: state.customer.singleCustomerInfo.customer.customerName
   //       };
-  //       dispatch(reset('customerAddNote'));
-  //       dispatch(toggleSuccessModalState('Customer Update Complete!'));
+  //       dispatch(reset('customerEditNote'));
+  //       dispatch(toggleSuccessModalState('Customer Note Updated!'));
   //       dispatch(handleCustomerSearchForm(searchFormObj));
   //     } else {
   //       // If errors are not specified above, then pass whole error
   //       dispatch(customerError(resp));
   //     }
   //     // This prevents adding a listener every time this function is called on ipcRenderOn
-  //     ipcRenderer.removeListener('asynchronous-reply', handleAddCustomerNoteResp);
+  //     ipcRenderer.removeListener('asynchronous-reply', handleUpdateCustomerNoteResp);
   //   };
   //   ipcRenderer.send('asynchronous-message', mainIPCRequest);
   //   dispatch(customerPending());
-  //   ipcRenderer.on('asynchronous-reply', handleAddCustomerNoteResp);
+  //   ipcRenderer.on('asynchronous-reply', handleUpdateCustomerNoteResp);
   // };
+}
+
+export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _: any, props: any) {
+
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+    const state = getState()
+    const mainIPCRequest = {
+      request: 'updateCustomerNote',
+      customerNoteID: `${props.props.noteID}`,
+      customerNoteText: `${customerNoteRequest.updateCustomerNote}`,
+      changeNoteDescription: 'Modified customer note.'
+    };
+
+    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    const handleUpdateCustomerNoteResp = (
+      _event: {},
+      resp: { error: { number: number } }
+    ) => {
+      debugger;
+      if (isObjEmpty(resp.error)) {
+        const searchFormObj = {
+          customerSearch: state.customer.singleCustomerInfo.customer.customerName
+        };
+        dispatch(reset('customerEditNote'));
+        dispatch(toggleSuccessModalState('Customer Note Updated!'));
+        dispatch(handleCustomerSearchForm(searchFormObj));
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleUpdateCustomerNoteResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleUpdateCustomerNoteResp);
+  };
 }
 
 export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string}) {

@@ -181,6 +181,15 @@
   margin: auto;
 }
 
+.single-customer-note-wrapper > div:first-child > div:last-child > button {
+  color: red;
+}
+
+.single-customer-note-wrapper > div:first-child > div:last-child > button:hover {
+  background-color: red;
+  color: black;
+}
+
 .single-customer-note-wrapper > div:last-child {
   width: 100%
 }

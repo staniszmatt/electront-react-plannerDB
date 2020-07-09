@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
   handleAddCustomerNote,
-  handleEditCustomerNote
+  handleEditCustomerNote,
+  handleDeleteCustomerNote
 } from '../../../actions/customer';
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
@@ -32,6 +33,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
       handleEditCustomerForm,
       handleAddCustomerNote,
       handleEditCustomerNote,
+      handleDeleteCustomerNote,
       reset
     },
     dispatch
@@ -72,7 +74,8 @@ function CustomerHeadTable(props: Props) {
   const {
     handleEditCustomerForm,
     handleAddCustomerNote,
-    handleEditCustomerNote
+    handleEditCustomerNote,
+    handleDeleteCustomerNote
   } = props;
 
   const [noteDisplayState, setNoteDisplayState] = useState<
@@ -170,6 +173,11 @@ function CustomerHeadTable(props: Props) {
     return returnNotes;
   };
 
+  const handleDeleteNoteClick = (_event, props) => {
+
+    handleDeleteCustomerNote(props)
+  }
+
   const renderCustomerNotes = () => {
     const customerNoteList = props.props.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
@@ -185,9 +193,6 @@ function CustomerHeadTable(props: Props) {
         >
           <div>
             <div>{`Note:${objIndex + 1}`}</div>
-            {/** ???????????????????????????????????????????
-            TODO: Add Edit Note Button HERE!
-            */}
             <div>
               <Btn
                 props={{
@@ -196,6 +201,13 @@ function CustomerHeadTable(props: Props) {
                 }}
                 buttonName="Edit Note"
                 ClickHandler={editCustomerNote}
+              />
+            </div>
+            <div>
+              <Btn
+                props={key}
+                buttonName="Delete Note"
+                ClickHandler={handleDeleteNoteClick}
               />
             </div>
           </div>
