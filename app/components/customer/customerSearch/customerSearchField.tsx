@@ -12,6 +12,7 @@ const CustomerSearchFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['form-main-container']}>

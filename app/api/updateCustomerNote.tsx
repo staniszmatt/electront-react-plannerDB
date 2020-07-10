@@ -2,31 +2,28 @@ import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 import postNewChangeNote from './postChangeNote';
 
-async function deleteCustomerNote(request) {
-  console.log('*************** Update Customer Note Obj: ******************', request);
+async function updateCustomerNote(request) {
   let returnData = {
     error: {}
   };
-
-  // Delete to customerNote
+  // Update to customerNote
   try {
     const db = await pool.connect();
-    const query = `DELETE customerNote
-      OUTPUT SUSER_NAME() LoggedInUser,  GETDATE() as dateStamp
-        WHERE id = ${request.customerNoteID}`;
-
+    const query = `UPDATE customerNote
+      SET customerNoteText = '${request.customerNoteText}'
+        OUTPUT inserted.id, SUSER_NAME() LoggedInUser,  GETDATE() as dateStamp
+          WHERE id = ${request.customerNoteID}`;
     const data = await db.query(query);
-    console.log('return delete data: ', data)
     // If customer add worked, then create the change note to show when customer was created
-    if (data.recordset[0].LoggedInUser) {
+    if (data.recordset[0].id) {
       returnData.customerNoteData = {
         success: 'Success',
         customerNoteData: data
       };
       try {
         const requestChangeNoteData = {
-          typeID: request.customerID,
-          typeCategory: 'customer',
+          typeID: data.recordset[0].id,
+          typeCategory: 'customerNote',
           // changeNoteDescription: Must be specified with request with every customer not request to specify where its coming from.
           changeNoteDescription: `${request.changeNoteDescription}`,
           userId: `${data.recordset[0].LoggedInUser}`,
@@ -60,4 +57,4 @@ async function deleteCustomerNote(request) {
   return returnData;
 }
 
-module.exports = deleteCustomerNote;
+module.exports = updateCustomerNote;

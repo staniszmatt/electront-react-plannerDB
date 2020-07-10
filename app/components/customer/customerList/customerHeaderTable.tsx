@@ -4,7 +4,6 @@ import styles from './customerlist.css'
 
 export default function CustomerHeadTable(props){
   // Stop running if nothing was passed
-  console.log('list customer props: ', props);
   if (props.props === undefined || props.props.length === 0) {
     return null;
   }

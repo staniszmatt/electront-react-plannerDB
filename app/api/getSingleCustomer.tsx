@@ -55,7 +55,6 @@ async function singleCustomer(request) {
                   WHERE (n.customerID = ${data.recordset[0].id})
         `;
         const customerNoteData = await db.query(noteQuery);
-        console.log('customerNoteData ', customerNoteData.recordset);
         if (customerNoteData.recordset.length > 0) {
           returnData.customerNotes = {
             noteList: {},

@@ -41,8 +41,6 @@ function AlarmModal(props: Props) {
   // eslint-disable-next-line no-shadow
   const { toggleModalState } = props;
 
-  console.log('modal props: ', props);
-
   return (
     <div>
       {props.state.modal.modalState && (

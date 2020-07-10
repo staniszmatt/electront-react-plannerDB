@@ -50,12 +50,10 @@ function CustomerRow(props: Props) {
   };
 
   const handleClickCustomerButton = (event) => {
-    console.log("handle customer click event", event)
     const resp = {
       customerSearch: customerName
     };
     handleCustomerSearchForm(resp);
-    console.log("Customer Name Clicked!")
   };
 
   return (

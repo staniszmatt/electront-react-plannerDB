@@ -76,7 +76,6 @@ interface NoteDisplayState {
 }
 
 function CustomerHeadTable(props: Props) {
-  console.log("Single Customer Props: ", props);
   const {
     handleEditCustomerForm,
     handleAddCustomerNote,

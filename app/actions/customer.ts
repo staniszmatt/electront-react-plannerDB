@@ -9,6 +9,7 @@ import {
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
+export const CUSTOMER_PENDING_OFF = 'CUSTOMER_PENDING_OFF'
 export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
 export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
@@ -36,6 +37,12 @@ export function customerSinglePageSelected(resp: {}) {
 export function customerPending() {
   return {
     type: CUSTOMER_PENDING
+  };
+}
+
+export function customerPendingOff() {
+  return {
+    type: CUSTOMER_PENDING_OFF
   };
 }
 
@@ -69,7 +76,6 @@ export function customerEditPageSelected(resp: {}) {
 
 // Call to electron main with ipcRenderer to get server data for customer list
 export function handleDeleteCustomerNote(customerID: { props: number }) {
-  console.log("Delete Customer Note Clicked, ", customerID);
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
@@ -90,7 +96,6 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
         const searchFormObj = {
           customerSearch: state.customer.singleCustomerInfo.customer.customerName
         };
-        console.log("Delete Customer Response: ", resp)
         dispatch(toggleSuccessModalState('Customer Note Deleted!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
       } else {
@@ -122,7 +127,6 @@ export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote:
       _event: {},
       resp: { error: {} }
     ) => {
-      debugger;
       if (isObjEmpty(resp.error)) {
         const searchFormObj = {
           customerSearch: state.customer.singleCustomerInfo.customer.customerName
@@ -204,9 +208,11 @@ export function pullRequestCustomerListData() {
 export function requestCustomerList() {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
+
     if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }
+
     if (state.customer.loadedCustomerListState) {
       return;
     }
@@ -214,9 +220,20 @@ export function requestCustomerList() {
 }
 
 export function handleCustomerSearchForm(customerName: {}) {
+
+
   return (dispatch: Dispatch, getState: GetCustomerState) => {
+
+    if (isObjEmpty(customerName)) {
+      return;
+    }
+
     const state = getState();
 
+    if (customerName.customerSearch === 'undefined'){
+      dispatch(toggleErrorModalState('Search Was Empty!'));
+      return;
+    }
     if (state.customer.customerList.length === 1) {
       // eslint-disable-next-line prettier/prettier
       if (state.customer.customerList[0].customerName === customerName.customerSearch){
@@ -237,18 +254,13 @@ export function handleCustomerSearchForm(customerName: {}) {
         };
       }
     ) => {
+
       if (!isObjEmpty(resp.customer)) {
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
-          debugger;
         // If request isn't in the server
-        dispatch(
-          customerError({
-            list: [],
-            error: {
-              customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
-            }
-          })
-        );
+      } else if (isObjEmpty(resp.customer)) {
+        dispatch(customerPendingOff())
+        dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
       } else {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
@@ -378,7 +390,6 @@ export function handleEditCustomerSubmit(editCustomer: {
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
       const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
-        console.log("Action Edit Customer Response", resp);
         if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
           const searchFormObj = {
             customerSearch: editCustomer.customerName

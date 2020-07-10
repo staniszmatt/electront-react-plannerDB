@@ -4,7 +4,6 @@ import styles from './modal.css';
 interface Props {}
 
 export default function AlarmModal(props: Props) {
-  console.log("ERROR Modal Component", props);
   return (
     <div className={styles["error-modal-container"]}>
       <div>
