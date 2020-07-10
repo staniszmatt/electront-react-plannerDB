@@ -36,7 +36,6 @@ const CustomerAddNote = (
     }
   };
 
-  console.log('Add Customer Note Props: ', props);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>

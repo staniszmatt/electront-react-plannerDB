@@ -76,7 +76,6 @@ export function customerEditPageSelected(resp: {}) {
 
 // Call to electron main with ipcRenderer to get server data for customer list
 export function handleDeleteCustomerNote(customerID: { props: number }) {
-  console.log("Delete Customer Note Clicked, ", customerID);
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
@@ -97,7 +96,6 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
         const searchFormObj = {
           customerSearch: state.customer.singleCustomerInfo.customer.customerName
         };
-        console.log("Delete Customer Response: ", resp)
         dispatch(toggleSuccessModalState('Customer Note Deleted!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
       } else {
@@ -222,8 +220,16 @@ export function requestCustomerList() {
 }
 
 export function handleCustomerSearchForm(customerName: {}) {
+
+
   return (dispatch: Dispatch, getState: GetCustomerState) => {
+
+    if (isObjEmpty(customerName)) {
+      return;
+    }
+
     const state = getState();
+
     if (customerName.customerSearch === 'undefined'){
       dispatch(toggleErrorModalState('Search Was Empty!'));
       return;
@@ -255,16 +261,6 @@ export function handleCustomerSearchForm(customerName: {}) {
       } else if (isObjEmpty(resp.customer)) {
         dispatch(customerPendingOff())
         dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
-
-
-
-
-
-
-
-
-
-
       } else {
         // If errors are not specified above, then pass whole error
         dispatch(customerError(resp));
@@ -394,7 +390,6 @@ export function handleEditCustomerSubmit(editCustomer: {
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
       const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
-        console.log("Action Edit Customer Response", resp);
         if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
           const searchFormObj = {
             customerSearch: editCustomer.customerName

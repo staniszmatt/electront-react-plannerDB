@@ -130,8 +130,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   let requestToSend = () => {};
   let swtichFail = false;
 
-  console.log('ipcMain arg: ', arg);
-
   switch (arg.request) {
     // Get Requests Here.
     case 'getCustomerList':
@@ -156,7 +154,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       break;
     // Delete Requests Here
     case 'deleteCustomerNote':
-      console.log("*** delete sent delete function ***")
       requestToSend = deleteCustomerNote;
       break;
     default:
@@ -175,16 +172,8 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   try {
     // let returnData = {};
     const data = await requestToSend(arg);
-
-    console.log('error empty check is: ', isObjEmpty(data.error));
-    console.log('Name Check ', data.error.name);
-    console.log('number check : ', data.error.number);
-    console.log('state check :', data.error.state);
-    console.log('*************** request error', data.error);
-
     event.sender.send('asynchronous-reply', data);
   } catch (err) {
-    console.log('**********************  ipcMain ERROR  ****************************', err);
     event.sender.send('asynchronous-reply', err);
   }
 });

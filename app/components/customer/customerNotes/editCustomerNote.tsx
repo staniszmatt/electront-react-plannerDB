@@ -16,7 +16,6 @@ interface CustomerNoteState {
 const CustomerAddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-  console.log('edit customer note props', props);
 
   const { handleSubmit, onSubmit } = props;
   const [customerNoteState, setCustomerNoteState] = useState<
@@ -37,7 +36,6 @@ const CustomerAddNote = (
     }
   };
 
-  console.log('Edit Customer Note Props: ', props);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
