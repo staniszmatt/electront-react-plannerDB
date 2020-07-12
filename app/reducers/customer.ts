@@ -25,7 +25,6 @@ const IState = {
 export interface CustomAction extends Action {
   type: string;
   resp?: {
-    returnValues?: {} | undefined;
     list?: [] | undefined;
     error?: {} | undefined;
   };
@@ -44,7 +43,7 @@ export default function customer(state = IState, action: CustomAction) {
         loadCustomerSinglePage: true,
         loadCustomerEditPage: false,
         customerList: [],
-        singleCustomerInfo: action.resp?.returnValues,
+        singleCustomerInfo: action.resp,
         // singleCustomerNoteID: null,
         error: {}
       };
