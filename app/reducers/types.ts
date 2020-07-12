@@ -12,18 +12,41 @@ export type errorModalStateType = {
   modalMessage: string;
 };
 
+export type singleCustomer = {
+  changeNoteList: {
+    list: [];
+  };
+  customerActive: boolean;
+  customerGenStd: boolean;
+  customerRsStd: boolean;
+  customerCodeName: string;
+  customerName: string;
+  id: number;
+  success: string;
+  customerNotes: {
+    error: string;
+    noteList: {};
+    success: string;
+  }
+  error: {};
+};
+
 export type customerStateType = {
-  loadingState: boolean;
-  errorState: boolean;
-  loadedCustomerListState: boolean;
-  loadedCustomerAddState: boolean;
-  loadCustomerAddPage: boolean;
-  loadCustomerSinglePage: boolean;
-  loadCustomerEditPage: boolean;
-  customerList: [];
-  singleCustomerInfo: {};
-  singleCustomerNoteID: number;
-  error: [];
+  customer: {
+    loadingState: boolean;
+    errorState: boolean;
+    loadedCustomerListState: boolean;
+    loadedCustomerAddState: boolean;
+    loadCustomerAddPage: boolean;
+    loadCustomerSinglePage: boolean;
+    loadCustomerEditPage: boolean;
+    customerList: [];
+    singleCustomerInfo: {
+      customer: singleCustomer;
+    };
+    singleCustomerNoteID: number;
+    error: [];
+  };
 };
 
 // export type GetState = () => counterStateType;

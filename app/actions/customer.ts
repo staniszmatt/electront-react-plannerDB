@@ -252,7 +252,6 @@ export function handleCustomerSearchForm(customerName: {}) {
         };
       }
     ) => {
-
       if (!isObjEmpty(resp.customer)) {
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
