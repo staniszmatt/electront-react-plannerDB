@@ -3,16 +3,16 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 
 interface FormProps {
-  // Need to set this up yet!
+  any: unknown;
 }
 interface DispatchProps {
-  // ...
+  onSubmit: () => {};
+  props: {};
 }
 
 interface CustomerNoteState {
   customerNoteDataCheck: boolean;
 }
-
 
 const CustomerAddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
@@ -23,7 +23,7 @@ const CustomerAddNote = (
   >({ customerNoteDataCheck: false });
 
   const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value !== "") {
+    if (event.target.value !== '') {
       setCustomerNoteState({
         ...customerNoteState,
         customerNoteDataCheck: true

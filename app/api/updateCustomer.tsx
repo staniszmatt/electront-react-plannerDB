@@ -100,4 +100,4 @@ async function updateCustomer(request) {
   }
 }
 
-module.exports = updateCustomer;
+export default updateCustomer;

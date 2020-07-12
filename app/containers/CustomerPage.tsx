@@ -13,7 +13,7 @@ import { customerStateType } from '../reducers/types';
 
 function mapStateToProps(state: customerStateType) {
   return {
-    customer: state
+    state
   }
 }
 

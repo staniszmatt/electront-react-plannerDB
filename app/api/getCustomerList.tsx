@@ -31,4 +31,4 @@ async function customerList() {
   }
 }
 
-module.exports = customerList;
+export default customerList;

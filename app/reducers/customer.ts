@@ -1,5 +1,4 @@
 import { Action } from 'redux';
-
 import {
   CUSTOMER_PENDING,
   CUSTOMER_PENDING_OFF,
@@ -23,7 +22,16 @@ const IState = {
   error: []
 };
 
-export default function customer(state = IState, action: Action<string>) {
+export interface CustomAction extends Action {
+  type: string;
+  resp?: {
+    returnValues?: {} | undefined;
+    list?: [] | undefined;
+    error?: {} | undefined;
+  };
+}
+
+export default function customer(state = IState, action: CustomAction) {
   switch (action.type) {
     case CUSTOMER_SINGLE_PAGE:
       return {
@@ -36,7 +44,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadCustomerSinglePage: true,
         loadCustomerEditPage: false,
         customerList: [],
-        singleCustomerInfo: action.resp,
+        singleCustomerInfo: action.resp?.returnValues,
         // singleCustomerNoteID: null,
         error: {}
       };
@@ -76,7 +84,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadCustomerAddPage: false,
         loadCustomerSinglePage: false,
         loadCustomerEditPage: false,
-        customerList: action.resp.list,
+        customerList: action.resp?.list,
         error: {}
       };
     case CUSTOMER_ERROR:
@@ -90,7 +98,7 @@ export default function customer(state = IState, action: Action<string>) {
         loadCustomerSinglePage: false,
         loadCustomerEditPage: false,
         customerList: [],
-        error: action.resp.error
+        error: action.resp?.error
       };
     case CUSTOMER_ADD_PAGE:
       return {
@@ -124,9 +132,9 @@ export default function customer(state = IState, action: Action<string>) {
   }
 }
 
-// Keeping the comment below in case I need example of how to setup seperate states for customer
+// Keeping the comment below in case I need example of how to setup separate states for customer
 // const customerCombineForReducer = {
-//   // Can add another state managment here and shows as a seperate object in props
+//   // Can add another state management here and shows as a separate object in props
 //   customer
 // };
 

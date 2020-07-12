@@ -78,12 +78,11 @@ export function customerEditPageSelected(resp: {}) {
 export function handleDeleteCustomerNote(customerID: { props: number }) {
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
-    const state = getState()
-
+    const state = getState().customer;
     const mainIPCRequest = {
       request: 'deleteCustomerNote',
       customerNoteID: customerID.props,
-      customerID: state.customer.singleCustomerInfo.customer.id,
+      customerID: state.singleCustomerInfo.customer.id,
       changeNoteDescription: `Deleted Customer Note: ${customerID.props}`
     };
 
@@ -94,7 +93,7 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
     ) => {
       if (isObjEmpty(resp.error)) {
         const searchFormObj = {
-          customerSearch: state.customer.singleCustomerInfo.customer.customerName
+          customerSearch: state.singleCustomerInfo.customer.customerName
         };
         dispatch(toggleSuccessModalState('Customer Note Deleted!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
@@ -112,7 +111,6 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
 }
 
 export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _: any, props: any) {
-
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
     const mainIPCRequest = {
@@ -206,9 +204,9 @@ export function pullRequestCustomerListData() {
 
 // Setup for customer list call
 export function requestCustomerList() {
+
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
-
     if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }

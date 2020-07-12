@@ -111,4 +111,4 @@ async function singleCustomer(request) {
   }
 }
 
-module.exports = singleCustomer;
+export default singleCustomer;

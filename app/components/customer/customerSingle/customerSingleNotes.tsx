@@ -2,14 +2,15 @@ import * as React from 'react';
 import styles from './customerSingle.css';
 
 interface Props {
-  props: {
-    changeNoteDateStamp: string;
-    changeNoteDescription: string;
-    changeNoteID: number;
-    typeCategory: string;
-    userID: string;
-  }
-
+  props:
+    | {
+        changeNoteDateStamp: string;
+        changeNoteDescription: string;
+        changeNoteID: number;
+        typeCategory: string;
+        userID: string;
+      }
+    | {};
 }
 
 export default function CustomerNoteRow(props: Props) {
@@ -22,7 +23,10 @@ export default function CustomerNoteRow(props: Props) {
   } = props.props;
 
   return (
-    <div className={styles["single-customer-note"]} id={`ChangeNoteID-${changeNoteID}`}>
+    <div
+      className={styles['single-customer-note']}
+      id={`ChangeNoteID-${changeNoteID}`}
+    >
       <div>
         <div>
           <div>Modified By:</div>

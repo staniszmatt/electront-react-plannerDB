@@ -58,4 +58,4 @@ async function deleteCustomerNote(request) {
   return returnData;
 }
 
-module.exports = deleteCustomerNote;
+export default deleteCustomerNote;

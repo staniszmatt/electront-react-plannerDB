@@ -59,4 +59,4 @@ async function postCustomerNote(request) {
   return returnData;
 }
 
-module.exports = postCustomerNote;
+export default postCustomerNote;

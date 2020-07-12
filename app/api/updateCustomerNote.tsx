@@ -57,4 +57,4 @@ async function updateCustomerNote(request) {
   return returnData;
 }
 
-module.exports = updateCustomerNote;
+export default updateCustomerNote;

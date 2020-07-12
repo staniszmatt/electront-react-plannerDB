@@ -1,6 +1,6 @@
 import React from 'react';
 import CustomerRow from './customerRow';
-import styles from './customerlist.css'
+import styles from './customerlist.css';
 
 export default function CustomerHeadTable(props){
   // Stop running if nothing was passed
@@ -17,7 +17,7 @@ export default function CustomerHeadTable(props){
   };
 
   return (
-    <table className={styles["main-table"]}>
+    <table className={styles['main-table']}>
       <caption>Customer List</caption>
       <thead>
         <tr>

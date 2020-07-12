@@ -16,7 +16,7 @@ interface Props {
   customerAddPageSelected: () => {};
   handleCustomerAddForm: () => {};
   handleEditCustomerSubmit: () => {};
-  customer: {
+  state: {
     customer: {
       loadingState: boolean;
       errorState: boolean;
@@ -56,12 +56,12 @@ export default function Customer(props: Props) {
         <CustomerSearchForm onSubmit={handleCustomerSearchForm} />
       </div>
       <div className={styles["customer-data"]}>
-        {props.customer.customer.loadingState && <div>LOADING</div>}
-        {props.customer.customer.errorState && <CustomerErrorDisplay props={props.customer.customer.error} />}
-        {props.customer.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customer.customerList} />}
-        {props.customer.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
-        {props.customer.customer.loadCustomerSinglePage && <CustomerSingleDisplay props={props.customer.customer.singleCustomerInfo} /> }
-        {props.customer.customer.loadCustomerEditPage && <CustomerEditFormComponent onSubmit={handleEditCustomerSubmit} props={props.customer.customer.singleCustomerInfo} /> }
+        {props.state.customer.loadingState && <div>LOADING</div>}
+        {props.state.customer.errorState && <CustomerErrorDisplay props={props.state.customer.error} />}
+        {props.state.customer.loadedCustomerListState && <CustomerHeadTable props={props.state.customer.customerList} />}
+        {props.state.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
+        {props.state.customer.loadCustomerSinglePage && <CustomerSingleDisplay props={props.state.customer.singleCustomerInfo} /> }
+        {props.state.customer.loadCustomerEditPage && <CustomerEditFormComponent onSubmit={handleEditCustomerSubmit} props={props.state.customer.singleCustomerInfo} /> }
       </div>
     </div>
   );

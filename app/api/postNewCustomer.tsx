@@ -91,4 +91,4 @@ async function postNewCustomer(request) {
   }
 }
 
-module.exports = postNewCustomer;
+export default postNewCustomer;
