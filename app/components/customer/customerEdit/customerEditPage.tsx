@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-boolean-value */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
@@ -11,8 +12,11 @@ interface FormProps {
   props: {
     customer: {};
   };
-  customerName: string;
-  customerCodeName: string;
+  customerName: string | null;
+  customerCodeName: string | null;
+  customerGenStd: boolean | null;
+  customerRsStd: boolean | null;
+  customerActive: boolean | null;
 }
 
 interface DispatchProps {
@@ -42,6 +46,8 @@ const CustomerEditFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   // Preset the value for the customer name only.
+  // The disabled no-param-reassign was disabled, From what I can tell we are allowed to reassign the initial values for redux-form here.
+  // eslint-disable-next-line no-param-reassign
   props.initialValues.customerName = props.props.customer.customerName;
 
   const [
@@ -58,10 +64,6 @@ const CustomerEditFormComponent = (
   >(props.props.customer);
 
   const { handleSubmit, onSubmit } = props;
-
-  // const handleDelete = () => {
-
-  // }
 
   const radioButtonCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     let setBoolean = false;
@@ -94,7 +96,7 @@ const CustomerEditFormComponent = (
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={styles["form-main-container"]}
+      className={styles['form-main-container']}
     >
       <div>
         <Field
@@ -235,7 +237,6 @@ function validate(values: FormProps) {
       errors.customerCodeName = 'Code name is too long!';
     }
   }
-  return errors;
 }
 
 export default reduxForm<FormProps, DispatchProps>({
