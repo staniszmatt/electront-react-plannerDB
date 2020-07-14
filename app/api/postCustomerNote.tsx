@@ -1,9 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 import postNewChangeNote from './postChangeNote';
 
-async function postCustomerNote(request) {
-  let returnData = {
+interface Request {
+  customerID: number;
+  customerNote: string;
+  changeNoteDescription: string;
+}
+
+interface ReturnData {
+  error?: {} | string;
+  customerNoteData?: {
+    success: string;
+    customerNoteData: {};
+  };
+  changeNoteData?: {
+    success: string;
+    changeNoteData: {};
+  };
+}
+
+async function postCustomerNote(request: Request) {
+  let returnData: ReturnData = {
     error: {}
   };
   // Post to add new customer
@@ -22,10 +41,10 @@ async function postCustomerNote(request) {
         customerNoteData: data
       };
       try {
-        const requestChangeNoteData = {
+        const requestChangeNoteData: any = {
           typeID: data.recordset[0].id,
           typeCategory: 'customerNote',
-          // Must be specified with request with every customer not request to specifiy where its coming from.
+          // Must be specified with request with every customer not request to specify where its coming from.
           changeNoteDescription: request.changeNoteDescription,
           userId: `${data.recordset[0].LoggedInUser}`,
           changeNoteDateStamp: `${data.recordset[0].dateStamp}`
@@ -43,7 +62,7 @@ async function postCustomerNote(request) {
       returnData = {
         changeNoteData: {
           success: 'Failed to add customer note!',
-          customerNoteData: data
+          changeNoteData: data
         },
         error: {
           empty: `Something went wrong on adding customer note!`

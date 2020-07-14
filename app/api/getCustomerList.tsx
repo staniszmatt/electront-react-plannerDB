@@ -26,7 +26,7 @@ async function customerList() {
     returnData = {
       list: [],
       error: err
-    }
+    };
     return returnData;
   }
 }
