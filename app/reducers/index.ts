@@ -6,7 +6,7 @@ import { reducer as fromReducer } from 'redux-form';
 // import {  } from 'react-modal';
 // import counter from './counter';
 import customer from './customer';
-import modal from './modals';
+import modals from './modals';
 
 // const { customer } = customerCombineForReducer;
 // const { errorModal } = errorModalCombineForReducer;
@@ -16,7 +16,7 @@ export default function createRootReducer(history: History) {
     router: connectRouter(history),
     form: fromReducer,
     // counter,
-    modal,
+    modals,
     customer
   });
 }

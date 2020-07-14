@@ -7,7 +7,7 @@ import {
   CUSTOMER_ADD_PAGE,
   CUSTOMER_SINGLE_PAGE,
   CUSTOMER_EDIT_PAGE
-} from '../actions/customer';
+} from '../actions/customerActions';
 
 const IState = {
   loadingState: false,

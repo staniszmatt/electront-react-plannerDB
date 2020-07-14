@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint global-require: off, no-console: off */
 /**
  * This module executes inside of electron's main process. You can start
@@ -126,7 +127,7 @@ app.on('activate', () => {
 });
 
 ipcMain.on('asynchronous-message', async (event, arg) => {
-  let requestToSend = () => {};
+  let requestToSend: any = () => {};
   let switchFail = false;
 
   console.log('request: ', arg);
@@ -171,7 +172,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     return;
   }
   try {
-    // let returnData = {};
     const data = await requestToSend(arg);
     event.sender.send('asynchronous-reply', data);
   } catch (err) {

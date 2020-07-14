@@ -10,29 +10,50 @@ import CustomerAddFormComponent from './customerAdd/customerAdd';
 import CustomerSingleDisplay from './customerSingle/customerSingleDisplay';
 import CustomerEditFormComponent from './customerEdit/customerEditPage';
 
+export type singleCustomer = {
+  changeNoteList: {
+    list: [];
+  };
+  customerActive: boolean;
+  customerGenStd: boolean;
+  customerRsStd: boolean;
+  customerCodeName: string;
+  customerName: string;
+  id: number;
+  success: string;
+  customerNotes: {
+    error: string;
+    noteList: {};
+    success: string;
+  }
+  error: {};
+};
+
 interface Props {
   requestCustomerList: () => {};
   handleCustomerSearchForm: () => {};
   customerAddPageSelected: () => {};
   handleCustomerAddForm: () => {};
   handleEditCustomerSubmit: () => {};
-  state: {
-    customer: {
-      loadingState: boolean;
-      errorState: boolean;
-      loadedCustomerListState: boolean;
-      loadedCustomerAddState: boolean;
-      loadCustomerAddPage: boolean;
-      loadCustomerSinglePage: boolean;
-      loadCustomerEditPage: boolean
-      customerList: [];
-      singleCustomerInfo: {};
-      error: [];
-    }
+  customer: {
+    loadingState: boolean;
+    errorState: boolean;
+    loadedCustomerListState: boolean;
+    loadedCustomerAddState: boolean;
+    loadCustomerAddPage: boolean;
+    loadCustomerSinglePage: boolean;
+    loadCustomerEditPage: boolean
+    customerList: [];
+    singleCustomerInfo: {
+      customer: singleCustomer;
+    };
+    singleCustomerNoteID: number;
+    error: [];
   }
 }
 
 export default function Customer(props: Props) {
+
   const {
     requestCustomerList,
     handleCustomerSearchForm,
@@ -56,12 +77,12 @@ export default function Customer(props: Props) {
         <CustomerSearchForm onSubmit={handleCustomerSearchForm} />
       </div>
       <div className={styles["customer-data"]}>
-        {props.state.customer.loadingState && <div>LOADING</div>}
-        {props.state.customer.errorState && <CustomerErrorDisplay props={props.state.customer.error} />}
-        {props.state.customer.loadedCustomerListState && <CustomerHeadTable props={props.state.customer.customerList} />}
-        {props.state.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
-        {props.state.customer.loadCustomerSinglePage && <CustomerSingleDisplay props={props.state.customer.singleCustomerInfo} /> }
-        {props.state.customer.loadCustomerEditPage && <CustomerEditFormComponent onSubmit={handleEditCustomerSubmit} props={props.state.customer.singleCustomerInfo} /> }
+        {props.customer.loadingState && <div>LOADING</div>}
+        {props.customer.errorState && <CustomerErrorDisplay props={props.customer.error} />}
+        {props.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customerList} />}
+        {props.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}
+        {props.customer.loadCustomerSinglePage && <CustomerSingleDisplay /> }
+        {props.customer.loadCustomerEditPage && <CustomerEditFormComponent onSubmit={handleEditCustomerSubmit} props={props.customer.singleCustomerInfo} /> }
       </div>
     </div>
   );

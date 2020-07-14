@@ -1,21 +1,27 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styles from './modal.css';
 import ModalBtn from '../buttonFunctions/buttonClickHandler';
 
-interface Props {}
+interface Props {
+  props: {
+    warningMsg: string;
+    handleDeleteCustomerNote: () => {};
+    closeModal: () => {};
+  };
+}
 
 export default function WarningModal(props: Props) {
-  console.log("WARNING Modal Component", props);
-  const deleteNote = props.props.handleDeleteCustomerNote;
-  const closeModal = props.props.closeModal
+  const { handleDeleteCustomerNote } = props.props;
+  const { closeModal } = props.props;
 
   const handDeleteBtn = () => {
-    deleteNote();
+    handleDeleteCustomerNote();
     closeModal();
-  }
+  };
 
   return (
-    <div className={styles["warning-modal-container"]}>
+    <div className={styles['warning-modal-container']}>
       <div className={styles.blink_me}>
         <p>WARNING!</p>
       </div>

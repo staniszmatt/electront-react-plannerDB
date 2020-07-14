@@ -1,9 +1,10 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
-import { toggleModalState } from '../../actions/modal';
-import { errorModalStateType } from '../../reducers/types';
+import { toggleModalState } from '../../actions/modalActions';
+import { modalStateType } from '../../reducers/types';
 import ErrorModal from './ErrorModal';
 import SuccessModal from './SuccessModal';
 import WarningModal from './warningModal';
@@ -12,7 +13,7 @@ import styles from './modal.css';
 
 interface Props {
   toggleModalState: () => {};
-  state: {
+  modals: {
     modalState: boolean;
     errorModalState: boolean;
     successModalState: boolean;
@@ -21,13 +22,13 @@ interface Props {
   };
 }
 
-function mapStateToProps(state: errorModalStateType) {
+function mapStateToProps(state: modalStateType) {
   return {
-    state
+    modals: state.modals
   };
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
       toggleModalState
@@ -40,27 +41,32 @@ function AlarmModal(props: Props) {
   // toggleModalState is needed to be called here to gain proper access to the toggle state.
   // eslint-disable-next-line no-shadow
   const { toggleModalState } = props;
-
   return (
     <div>
-      {props.state.modal.modalState && (
+      {props.modals.modalState && (
         <ReactModal
-          isOpen={props.state.modal.modalState}
+          isOpen={props.modals.modalState}
           onRequestClose={toggleModalState}
           contentLabel="MODAL"
           ariaHideApp={false}
-          className={styles["modal-container"]}
+          className={styles['modal-container']}
         >
-          {props.state.modal.errorModalState && <ErrorModal props={props.state.modal.modalMessage} />}
-          {props.state.modal.successModalState && <SuccessModal props={props.state.modal.modalMessage} />}
-          {props.state.modal.warningModalState && <WarningModal props={props.state.modal.modalMessage} />}
+          {props.modals.errorModalState && (
+            <ErrorModal props={props.modals.modalMessage} />
+          )}
+          {props.modals.successModalState && (
+            <SuccessModal props={props.modals.modalMessage} />
+          )}
+          {props.modals.warningModalState && (
+            <WarningModal props={props.modals.modalMessage} />
+          )}
 
-          {!props.state.modal.warningModalState && (
+          {!props.modals.warningModalState && (
             <div>
               <ModalBtn buttonName="CLOSE" ClickHandler={toggleModalState} />
             </div>
           )}
-          {props.state.modal.warningModalState && (
+          {props.modals.warningModalState && (
             <div>
               <ModalBtn buttonName="CANCEL" ClickHandler={toggleModalState} />
             </div>

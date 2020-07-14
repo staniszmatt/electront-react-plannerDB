@@ -1,9 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 import postNewChangeNote from './postChangeNote';
 
-async function deleteCustomerNote(request) {
-  let returnData = {
+interface Request {
+  request: string;
+  customerNoteID: number;
+  customerID: number;
+  changeNoteDescription: string;
+}
+
+interface ReturnData {
+  error?: {};
+  changeNoteData?: {
+    success: string;
+    changeNoteData: {};
+  };
+  customerNoteData?: {
+    success: string;
+    customerNoteData: {};
+  };
+}
+
+async function deleteCustomerNote(request: Request) {
+  let returnData: ReturnData = {
     error: {}
   };
 
@@ -22,7 +42,7 @@ async function deleteCustomerNote(request) {
         customerNoteData: data
       };
       try {
-        const requestChangeNoteData = {
+        const requestChangeNoteData: any = {
           typeID: request.customerID,
           typeCategory: 'customer',
           // changeNoteDescription: Must be specified with request with every customer not request to specify where its coming from.
@@ -30,10 +50,11 @@ async function deleteCustomerNote(request) {
           userId: `${data.recordset[0].LoggedInUser}`,
           changeNoteDateStamp: `${data.recordset[0].dateStamp}`
         };
-        const changeNoteData = await postNewChangeNote(requestChangeNoteData);
+        // eslint-disable-next-line prettier/prettier
+        const changeNoteDataResp = await postNewChangeNote(requestChangeNoteData);
         returnData.changeNoteData = {
           success: 'Success',
-          changeNoteData
+          changeNoteData: changeNoteDataResp
         };
       } catch (error) {
         returnData.error = error;
@@ -42,7 +63,7 @@ async function deleteCustomerNote(request) {
       returnData = {
         changeNoteData: {
           success: 'Failed to update customer note!',
-          customerNoteData: data
+          changeNoteData: data
         },
         error: {
           empty: `Something went wrong editing customer note!`

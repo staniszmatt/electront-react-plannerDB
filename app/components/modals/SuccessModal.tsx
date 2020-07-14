@@ -1,12 +1,14 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styles from './modal.css';
 
-interface Props {}
+interface Props {
+  props: string;
+}
 
 export default function SuccessModal(props: Props) {
-  console.log("SUCCESS Modal Component", props);
   return (
-    <div className={styles["success-modal-container"]}>
+    <div className={styles['success-modal-container']}>
       <div>
         <p>SUCCESS!</p>
       </div>

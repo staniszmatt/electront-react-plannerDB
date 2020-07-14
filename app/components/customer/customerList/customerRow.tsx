@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
   handleCustomerSearchForm
-} from '../../../actions/customer';
+} from '../../../actions/customerActions';
 import { customerStateType } from '../../../reducers/types';
 import EditButton from '../../buttonFunctions/buttonClickHandler';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';

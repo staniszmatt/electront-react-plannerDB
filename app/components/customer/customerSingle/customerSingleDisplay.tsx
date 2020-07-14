@@ -10,11 +10,11 @@ import {
   handleAddCustomerNote,
   handleEditCustomerNote,
   handleDeleteCustomerNote
-} from '../../../actions/customer';
+} from '../../../actions/customerActions';
 import {
   toggleWarningModalState,
   toggleModalState
-} from '../../../actions/modal';
+} from '../../../actions/modalActions';
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
 import EditCustomerNote from '../customerNotes/editCustomerNote';
@@ -31,29 +31,27 @@ interface Props {
   handleDeleteCustomerNote: (deleteProps: {}) => {};
   toggleWarningModalState: (warningModalResp: {}) => {};
   toggleModalState: () => {};
-  state: {
-    customer: {
-      singleCustomerInfo: {
-        customer: {
-          customerName: string;
-          customerCodeName: string;
-          customerGenStd: boolean;
-          customerRsStd: boolean;
-          customerActive: boolean;
-          changeNoteList: {
-            list: [
-              {
-                customerNoteText: string;
-              }
-            ];
-          };
+  customer: {
+    singleCustomerInfo: {
+      customer: {
+        customerName: string;
+        customerCodeName: string;
+        customerGenStd: boolean;
+        customerRsStd: boolean;
+        customerActive: boolean;
+        changeNoteList: {
+          list: [
+            {
+              customerNoteText: string;
+            }
+          ];
         };
-        customerNotes: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          noteList: {} | any;
-        };
-        singleCustomerNoteID: number;
       };
+      customerNotes: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        noteList: {} | any;
+      };
+      singleCustomerNoteID: number;
     };
   };
 }
@@ -61,11 +59,11 @@ interface Props {
 // Has to be mapped in order for dispatch to work.
 function mapStateToProps(state: customerStateType) {
   return {
-    state
+    customer: state.customer
   };
 }
 // Mapping actions to component without having to pass it through the parents.
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
       handleEditCustomerForm,
@@ -89,7 +87,7 @@ function CustomerHeadTable(props: Props) {
     toggleWarningModalState,
     toggleModalState
   } = props;
-  const singleCustomer = props.state.customer.singleCustomerInfo;
+  const singleCustomer = props.customer.singleCustomerInfo;
   // useState setup with typescript defaults
   const [noteDisplayState, setNoteDisplayState] = useState<{
     listNotes: boolean;

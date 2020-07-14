@@ -8,16 +8,16 @@ import {
   handleCustomerAddForm,
   handleEditCustomerForm,
   handleEditCustomerSubmit
-} from '../actions/customer';
+} from '../actions/customerActions';
 import { customerStateType } from '../reducers/types';
 
 function mapStateToProps(state: customerStateType) {
   return {
-    state
-  }
+    customer: state.customer
+  };
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
       requestCustomerList,

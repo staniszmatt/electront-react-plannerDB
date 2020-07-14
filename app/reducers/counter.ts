@@ -1,5 +1,8 @@
 // import { Action } from 'redux';
-// import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
+// import {
+//   INCREMENT_COUNTER,
+//   DECREMENT_COUNTER
+// } from '../actions/counterActions';
 
 // export default function counter(state = 0, action: Action<string>) {
 //   switch (action.type) {

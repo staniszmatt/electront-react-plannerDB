@@ -12,7 +12,6 @@
 // };
 
 // export default function Counter(props: Props) {
-//   console.log("counterpage coutner", props.counter);
 //   const {
 //     increment,
 //     incrementIfOdd,

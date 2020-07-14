@@ -4,7 +4,7 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 //   counter: number;
 // };
 
-export type errorModalStateType = {
+export type modalStateType = {
   modalState: boolean;
   errorModalState: boolean;
   successModalState: boolean;
@@ -27,7 +27,7 @@ export type singleCustomer = {
     error: string;
     noteList: {};
     success: string;
-  }
+  };
   error: {};
 };
 
@@ -40,7 +40,7 @@ export type customerStateType = {
     loadCustomerAddPage: boolean;
     loadCustomerSinglePage: boolean;
     loadCustomerEditPage: boolean;
-    customerList: [];
+    customerList: [{ customerName: string }];
     singleCustomerInfo: {
       customer: singleCustomer;
     };
@@ -51,11 +51,11 @@ export type customerStateType = {
 
 // export type GetState = () => counterStateType;
 export type GetCustomerState = () => customerStateType;
-export type GetErrorModalState = () => errorModalStateType;
+export type GetErrorModalState = () => modalStateType;
 
 export type Store =
   | ReduxStore<customerStateType, Action<string>>
-  | ReduxStore<errorModalStateType, Action<string>>;
+  | ReduxStore<modalStateType, Action<string>>;
 // | ReduxStore<counterStateType, Action<string>>
 
 export type Dispatch = ReduxDispatch<Action<string>>;
