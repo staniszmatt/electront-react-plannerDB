@@ -33,12 +33,16 @@
 }
 
 /* Setup of row */
-.t-row > td:first-child {
+/* .t-row > button {
+
+} */
+
+.t-row > button > td:first-child {
   color: #0000EE;
   text-decoration: underline;
 }
 
-.t-row > td:first-child:hover {
+.t-row > button >  td:first-child:hover {
   cursor: pointer;
 }
 /* TODO: Setup Visited color at some point, right now, doesn't keep the affect */

@@ -1,16 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import CustomerRow from './customerRow';
-import styles from './customerlist.css';
+import styles from './customerList.css';
 
-export default function CustomerHeadTable(props){
+interface Props {
+  props: {
+    [index: number]: {
+      customer: {};
+    };
+    length: number;
+  };
+}
+
+interface Customer {
+  id: number;
+  customerName: string;
+  customerCodeName: string;
+  customerGenStd: boolean;
+  customerRsStd: boolean;
+  customerActive: boolean;
+}
+
+export default function CustomerHeadTable(props: Props) {
   // Stop running if nothing was passed
   if (props.props === undefined || props.props.length === 0) {
     return null;
   }
 
   const renderRows = () => {
-    const data = props.props;
-    const customerRow = data.map(customer => {
+    const data: any = props.props;
+    const customerRow = data.map((customer: Customer) => {
       return <CustomerRow key={customer.id} props={customer} />;
     });
     return customerRow;
