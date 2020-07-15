@@ -177,7 +177,9 @@ function CustomerHeadTable(props: Props) {
 
   const renderRow = (noteArray: []) => {
     const returnNotes: JSX.Element[] = [];
-
+    // TODO: Figure out how to fix the typescript rule here,
+    // Either need to fix this rule our add " : {} " to the end of the other to component file interfaces
+    // and fix them.
     noteArray.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
         <CustomerNoteRow
@@ -372,5 +374,5 @@ function CustomerHeadTable(props: Props) {
     </div>
   );
 }
-// TODO: Figure out how to fix this type script error!
+// TODO: Figure out how to fix this type script error or fix typescript rule.
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerHeadTable);

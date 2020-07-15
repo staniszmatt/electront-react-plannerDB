@@ -7,7 +7,7 @@
   display: inline-flex;
   width: 100%;
   background-color: #8080802b;
-  padding: 10px 0px;
+  padding: 10px 0;
   position: fixed;
 }
 
@@ -55,7 +55,7 @@
   font-size: 15px;
 }
 
-.btnContainer form .form-container  input {
+.btnContainer form .form-container input {
   width: 100%;
   padding: 2px;
 }

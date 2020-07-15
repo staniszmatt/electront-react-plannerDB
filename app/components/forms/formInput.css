@@ -32,6 +32,6 @@ label.form-label {
 
 .form-container > p {
   font-size: 18px;
-  margin: 0px;
+  margin: 0;
   color: red;
 }

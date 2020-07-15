@@ -5,11 +5,13 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 // };
 
 export type modalStateType = {
-  modalState: boolean;
-  errorModalState: boolean;
-  successModalState: boolean;
-  warningModalState: boolean;
-  modalMessage: string;
+  modals: {
+    modalState: boolean;
+    errorModalState: boolean;
+    successModalState: boolean;
+    warningModalState: boolean;
+    modalMessage: string;
+  };
 };
 
 export type singleCustomer = {

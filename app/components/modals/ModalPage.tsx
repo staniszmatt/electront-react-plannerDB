@@ -41,6 +41,7 @@ function AlarmModal(props: Props) {
   // toggleModalState is needed to be called here to gain proper access to the toggle state.
   // eslint-disable-next-line no-shadow
   const { toggleModalState } = props;
+  // TODO: Fix the way string props is passed or how to fix typescript rules.
   return (
     <div>
       {props.modals.modalState && (
@@ -71,11 +72,10 @@ function AlarmModal(props: Props) {
               <ModalBtn buttonName="CANCEL" ClickHandler={toggleModalState} />
             </div>
           )}
-
         </ReactModal>
       )}
     </div>
-  )
+  );
 }
-
+// TODO: Need to figure out how to fix typescript rules or the interface setup.
 export default connect(mapStateToProps, mapDispatchToProps)(AlarmModal);

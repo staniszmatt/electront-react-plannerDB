@@ -1,16 +1,15 @@
+/* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
 import styles from './customerSingle.css';
 
 interface Props {
-  props:
-    | {
-        changeNoteDateStamp: string;
-        changeNoteDescription: string;
-        changeNoteID: number;
-        typeCategory: string;
-        userID: string;
-      }
-    | {};
+  props: {
+    changeNoteDateStamp: string;
+    changeNoteDescription: string;
+    changeNoteID: number;
+    typeCategory: string;
+    userID: string;
+  };
 }
 
 export default function CustomerNoteRow(props: Props) {

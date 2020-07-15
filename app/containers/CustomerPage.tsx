@@ -30,5 +30,5 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
     dispatch
   );
 }
-
+// TODO: Fix typescript, either the rules or the interface.
 export default connect(mapStateToProps, mapDispatchToProps)(Customer);
