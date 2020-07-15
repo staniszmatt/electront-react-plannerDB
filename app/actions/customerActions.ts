@@ -389,8 +389,19 @@ export function handleEditCustomerSubmit(editCustomer: {
       dispatch(toggleErrorModalState('No Changes Where Made!'));
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
-      const handleUpdateCustomerFormResp = (_event: {}, resp: { editCustomer: { success: string; }; changeNotePost: { success: string } }) => {
-        if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
+      const handleUpdateCustomerFormResp = (_event: {}, resp: {
+        editCustomer: { success: string; };
+        changeNotePost: { success: string };
+        error:{ number: number }
+      }) => {
+        if (!isObjEmpty(resp.error)) {
+          if (resp.error.number === 2627) {
+            dispatch(toggleErrorModalState('Customer code is already being used!'));
+            dispatch(handleEditCustomerForm(editCustomer.customerName));
+          } else {
+            dispatch(customerError(resp));
+          }
+        } else if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
           const searchFormObj = {
             customerSearch: editCustomer.customerName
           };
