@@ -418,3 +418,16 @@ export function handleEditCustomerSubmit(editCustomer: {
     }
   };
 }
+
+export function serverAlertTimeoutResp(returnToFunction: ()=> {}) {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleErrorModalState('Issue communicating with server!'));
+    dispatch(returnToFunction);
+  }
+
+
+}
+
+export function stopTimeOut() {
+
+}

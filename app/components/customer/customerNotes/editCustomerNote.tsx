@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
@@ -14,6 +15,17 @@ interface DispatchProps {
 
 interface CustomerNoteState {
   customerNoteDataCheck: boolean;
+}
+
+function charCheck(
+  value: string | number,
+  _previousValue: string,
+  _allValues: {},
+  _previousAllValues: {}
+) {
+  let changeCharString = value;
+  changeCharString = changeCharString.replace(/[`]/g, '"').replace(/[']/g, '"');
+  return changeCharString;
 }
 
 const CustomerAddNote = (
@@ -52,6 +64,7 @@ const CustomerAddNote = (
           rows="15"
           onChange={checkTextArea}
           defaultValue={noteText}
+          normalize={charCheck}
         />
       </div>
       <div>
@@ -66,8 +79,3 @@ const CustomerAddNote = (
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerEditNote'
 })(CustomerAddNote);
-// TODO: Might be able to do this to setup some error handling
-// onSubmit={(values, _, props)=>{
-//   console.log("onSubmit props: ", props.props.noteID);
-//   console.log('Values: ',values);
-// }}

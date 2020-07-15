@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
@@ -15,6 +16,28 @@ interface DispatchProps {
 
 function toUpperCase(value: string) {
   return value && value.toUpperCase();
+}
+
+function charCheck(
+  value: string | number,
+  _previousValue: string,
+  _allValues: {},
+  _previousAllValues: {}
+) {
+  const lastCharCheck = value.slice(value.length - 1);
+  const returnString = value.slice(0, -1);
+
+  if (
+    lastCharCheck === '\\' ||
+    lastCharCheck === "'" ||
+    lastCharCheck === '`'
+  ) {
+    const testStringTempCheck = `${returnString}"`;
+    debugger;
+    return testStringTempCheck;
+  }
+  debugger;
+  return value;
 }
 
 const CustomerAddFormComponent = (
@@ -120,6 +143,7 @@ const CustomerAddFormComponent = (
               type="textarea"
               aria-multiline
               rows="15"
+              normalize={charCheck}
             />
           </div>
         </label>
