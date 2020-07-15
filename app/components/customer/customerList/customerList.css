@@ -14,9 +14,6 @@
 
 .main-table thead tr th {
   width: 15%;
-}
-
-.main-table thead tr th {
   font-weight: unset;
 }
 
@@ -32,16 +29,11 @@
   width: 15%;
 }
 
-/* Setup of row */
-.t-row > td:first-child {
-  color: #0000EE;
+.t-row > button > td:first-child {
+  color: #00ee;
   text-decoration: underline;
 }
 
-.t-row > td:first-child:hover {
+.t-row > button > td:first-child:hover {
   cursor: pointer;
 }
-/* TODO: Setup Visited color at some point, right now, doesn't keep the affect */
-/* .t-row > td:first-child:visited {
-  color: #551A8B;
-} */

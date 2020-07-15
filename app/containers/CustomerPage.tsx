@@ -8,16 +8,16 @@ import {
   handleCustomerAddForm,
   handleEditCustomerForm,
   handleEditCustomerSubmit
-} from '../actions/customer';
+} from '../actions/customerActions';
 import { customerStateType } from '../reducers/types';
 
 function mapStateToProps(state: customerStateType) {
   return {
-    customer: state
-  }
+    customer: state.customer
+  };
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
       requestCustomerList,
@@ -30,5 +30,5 @@ function mapDispatchToProps(dispatch: Dispatch) {
     dispatch
   );
 }
-
+// TODO: Fix typescript, either the rules or the interface.
 export default connect(mapStateToProps, mapDispatchToProps)(Customer);

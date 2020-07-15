@@ -1,8 +1,17 @@
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 
-async function postNewChangeNote(request) {
+interface Request {
+  typeID: number;
+  typeCategory: string;
+  changeNoteDescription: string;
+  userId: number;
+  changeNoteDateStamp: string;
+}
+
+async function postNewChangeNote(request: Request) {
   let returnData = {
+    changeNoteData: {},
     error: {}
   };
   // Post to add a new change note
@@ -39,10 +48,11 @@ async function postNewChangeNote(request) {
     }
   } catch (err) {
     returnData = {
+      changeNoteData: {},
       error: err
     };
   }
   return returnData;
 }
 
-module.exports = postNewChangeNote;
+export default postNewChangeNote;

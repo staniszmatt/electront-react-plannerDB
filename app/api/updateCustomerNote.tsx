@@ -1,9 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 import postNewChangeNote from './postChangeNote';
 
-async function updateCustomerNote(request) {
-  let returnData = {
+interface Request {
+  customerNoteText: string;
+  customerNoteID: number;
+  changeNoteDescription: string;
+}
+interface ReturnData {
+  error?: {} | string;
+  success?: string;
+  customerNoteData?: {
+    success: string;
+    customerNoteData: {};
+  };
+  changeNoteData?: {
+    success: string;
+    changeNoteData: {};
+  };
+}
+
+async function updateCustomerNote(request: Request) {
+  let returnData: ReturnData = {
     error: {}
   };
   // Update to customerNote
@@ -21,7 +40,7 @@ async function updateCustomerNote(request) {
         customerNoteData: data
       };
       try {
-        const requestChangeNoteData = {
+        const requestChangeNoteData: any = {
           typeID: data.recordset[0].id,
           typeCategory: 'customerNote',
           // changeNoteDescription: Must be specified with request with every customer not request to specify where its coming from.
@@ -41,7 +60,7 @@ async function updateCustomerNote(request) {
       returnData = {
         changeNoteData: {
           success: 'Failed to update customer note!',
-          customerNoteData: data
+          changeNoteData: data
         },
         error: {
           empty: `Something went wrong editing customer note!`
@@ -57,4 +76,4 @@ async function updateCustomerNote(request) {
   return returnData;
 }
 
-module.exports = updateCustomerNote;
+export default updateCustomerNote;

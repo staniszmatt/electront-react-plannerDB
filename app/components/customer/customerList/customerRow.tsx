@@ -1,23 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-shadow */
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
   handleCustomerSearchForm
-} from '../../../actions/customer';
+} from '../../../actions/customerActions';
 import { customerStateType } from '../../../reducers/types';
 import EditButton from '../../buttonFunctions/buttonClickHandler';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import styles from './customerlist.css';
+import styles from './customerList.css';
 
 // Has to be mapped in order for dispatch to work.
 function mapStateToProps(state: customerStateType) {
   return {
-    customer: state
+    customer: state.customer
   };
 }
 // Mapping actions to component without having to pass it through the parents.
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     { handleEditCustomerForm, handleCustomerSearchForm },
     dispatch
@@ -25,7 +28,16 @@ function mapDispatchToProps(dispatch: Dispatch) {
 }
 // Typescript to show prop is a function.
 interface Props {
-  handleEditCustomerForm: () => {};
+  handleEditCustomerForm: (customerName: string) => {};
+  handleCustomerSearchForm: (resp: { customerSearch: string }) => {};
+  props: {
+    id: number;
+    customerName: string;
+    customerCodeName: string;
+    customerGenStd: boolean;
+    customerRsStd: boolean;
+    customerActive: boolean;
+  };
 }
 
 function CustomerRow(props: Props) {
@@ -39,17 +51,18 @@ function CustomerRow(props: Props) {
   } = props.props;
 
   const { handleEditCustomerForm, handleCustomerSearchForm } = props;
+  const newID = id.toString();
 
   // Setup boolean to string to add to row data
   const genStd = booleanToStringYesNo(customerGenStd);
   const rsStd = booleanToStringYesNo(customerRsStd);
-  const acitve = booleanToStringYesNo(customerActive);
+  const active = booleanToStringYesNo(customerActive);
 
   const handleEditButton = () => {
     handleEditCustomerForm(customerName);
   };
 
-  const handleClickCustomerButton = (event) => {
+  const handleClickCustomerButton = () => {
     const resp = {
       customerSearch: customerName
     };
@@ -57,17 +70,19 @@ function CustomerRow(props: Props) {
   };
 
   return (
-    <tr className={styles["t-row"]}>
-      <td onClick={handleClickCustomerButton}>{customerName}</td>
+    <tr className={styles['t-row']} id={newID}>
+      <button type="button" onClick={handleClickCustomerButton}>
+        <td>{customerName}</td>
+      </button>
       <td>{customerCodeName}</td>
       <td>{genStd}</td>
       <td>{rsStd}</td>
-      <td>{acitve}</td>
+      <td>{active}</td>
       <td>
         <EditButton buttonName="EDIT" ClickHandler={handleEditButton} />
       </td>
     </tr>
-  )
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerRow);

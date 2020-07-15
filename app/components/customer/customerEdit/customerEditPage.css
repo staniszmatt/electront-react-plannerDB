@@ -8,11 +8,25 @@ form.form-main-container > div {
   text-align: left;
 }
 
+form.form-main-container > div > label > div {
+  display: flex;
+  padding: 0 10px;
+}
+
+form.form-main-container > div > label > div > label {
+  padding: 0 10px;
+}
+
+form.form-main-container > div:last-child {
+  width: 350px;
+  text-align: center;
+}
+
 form.form-main-container > div > div:nth-child(1),
 form.form-main-container > div > div:nth-child(2) {
   display: block;
   text-align: unset;
-  padding: 5px 0px;
+  padding: 5px 0;
   height: unset;
 }
 
@@ -22,15 +36,6 @@ form.form-main-container > div > label:nth-child(5) {
   display: flex;
   font-size: 18px;
   padding: 5px 10px;
-}
-
-form.form-main-container > div > label > div {
-  display: flex;
-  padding: 0px 10px;
-}
-
-form.form-main-container > div > label > div > label {
-  padding: 0 10px;
 }
 
 form.form-main-container button {
@@ -44,12 +49,13 @@ form.form-main-container > div > div:nth-child(2) label {
   padding: 5px 10px;
 }
 
-form.form-main-container > div > div:nth-child(1) input
-form.form-main-container > div > div:nth-child(2) input {
+form.form-main-container
+  > div
+  > div:nth-child(1)
+  input
+  form.form-main-container
+  > div
+  > div:nth-child(2)
+  input {
   font-size: 16px;
-}
-
-form.form-main-container > div:last-child {
-  width: 350px;
-  text-align: center;
 }

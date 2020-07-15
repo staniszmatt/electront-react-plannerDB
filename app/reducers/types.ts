@@ -4,35 +4,60 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 //   counter: number;
 // };
 
-export type errorModalStateType = {
-  modalState: boolean;
-  errorModalState: boolean;
-  successModalState: boolean;
-  warningModalState: boolean;
-  modalMessage: string;
+export type modalStateType = {
+  modals: {
+    modalState: boolean;
+    errorModalState: boolean;
+    successModalState: boolean;
+    warningModalState: boolean;
+    modalMessage: string;
+  };
+};
+
+export type singleCustomer = {
+  changeNoteList: {
+    list: [];
+  };
+  customerActive: boolean;
+  customerGenStd: boolean;
+  customerRsStd: boolean;
+  customerCodeName: string;
+  customerName: string;
+  id: number;
+  success: string;
+  customerNotes: {
+    error: string;
+    noteList: {};
+    success: string;
+  };
+  error: {};
 };
 
 export type customerStateType = {
-  loadingState: boolean;
-  errorState: boolean;
-  loadedCustomerListState: boolean;
-  loadedCustomerAddState: boolean;
-  loadCustomerAddPage: boolean;
-  loadCustomerSinglePage: boolean;
-  loadCustomerEditPage: boolean;
-  customerList: [];
-  singleCustomerInfo: {};
-  singleCustomerNoteID: number;
-  error: [];
+  customer: {
+    loadingState: boolean;
+    errorState: boolean;
+    loadedCustomerListState: boolean;
+    loadedCustomerAddState: boolean;
+    loadCustomerAddPage: boolean;
+    loadCustomerSinglePage: boolean;
+    loadCustomerEditPage: boolean;
+    customerList: [{ customerName: string }];
+    singleCustomerInfo: {
+      customer: singleCustomer;
+    };
+    singleCustomerNoteID: number;
+    error: [];
+  };
 };
 
 // export type GetState = () => counterStateType;
 export type GetCustomerState = () => customerStateType;
-export type GetErrorModalState = () => errorModalStateType;
+export type GetErrorModalState = () => modalStateType;
 
 export type Store =
   | ReduxStore<customerStateType, Action<string>>
-  | ReduxStore<errorModalStateType, Action<string>>;
+  | ReduxStore<modalStateType, Action<string>>;
 // | ReduxStore<counterStateType, Action<string>>
 
 export type Dispatch = ReduxDispatch<Action<string>>;

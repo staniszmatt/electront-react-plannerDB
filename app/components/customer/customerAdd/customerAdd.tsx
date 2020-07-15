@@ -1,15 +1,16 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
-import FormBtn from '../../buttonFunctions/buttonClickHandler'
+import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
 
-interface FormProps {
-  // Need to set this up yet!
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface FormProps {}
 interface DispatchProps {
-  // ...
+  onSubmit: () => {};
 }
 
 function toUpperCase(value: string) {
@@ -40,9 +41,9 @@ const CustomerAddFormComponent = (
           type="text"
           format={toUpperCase}
         />
-        <label className={styles["radio-form"]}>
+        <label>
           General Standards Approved:
-          <div className={styles["radio-container"]}>
+          <div>
             <label>
               Yes
               <Field
@@ -63,9 +64,9 @@ const CustomerAddFormComponent = (
             </label>
           </div>
         </label>
-        <label className={styles["radio-form"]}>
+        <label>
           RS Standards Approved:
-          <div className={styles['radio-container']}>
+          <div>
             <label>
               Yes
               <Field
@@ -86,9 +87,9 @@ const CustomerAddFormComponent = (
             </label>
           </div>
         </label>
-        <label className={styles["radio-form"]}>
+        <label>
           Customer Active:
-          <div className={styles["radio-container"]}>
+          <div>
             <label>
               Yes
               <Field
@@ -128,7 +129,15 @@ const CustomerAddFormComponent = (
   );
 };
 
-function validate(values) {
+interface Values {
+  customerName: string;
+  customerCodeName: string;
+  customerGenStatus: string;
+  customerRSStatus: string;
+  customerActive: string;
+}
+
+function validate(values: Values) {
   const {
     customerName,
     customerCodeName,
@@ -137,7 +146,7 @@ function validate(values) {
     customerActive
   } = values;
 
-  const errors = {};
+  const errors: any = {};
 
   if (!customerName) {
     errors.customerName = 'Please Enter a Customer Name!';
@@ -152,7 +161,7 @@ function validate(values) {
   }
   if (customerCodeName) {
     if (customerCodeName.length > 6) {
-      errors.customerCodeName = 'Code name is too long!';
+      errors.customerCodeName = 'Code name is too long! 6 Characters or less.';
     }
   }
   if (!customerGenStatus) {
@@ -167,7 +176,7 @@ function validate(values) {
     errors.customerActive = 'Please Select if Customer is Active!';
   }
   return errors;
-};
+}
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'customerAddForm',

@@ -3,10 +3,13 @@ import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 
 interface FormProps {
-  // Need to set this up yet!
+  any: unknown;
 }
 interface DispatchProps {
-  // ...
+  onSubmit: () => {};
+  props: {
+    noteText: string;
+  };
 }
 
 interface CustomerNoteState {
@@ -16,8 +19,9 @@ interface CustomerNoteState {
 const CustomerAddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
-
   const { handleSubmit, onSubmit } = props;
+  // eslint-disable-next-line react/destructuring-assignment
+  const { noteText } = props.props;
   const [customerNoteState, setCustomerNoteState] = useState<
     CustomerNoteState | { customerNoteDataCheck: boolean }
   >({ customerNoteDataCheck: false });
@@ -47,8 +51,7 @@ const CustomerAddNote = (
           aria-multiline
           rows="15"
           onChange={checkTextArea}
-          defaultValue={props.props.noteText}
-          onSubmit={(values, _value, props) => {}}
+          defaultValue={noteText}
         />
       </div>
       <div>

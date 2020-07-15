@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import styles from './formInput.css';
-import { notStrictEqual } from 'assert';
 
 interface Props {
   checkedValue: boolean;
@@ -11,6 +10,7 @@ interface Props {
   input: string;
   label: string;
   type: string;
+  name: string;
   meta: {
     error: {};
     touched: {};
@@ -23,6 +23,7 @@ export default function FormField(props: Props) {
     defaultValue,
     disabled,
     input,
+    name,
     label,
     type = 'text',
     meta: { error, touched }
@@ -30,7 +31,7 @@ export default function FormField(props: Props) {
 
   return (
     <div className={styles['form-container']}>
-      <label className={styles['form-label-input']} id="input-label">
+      <label className={styles['form-label-input']} htmlFor={name}>
         {label}
       </label>
       <input
@@ -40,6 +41,7 @@ export default function FormField(props: Props) {
         checked={checkedValue}
         defaultValue={defaultValue}
         disabled={disabled}
+        id={name}
       />
       <p className="red-text darken-2">{touched && error}</p>
     </div>

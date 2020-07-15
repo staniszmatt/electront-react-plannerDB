@@ -5,7 +5,7 @@ import { GetCustomerState, Dispatch } from '../reducers/types';
 import {
   toggleErrorModalState,
   toggleSuccessModalState
-} from './modal';
+} from './modalActions';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
@@ -15,6 +15,9 @@ export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
 export const CUSTOMER_SINGLE_PAGE = 'CUSTOMER_SINGLE_PAGE';
 export const CUSTOMER_EDIT_PAGE = 'CUSTOMER_EDIT_PAGE';
+
+// Un-used arguments setup
+type unused = unknown;
 
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
@@ -26,14 +29,8 @@ function returnOneZeroFromString(stringToCheck: string) {
   }
   return 0;
 }
-// Reducer function calls
-export function customerSinglePageSelected(resp: {}) {
-  return {
-    type: CUSTOMER_SINGLE_PAGE,
-    resp
-  };
-}
 
+// Reducer function calls
 export function customerPending() {
   return {
     type: CUSTOMER_PENDING
@@ -74,16 +71,74 @@ export function customerEditPageSelected(resp: {}) {
   };
 }
 
+export function customerSinglePageSelected(resp: {}) {
+  return {
+    type: CUSTOMER_SINGLE_PAGE,
+    resp
+  };
+}
+
 // Call to electron main with ipcRenderer to get server data for customer list
+export function handleCustomerSearchForm(customerName: { customerSearch: string }) {
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+
+    if (isObjEmpty(customerName)) {
+      return;
+    }
+
+    const state = getState();
+
+    if (customerName.customerSearch === 'undefined'){
+      dispatch(toggleErrorModalState('Search Was Empty!'));
+      return;
+    }
+    if (state.customer.customerList.length === 1) {
+      // eslint-disable-next-line prettier/prettier
+      if (state.customer.customerList[0].customerName === customerName.customerSearch){
+        return;
+      }
+    }
+    const mainIPCRequest = {
+      request: 'getSearchCustomer',
+      customerName: `${customerName.customerSearch}`
+    };
+
+    const handleCustomerSearchFormResp = (
+      _event: {},
+      resp: {
+        customer: {};
+        error: {
+          name: string;
+        };
+      }
+    ) => {
+      if (!isObjEmpty(resp.customer)) {
+        dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
+        // If request isn't in the server
+      } else if (isObjEmpty(resp.customer)) {
+        dispatch(customerPendingOff())
+        dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // Remove Listener to prevent adding one every time this method is called
+      ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleCustomerSearchFormResp);
+  };
+}
+
 export function handleDeleteCustomerNote(customerID: { props: number }) {
 
   return (dispatch: Dispatch, getState: GetCustomerState) => {
-    const state = getState()
-
+    const state = getState().customer;
     const mainIPCRequest = {
       request: 'deleteCustomerNote',
       customerNoteID: customerID.props,
-      customerID: state.customer.singleCustomerInfo.customer.id,
+      customerID: state.singleCustomerInfo.customer.id,
       changeNoteDescription: `Deleted Customer Note: ${customerID.props}`
     };
 
@@ -94,7 +149,7 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
     ) => {
       if (isObjEmpty(resp.error)) {
         const searchFormObj = {
-          customerSearch: state.customer.singleCustomerInfo.customer.customerName
+          customerSearch: state.singleCustomerInfo.customer.customerName
         };
         dispatch(toggleSuccessModalState('Customer Note Deleted!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
@@ -111,8 +166,7 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
   };
 }
 
-export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _: any, props: any) {
-
+export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _e: unused, props: { props: { noteID: number } }) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
     const mainIPCRequest = {
@@ -124,7 +178,7 @@ export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote:
 
     // Function needs to be inside the return dispatch scope of handleCustomerAddForm
     const handleUpdateCustomerNoteResp = (
-      _event: {},
+      _event: unused,
       resp: { error: {} }
     ) => {
       if (isObjEmpty(resp.error)) {
@@ -206,71 +260,18 @@ export function pullRequestCustomerListData() {
 
 // Setup for customer list call
 export function requestCustomerList() {
+
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState();
-
+    if (state.customer.loadedCustomerListState) {
+      // Need to stop process if the list is already loaded and displayed.
+      return;
+    }
     if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }
 
-    if (state.customer.loadedCustomerListState) {
-      return;
-    }
-  };
-}
 
-export function handleCustomerSearchForm(customerName: {}) {
-
-
-  return (dispatch: Dispatch, getState: GetCustomerState) => {
-
-    if (isObjEmpty(customerName)) {
-      return;
-    }
-
-    const state = getState();
-
-    if (customerName.customerSearch === 'undefined'){
-      dispatch(toggleErrorModalState('Search Was Empty!'));
-      return;
-    }
-    if (state.customer.customerList.length === 1) {
-      // eslint-disable-next-line prettier/prettier
-      if (state.customer.customerList[0].customerName === customerName.customerSearch){
-        return;
-      }
-    }
-    const mainIPCRequest = {
-      request: 'getSearchCustomer',
-      customerName: `${customerName.customerSearch}`
-    };
-
-    const handleCustomerSearchFormResp = (
-      _event: {},
-      resp: {
-        customer: {};
-        error: {
-          name: string;
-        };
-      }
-    ) => {
-
-      if (!isObjEmpty(resp.customer)) {
-        dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
-        // If request isn't in the server
-      } else if (isObjEmpty(resp.customer)) {
-        dispatch(customerPendingOff())
-        dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
-      } else {
-        // If errors are not specified above, then pass whole error
-        dispatch(customerError(resp));
-      }
-      // Remove Listener to prevent adding one every time this mehtode is called
-      ipcRenderer.removeListener('asynchronous-reply', handleCustomerSearchFormResp);
-    };
-    ipcRenderer.send('asynchronous-message', mainIPCRequest);
-    dispatch(customerPending());
-    ipcRenderer.on('asynchronous-reply', handleCustomerSearchFormResp);
   };
 }
 
@@ -332,7 +333,7 @@ export function handleEditCustomerForm(customerInfo: string) {
       request: 'getSearchCustomer',
       customerName: `${customerInfo}`
     };
-    const handleCustomerSearchFormResp = (_event: {}, resp: {}) => {
+    const handleCustomerSearchFormResp = (_event: {}, resp: { customer: string; error: { customerName:string; name: string; } }) => {
       if (!isObjEmpty(resp.customer)) {
         dispatch(reset('customerEditForm'));
         dispatch(customerEditPageSelected(resp));
@@ -342,7 +343,7 @@ export function handleEditCustomerForm(customerInfo: string) {
           customerError({
             list: [],
             error: {
-              customerName: `Customer has not been added, please add '${customerName.customerSearch}'`
+              customerName: `Customer has not been added, please add '${mainIPCRequest.customerName}'`
             }
           })
         );
@@ -369,7 +370,8 @@ export function handleEditCustomerSubmit(editCustomer: {
   customerName: string;
   customerCodeName: string;
 }) {
-    // Setup to set all values and filter out null values.
+  return (dispatch: Dispatch) => {
+  // Setup to set all values and filter out null values.
   const mainIPCRequest = {
     request: 'updateCustomer',
     customerName: editCustomer.customerName,
@@ -379,8 +381,6 @@ export function handleEditCustomerSubmit(editCustomer: {
     customerRsStd: returnOneZeroFromString(editCustomer.customerRsStd)
   }
 
-  return (dispatch: Dispatch) => {
-
     if (mainIPCRequest.customerGenStd === null
       && mainIPCRequest.customerActive === null
       && mainIPCRequest.customerRsStd === null
@@ -389,7 +389,7 @@ export function handleEditCustomerSubmit(editCustomer: {
       dispatch(toggleErrorModalState('No Changes Where Made!'));
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
-      const handleUpdateCustomerFormResp = (_event: {}, resp: {}) => {
+      const handleUpdateCustomerFormResp = (_event: {}, resp: { editCustomer: { success: string; }; changeNotePost: { success: string } }) => {
         if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
           const searchFormObj = {
             customerSearch: editCustomer.customerName

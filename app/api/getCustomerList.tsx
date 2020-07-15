@@ -26,9 +26,9 @@ async function customerList() {
     returnData = {
       list: [],
       error: err
-    }
+    };
     return returnData;
   }
 }
 
-module.exports = customerList;
+export default customerList;

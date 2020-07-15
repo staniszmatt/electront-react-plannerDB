@@ -1,6 +1,6 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-boolean-value */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { reset } from 'redux-form';
@@ -10,11 +10,11 @@ import {
   handleAddCustomerNote,
   handleEditCustomerNote,
   handleDeleteCustomerNote
-} from '../../../actions/customer';
+} from '../../../actions/customerActions';
 import {
   toggleWarningModalState,
   toggleModalState
-} from '../../../actions/modal';
+} from '../../../actions/modalActions';
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
 import EditCustomerNote from '../customerNotes/editCustomerNote';
@@ -24,14 +24,46 @@ import styles from './customerSingle.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 import CustomerChangeNoteRow from './customerSingleChangeNote';
 
+interface Props {
+  handleEditCustomerForm: (customerInfo: string) => {};
+  handleAddCustomerNote: () => {};
+  handleEditCustomerNote: () => {};
+  handleDeleteCustomerNote: (deleteProps: {}) => {};
+  toggleWarningModalState: (warningModalResp: {}) => {};
+  toggleModalState: () => {};
+  customer: {
+    singleCustomerInfo: {
+      customer: {
+        customerName: string;
+        customerCodeName: string;
+        customerGenStd: boolean;
+        customerRsStd: boolean;
+        customerActive: boolean;
+        changeNoteList: {
+          list: [
+            {
+              customerNoteText: string;
+            }
+          ];
+        };
+      };
+      customerNotes: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        noteList: {} | any;
+      };
+      singleCustomerNoteID: number;
+    };
+  };
+}
+
 // Has to be mapped in order for dispatch to work.
 function mapStateToProps(state: customerStateType) {
   return {
-    customer: state
+    customer: state.customer
   };
 }
 // Mapping actions to component without having to pass it through the parents.
-function mapDispatchToProps(dispatch: Dispatch) {
+function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
       handleEditCustomerForm,
@@ -45,35 +77,6 @@ function mapDispatchToProps(dispatch: Dispatch) {
     dispatch
   );
 }
-interface Props {
-  handleEditCustomerForm: () => {};
-  props: {
-    customer: {
-      customerName: string;
-      customerCodeName: string;
-      customerGenStd: boolean;
-      customerRsStd: boolean;
-      customerActive: boolean;
-      changeNoteList: {
-        list: [];
-      }
-    };
-    customerNotes: {
-      noteList: [];
-    };
-    singleCustomerNoteID: number;
-  }
-}
-
-interface NoteDisplayState {
-  listNotes: boolean;
-  addNote: boolean;
-  editNote: boolean;
-  customerNote: {
-    noteID: number;
-    noteText: string;
-  };
-}
 
 function CustomerHeadTable(props: Props) {
   const {
@@ -84,19 +87,17 @@ function CustomerHeadTable(props: Props) {
     toggleWarningModalState,
     toggleModalState
   } = props;
-
-  const [noteDisplayState, setNoteDisplayState] = useState<
-    | NoteDisplayState
-    | {
-        listNotes: boolean;
-        addNote: boolean;
-        editNote: boolean;
-        customerNote: {
-          noteID: number;
-          noteText: string;
-        };
-      }
-  >({
+  const singleCustomer = props.customer.singleCustomerInfo;
+  // useState setup with typescript defaults
+  const [noteDisplayState, setNoteDisplayState] = useState<{
+    listNotes: boolean;
+    addNote: boolean;
+    editNote: boolean;
+    customerNote: {
+      noteID: number | null;
+      noteText: string;
+    };
+  }>({
     listNotes: true,
     addNote: false,
     editNote: false,
@@ -119,20 +120,28 @@ function CustomerHeadTable(props: Props) {
     });
   };
 
-  const editCustomerNote = (_event, props) => {
+  const editCustomerNote = (
+    _event: {},
+    editNoteProps: {
+      props: {
+        noteID: number;
+        noteText: string;
+      };
+    }
+  ) => {
     setNoteDisplayState({
       ...noteDisplayState,
       listNotes: false,
       addNote: false,
       editNote: true,
       customerNote: {
-        noteID: props.props.noteID,
-        noteText: props.props.noteText
+        noteID: editNoteProps.props.noteID,
+        noteText: editNoteProps.props.noteText
       }
     });
   };
 
-  const cancelNote = (event, props) => {
+  const cancelNote = () => {
     // Clear forms if canceled.
     reset('customerEditNote');
     reset('customerAddNote');
@@ -152,7 +161,8 @@ function CustomerHeadTable(props: Props) {
   const renderChangeNoteRow = () => {
     const returnNotes: JSX.Element[] = [];
 
-    props.props.customer.changeNoteList.list.forEach((note: {}, arrIndex: number) => {
+    singleCustomer.customer.changeNoteList.list.forEach(
+      (note: {}, arrIndex: number) => {
         returnNotes.push(
           <CustomerChangeNoteRow
             // eslint-disable-next-line react/no-array-index-key
@@ -167,7 +177,9 @@ function CustomerHeadTable(props: Props) {
 
   const renderRow = (noteArray: []) => {
     const returnNotes: JSX.Element[] = [];
-
+    // TODO: Figure out how to fix the typescript rule here,
+    // Either need to fix this rule our add " : {} " to the end of the other to component file interfaces
+    // and fix them.
     noteArray.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
         <CustomerNoteRow
@@ -180,87 +192,94 @@ function CustomerHeadTable(props: Props) {
     return returnNotes;
   };
 
-  const handleDeleteNoteClick = (_event, props) => {
+  const handleDeleteNoteClick = (_event: {}, deleteProps: {}) => {
     const warningModalResp = {
       warningMsg: 'Do you really want to delete this customer note?',
       handleDeleteCustomerNote: () => {
-        handleDeleteCustomerNote(props);
+        handleDeleteCustomerNote(deleteProps);
       },
       closeModal: () => {
         toggleModalState();
       }
     };
-
     toggleWarningModalState(warningModalResp);
-    // handleDeleteCustomerNote(props);
   };
 
   const renderCustomerNotes = () => {
-    const customerNoteList = props.props.customerNotes.noteList;
+    const customerNoteList = singleCustomer.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
 
-    Object.keys(customerNoteList).forEach((key, objIndex) => {
-      const returnNotes = (
-        // eslint-disable-next-line react/no-array-index-key
-        <div
+    Object.keys(customerNoteList).forEach(
+      (noteListKey: string, objIndex: number) => {
+        const noteListNumber = parseInt(noteListKey, 10);
+        const returnNotes = (
           // eslint-disable-next-line react/no-array-index-key
-          key={`customerNotes${objIndex}`}
-          id={`customerNoteID-${key}`}
-          className={styles['single-customer-note-wrapper']}
-        >
-          <div>
-            <div>{`Note:${objIndex + 1}`}</div>
+          <div
+            // eslint-disable-next-line react/no-array-index-key
+            key={`customerNotes${objIndex}`}
+            id={`customerNoteID-${noteListKey}`}
+            className={styles['single-customer-note-wrapper']}
+          >
             <div>
-              <Btn
-                props={{
-                  noteID: key,
-                  noteText: customerNoteList[key].customerNoteText
-                }}
-                buttonName="Edit Note"
-                ClickHandler={editCustomerNote}
-              />
+              <div>{`Note:${objIndex + 1}`}</div>
+              <div>
+                <Btn
+                  props={{
+                    noteID: noteListKey,
+                    noteText: customerNoteList[noteListNumber].customerNoteText
+                  }}
+                  buttonName="Edit Note"
+                  ClickHandler={editCustomerNote}
+                />
+              </div>
+              <div>
+                <Btn
+                  props={noteListKey}
+                  buttonName="Delete Note"
+                  ClickHandler={handleDeleteNoteClick}
+                />
+              </div>
             </div>
             <div>
-              <Btn
-                props={key}
-                buttonName="Delete Note"
-                ClickHandler={handleDeleteNoteClick}
-              />
+              <div>
+                <textarea disabled={true}>
+                  {customerNoteList[noteListNumber].customerNoteText}
+                </textarea>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div>
+                  {renderRow(customerNoteList[noteListNumber].changeNoteList)}
+                </div>
+              </div>
             </div>
           </div>
-          <div>
-            <div>
-              <textarea disabled={true}>
-                {customerNoteList[key].customerNoteText}
-              </textarea>
-            </div>
-          </div>
-          <div>
-            <div>
-              <div>{renderRow(customerNoteList[key].changeNoteList)}</div>
-            </div>
-          </div>
-        </div>
-      );
-      returnNoteLists.push(returnNotes);
-    });
+        );
+        returnNoteLists.push(returnNotes);
+      }
+    );
     return returnNoteLists;
-  }
+  };
 
   const renderBooleanData = () => {
+    // Disabled validation here, the validation matches but not getting referenced here.
     const {
       // eslint-disable-next-line react/prop-types
       customerGenStd,
+      // eslint-disable-next-line react/prop-types
       customerRsStd,
+      // eslint-disable-next-line react/prop-types
       customerActive
-    } = props.props.customer;
+      // eslint-disable-next-line react/prop-types
+    } = singleCustomer.customer;
     // Setup boolean to string to add to row data
     const genStd = booleanToStringYesNo(customerGenStd);
     const rsStd = booleanToStringYesNo(customerRsStd);
     const active = booleanToStringYesNo(customerActive);
 
     return (
-      <div className={styles["single-customer-status"]}>
+      <div className={styles['single-customer-status']}>
         <div>
           <div>Status:</div>
         </div>
@@ -279,25 +298,26 @@ function CustomerHeadTable(props: Props) {
       </div>
     );
   };
+
   // Setup so Action isn't called until the button is clicked.
   const editCustomer = () => {
-    handleEditCustomerForm(props.props.customer.customerName);
+    handleEditCustomerForm(singleCustomer.customer.customerName);
   };
 
   return (
-    <div className={styles["main-single-customer"]}>
+    <div className={styles['main-single-customer']}>
       <div>
         <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
       </div>
-      <div className={styles["single-main-customer-info"]}>
+      <div className={styles['single-main-customer-info']}>
         <div>
           <div>
             <div>Customer:</div>
-            <div>{props.props.customer.customerName}</div>
+            <div>{singleCustomer.customer.customerName}</div>
           </div>
           <div>
             <div>Customer Code:</div>
-            <div>{props.props.customer.customerCodeName}</div>
+            <div>{singleCustomer.customer.customerCodeName}</div>
           </div>
           <div>{renderBooleanData()}</div>
         </div>
@@ -310,11 +330,10 @@ function CustomerHeadTable(props: Props) {
           </div>
         </div>
       </div>
-      <div className={styles["single-customer-notes"]}>
+      <div className={styles['single-customer-notes']}>
         <div>
-
           {noteDisplayState.listNotes && (
-            <div className={styles["list-customer-note-wrapper"]}>
+            <div className={styles['list-customer-note-wrapper']}>
               <div>
                 <div>Customer Notes:</div>
                 <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
@@ -324,24 +343,21 @@ function CustomerHeadTable(props: Props) {
           )}
 
           {noteDisplayState.addNote && (
-            <div className={styles["add-customer-note-wrapper"]}>
-
+            <div className={styles['add-customer-note-wrapper']}>
               <div>
                 <AddCustomerNote
-                  props={props.props.customer}
+                  props={singleCustomer.customer}
                   onSubmit={handleAddCustomerNote}
                 />
               </div>
               <div>
                 <Btn buttonName="Cancel" ClickHandler={cancelNote} />
               </div>
-
             </div>
           )}
 
           {noteDisplayState.editNote && (
-            <div className={styles["add-customer-note-wrapper"]}>
-
+            <div className={styles['add-customer-note-wrapper']}>
               <div>
                 <EditCustomerNote
                   props={noteDisplayState.customerNote}
@@ -351,14 +367,12 @@ function CustomerHeadTable(props: Props) {
               <div>
                 <Btn buttonName="Cancel" ClickHandler={cancelNote} />
               </div>
-
             </div>
           )}
-
         </div>
       </div>
     </div>
   );
 }
-
+// TODO: Figure out how to fix this type script error or fix typescript rule.
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerHeadTable);

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Action } from 'redux';
 import {
   TOGGLE_MODAL_STATE,
   TOGGLE_ERROR_MODAL_STATE,
   TOGGLE_SUCCESS_MODAL_STATE,
   TOGGLE_WARNING_MODAL_STATE
-} from '../actions/modal';
+} from '../actions/modalActions';
 
 const IState = {
   modalState: false,
@@ -14,7 +15,12 @@ const IState = {
   modalMessage: 'Initial'
 };
 
-export default function errorModal(state = IState, action: Action<string>) {
+export interface ModalAction extends Action {
+  type: string;
+  resp?: any;
+}
+
+export default function modals(state = IState, action: ModalAction) {
   switch (action.type) {
     case TOGGLE_MODAL_STATE:
       return {

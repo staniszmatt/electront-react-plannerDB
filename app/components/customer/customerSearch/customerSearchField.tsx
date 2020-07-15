@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import styles from './customerSearch.css';
 import FormInput from '../../forms/formInput';
 import '../../forms/formInput.css';
 
-interface FormProps {}
+interface FormProps {
+  props: any;
+}
 
-interface DispatchProps {}
+interface DispatchProps {
+  onSubmit: () => {};
+}
 
 const CustomerSearchFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>

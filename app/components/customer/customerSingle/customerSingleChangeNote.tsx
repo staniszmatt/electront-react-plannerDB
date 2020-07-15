@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
-import styles from './customerSingle.css'
+import styles from './customerSingle.css';
 
 interface Props {
   props: {
@@ -9,7 +9,7 @@ interface Props {
     changeNoteID: number;
     typeCategory: string;
     userID: number;
-  }
+  };
 }
 
 export default function CustomerChangeNoteRow(props: Props) {

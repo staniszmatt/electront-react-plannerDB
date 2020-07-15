@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint global-require: off, no-console: off */
 /**
  * This module executes inside of electron's main process. You can start
@@ -20,7 +21,6 @@ import postCustomerNote from './api/postCustomerNote';
 import updateCustomer from './api/updateCustomer';
 import updateCustomerNote from './api/updateCustomerNote';
 import deleteCustomerNote from './api/deleteCustomerNote';
-import isObjEmpty from './helpFunctions/isObjEmpty';
 
 export default class AppUpdater {
   constructor() {
@@ -127,8 +127,10 @@ app.on('activate', () => {
 });
 
 ipcMain.on('asynchronous-message', async (event, arg) => {
-  let requestToSend = () => {};
-  let swtichFail = false;
+  let requestToSend: any = () => {};
+  let switchFail = false;
+
+  console.log('request: ', arg);
 
   switch (arg.request) {
     // Get Requests Here.
@@ -158,10 +160,10 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       break;
     default:
       console.log('ERROR, Request does not match allowed requests!');
-      swtichFail = true;
+      switchFail = true;
       break;
   }
-  if (swtichFail) {
+  if (switchFail) {
     event.sender.send('asynchronous-reply', {
       error: {
         switchFail: `No Request found for ${arg.request}`
@@ -170,7 +172,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     return;
   }
   try {
-    // let returnData = {};
     const data = await requestToSend(arg);
     event.sender.send('asynchronous-reply', data);
   } catch (err) {

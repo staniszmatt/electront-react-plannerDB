@@ -4,11 +4,14 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
-// import * as counterActions from '../actions/counter';
-import * as customerActions from '../actions/customer';
-import * as errorModalActions from '../actions/modal';
-import { customerStateType, errorModalStateType } from '../reducers/types';
-// import { counterStateType, customerStateType } from '../reducers/types';
+// import * as counterActions from '../actions/counterActions';
+import * as customerActions from '../actions/customerActions';
+import * as modalActions from '../actions/modalActions';
+import {
+  customerStateType,
+  modalStateType
+  // counterStateType
+} from '../reducers/types';
 
 declare global {
   interface Window {
@@ -28,36 +31,32 @@ const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (
-  initialState:
+const configureStore = (initialState: {
+  // counter?: number | counterStateType;
+  customer?:
     | {
-        customer?:
-          | {
-              loadingState: boolean;
-              errorState: boolean;
-              loadedCustomerListState: boolean;
-              loadedCustomerAddState: boolean;
-              loadCustomerAddPage: boolean;
-              loadCustomerSinglePage: boolean;
-              loadCustomerEditPage: boolean;
-              customerList: [];
-              singleCustomerInfo: {};
-              error: [];
-            }
-          | customerStateType;
-        errorModal?:
-          | {
-              modalState: boolean;
-              errorModalState: boolean;
-              successModalState: boolean;
-              warningModalState: boolean;
-              modalMessage: string;
-            }
-          | errorModalStateType;
-        // counter?: number | counterStateType;
+        loadingState: boolean;
+        errorState: boolean;
+        loadedCustomerListState: boolean;
+        loadedCustomerAddState: boolean;
+        loadCustomerAddPage: boolean;
+        loadCustomerSinglePage: boolean;
+        loadCustomerEditPage: boolean;
+        customerList: [];
+        singleCustomerInfo: {};
+        error: [];
       }
-    | undefined
-) => {
+    | customerStateType;
+  modals?:
+    | {
+        modalState: boolean;
+        errorModalState: boolean;
+        successModalState: boolean;
+        warningModalState: boolean;
+        modalMessage: string;
+      }
+    | modalStateType;
+}) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -83,7 +82,7 @@ const configureStore = (
   // Redux DevTools Configuration
   const actionCreators = {
     ...customerActions,
-    ...errorModalActions,
+    ...modalActions,
     // ...counterActions,
     ...routerActions
   };

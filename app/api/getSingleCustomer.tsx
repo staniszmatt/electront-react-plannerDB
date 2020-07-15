@@ -1,9 +1,66 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
-import { isArray } from 'util';
 
-async function singleCustomer(request) {
-  const returnData = {
+interface Request {
+  customerName: string;
+}
+
+interface List {
+  push?: any;
+  [index: number]: {
+    changeNoteDateStamp: string;
+    changeNoteID: number;
+    typeCategory: string;
+    userID: string;
+    changeNoteDescription: string;
+  };
+}
+
+interface ReturnData {
+  error?: {};
+  customer?:
+    | {
+        id: number;
+        customerName: string;
+        customerActive: number;
+        customerCodeName: string;
+        customerGenStd: number;
+        customerRsStd: number;
+        changeNoteList?: {
+          typeCategory: string;
+          list: List;
+        };
+        success: string;
+      }
+    | {}
+    | any;
+  customerNotes?:
+    | {
+        noteList: {
+          objId: number;
+          changeNoteList: List;
+        };
+        error: string;
+        success: string;
+      }
+    | {}
+    | any;
+}
+
+interface Item {
+  customerNoteID: number;
+  customerNoteText: string;
+  changeNoteDateStamp: string;
+  changeNoteID: number;
+  typeCategory: string;
+  userID: string;
+  changeNoteDescription: string;
+}
+
+async function singleCustomer(request: Request) {
+  const returnData: ReturnData = {
     error: {}
   };
 
@@ -34,7 +91,7 @@ async function singleCustomer(request) {
         success: 'Success'
       };
 
-      data.recordset.forEach(item => {
+      data.recordset.forEach((item: Item) => {
         const listItem = {
           changeNoteDateStamp: item.changeNoteDateStamp,
           changeNoteID: item.changeNoteID,
@@ -58,10 +115,11 @@ async function singleCustomer(request) {
         if (customerNoteData.recordset.length > 0) {
           returnData.customerNotes = {
             noteList: {},
-            error: ''
+            error: '',
+            success: 'Success'
           };
 
-          customerNoteData.recordset.forEach(item => {
+          customerNoteData.recordset.forEach((item: Item) => {
             const objId = item.customerNoteID.toString();
             const changeNoteItem = {
               changeNoteDateStamp: item.changeNoteDateStamp,
@@ -76,7 +134,7 @@ async function singleCustomer(request) {
               changeNoteList: []
             };
 
-            if (returnData.customerNotes.noteList.hasOwnProperty(objId)) {
+            if (returnData.customerNotes.noteList?.hasOwnProperty(objId)) {
               // eslint-disable-next-line prettier/prettier
               returnData.customerNotes.noteList[objId].changeNoteList.push(changeNoteItem);
             } else {
@@ -100,15 +158,15 @@ async function singleCustomer(request) {
           error
         };
       }
-    }  else {
+    } else {
       returnData.customer = {};
     }
     return returnData;
   } catch (err) {
-    returnData.customer = [];
+    returnData.customer = {};
     returnData.error = err;
     return returnData;
   }
 }
 
-module.exports = singleCustomer;
+export default singleCustomer;

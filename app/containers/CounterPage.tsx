@@ -1,12 +1,12 @@
 // import { bindActionCreators, Dispatch } from 'redux';
-// import { connect, ReactReduxContext } from 'react-redux';
+// import { connect } from 'react-redux';
 // import Counter from '../components/Counter';
 // import {
 //   increment,
 //   decrement,
 //   incrementIfOdd,
 //   incrementAsync
-// } from '../actions/counter';
+// } from '../actions/counterActions';
 // import { counterStateType } from '../reducers/types';
 
 // function mapStateToProps(state: counterStateType) {
@@ -15,7 +15,7 @@
 //   };
 // }
 
-// function mapDispatchToProps(dispatch: Dispatch) {
+// function mapDispatchToProps(dispatch: Dispatch<null>) {
 //   return bindActionCreators(
 //     {
 //       increment,
