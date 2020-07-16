@@ -128,7 +128,6 @@ async function singleCustomer(request: Request) {
               userID: item.userID,
               changeNoteDescription: item.changeNoteDescription
             };
-
             const customerNote = {
               customerNoteText: item.customerNoteText,
               changeNoteList: []

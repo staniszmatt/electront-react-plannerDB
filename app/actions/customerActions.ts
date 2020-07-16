@@ -142,7 +142,7 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
       changeNoteDescription: `Deleted Customer Note: ${customerID.props}`
     };
 
-    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    // Function needs to be inside the return dispatch scope
     const handleDeleteCustomerNoteResp = (
       _event: {},
       resp: { error: {} }
@@ -176,7 +176,7 @@ export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote:
       changeNoteDescription: 'Modified customer note.'
     };
 
-    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    // Function needs to be inside the return dispatch scope
     const handleUpdateCustomerNoteResp = (
       _event: unused,
       resp: { error: {} }
@@ -212,7 +212,7 @@ export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: str
       changeNoteDescription: 'Added customer note to current customer.'
     };
 
-    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    // Function needs to be inside the return dispatch scope
     const handleAddCustomerNoteResp = (
       _event: {},
       resp: { error: { number: number } }
@@ -298,7 +298,7 @@ export function handleCustomerAddForm(customerToAdd: {
       customerActive: returnActiveStatus,
       customerNote: `${customerToAdd.customerNote}`
     };
-    // Function needs to be inside the return dispatch scope of handleCustomerAddForm
+    // Function needs to be inside the return dispatch scope
     const handleAddCustomerResp = (
       _event: {},
       resp: { error: { number: number } }
@@ -310,6 +310,10 @@ export function handleCustomerAddForm(customerToAdd: {
 
         dispatch(reset('customerAddForm'));
         dispatch(handleCustomerSearchForm(searchFormObj));
+        // eslint-disable-next-line no-prototype-builtins
+        if(!resp.hasOwnProperty('customerNote')) {
+          dispatch(toggleErrorModalState('RELOAD APP! Failed to add customer note! Possibly character issue.'));
+        }
       } else if (resp.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
         dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
@@ -389,8 +393,19 @@ export function handleEditCustomerSubmit(editCustomer: {
       dispatch(toggleErrorModalState('No Changes Where Made!'));
       dispatch(handleEditCustomerForm(editCustomer.customerName));
     } else {
-      const handleUpdateCustomerFormResp = (_event: {}, resp: { editCustomer: { success: string; }; changeNotePost: { success: string } }) => {
-        if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
+      const handleUpdateCustomerFormResp = (_event: {}, resp: {
+        editCustomer: { success: string; };
+        changeNotePost: { success: string };
+        error:{ number: number }
+      }) => {
+        if (!isObjEmpty(resp.error)) {
+          if (resp.error.number === 2627) {
+            dispatch(toggleErrorModalState('Customer code is already being used!'));
+            dispatch(handleEditCustomerForm(editCustomer.customerName));
+          } else {
+            dispatch(customerError(resp));
+          }
+        } else if (resp.editCustomer.success === 'Success' && resp.changeNotePost.success === 'Success') {
           const searchFormObj = {
             customerSearch: editCustomer.customerName
           };
@@ -406,4 +421,17 @@ export function handleEditCustomerSubmit(editCustomer: {
       ipcRenderer.on('asynchronous-reply', handleUpdateCustomerFormResp);
     }
   };
+}
+
+export function serverAlertTimeoutResp(returnToFunction: ()=> {}) {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleErrorModalState('Issue communicating with server!'));
+    dispatch(returnToFunction);
+  }
+
+
+}
+
+export function stopTimeOut() {
+
 }

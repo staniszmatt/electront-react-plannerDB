@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
@@ -15,6 +18,13 @@ interface DispatchProps {
 
 function toUpperCase(value: string) {
   return value && value.toUpperCase();
+}
+
+function charCheck(value: string) {
+  let changeCharString = value;
+  // Disabled pretty checks here, need to keep the \ and quotes the way they are
+  changeCharString = changeCharString.replace(/[`]/g, '\"').replace(/[']/g, '\"').replace(/["]/g, '\"');
+  return changeCharString;
 }
 
 const CustomerAddFormComponent = (
@@ -120,6 +130,7 @@ const CustomerAddFormComponent = (
               type="textarea"
               aria-multiline
               rows="15"
+              normalize={charCheck}
             />
           </div>
         </label>

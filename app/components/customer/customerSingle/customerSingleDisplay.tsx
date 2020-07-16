@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-shadow */
@@ -167,6 +168,7 @@ function CustomerHeadTable(props: Props) {
           <CustomerChangeNoteRow
             // eslint-disable-next-line react/no-array-index-key
             key={`customerChangeNote${arrIndex}`}
+            // @ts-ignore: Type '{}' is missing
             props={note}
           />
         );
@@ -185,6 +187,7 @@ function CustomerHeadTable(props: Props) {
         <CustomerNoteRow
           // eslint-disable-next-line react/no-array-index-key
           key={`customerNote${arrIndex}`}
+          // @ts-ignore: Type '{}' is missing
           props={note}
         />
       );
@@ -375,4 +378,5 @@ function CustomerHeadTable(props: Props) {
   );
 }
 // TODO: Figure out how to fix this type script error or fix typescript rule.
+// @ts-ignore: Argument of type '(props: Props)'
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerHeadTable);
