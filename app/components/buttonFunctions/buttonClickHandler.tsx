@@ -11,7 +11,6 @@ interface NewButton {
 
 export default function ButtonHandle(btnProps: NewButton) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
     btnProps.ClickHandler(event, btnProps)
   }
   return (

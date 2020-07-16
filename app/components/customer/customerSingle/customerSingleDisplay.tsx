@@ -10,7 +10,8 @@ import {
   handleEditCustomerForm,
   handleAddCustomerNote,
   handleEditCustomerNote,
-  handleDeleteCustomerNote
+  handleDeleteCustomerNote,
+  handleDeleteCustomer
 } from '../../../actions/customerActions';
 import {
   toggleWarningModalState,
@@ -31,6 +32,7 @@ interface Props {
   handleEditCustomerNote: () => {};
   handleDeleteCustomerNote: (deleteProps: {}) => {};
   toggleWarningModalState: (warningModalResp: {}) => {};
+  handleDeleteCustomer: () => {};
   toggleModalState: () => {};
   customer: {
     singleCustomerInfo: {
@@ -71,6 +73,7 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
       handleAddCustomerNote,
       handleEditCustomerNote,
       handleDeleteCustomerNote,
+      handleDeleteCustomer,
       toggleWarningModalState,
       toggleModalState,
       reset
@@ -85,6 +88,7 @@ function CustomerHeadTable(props: Props) {
     handleAddCustomerNote,
     handleEditCustomerNote,
     handleDeleteCustomerNote,
+    handleDeleteCustomer,
     toggleWarningModalState,
     toggleModalState
   } = props;
@@ -198,7 +202,7 @@ function CustomerHeadTable(props: Props) {
   const handleDeleteNoteClick = (_event: {}, deleteProps: {}) => {
     const warningModalResp = {
       warningMsg: 'Do you really want to delete this customer note?',
-      handleDeleteCustomerNote: () => {
+      actionFunction: () => {
         handleDeleteCustomerNote(deleteProps);
       },
       closeModal: () => {
@@ -235,7 +239,7 @@ function CustomerHeadTable(props: Props) {
                   ClickHandler={editCustomerNote}
                 />
               </div>
-              <div>
+              <div className={styles['delete-btn']}>
                 <Btn
                   props={noteListKey}
                   buttonName="Delete Note"
@@ -307,10 +311,28 @@ function CustomerHeadTable(props: Props) {
     handleEditCustomerForm(singleCustomer.customer.customerName);
   };
 
+  const deleteCustomer = () => {
+    const warningModalResp = {
+      warningMsg: 'Do you really want to delete this customer note?',
+      actionFunction: () => {
+        handleDeleteCustomer();
+      },
+      closeModal: () => {
+        toggleModalState();
+      }
+    };
+    toggleWarningModalState(warningModalResp);
+  };
+
   return (
     <div className={styles['main-single-customer']}>
       <div>
-        <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
+        <div>
+          <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
+        </div>
+        <div className={styles['delete-btn']}>
+          <Btn buttonName="DELETE CUSTOMER" ClickHandler={deleteCustomer} />
+        </div>
       </div>
       <div className={styles['single-main-customer-info']}>
         <div>

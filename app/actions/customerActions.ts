@@ -9,7 +9,6 @@ import {
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const CUSTOMER_PENDING = 'CUSTOMER_PENDING';
-export const CUSTOMER_PENDING_OFF = 'CUSTOMER_PENDING_OFF'
 export const CUSTOMER_ERROR = 'CUSTOMER_ERROR';
 export const CUSTOMER_LIST_RECEIVED = 'CUSTOMER_LIST_RECEIVED';
 export const CUSTOMER_ADD_PAGE = 'CUSTOMER_ADD_PAGE';
@@ -34,12 +33,6 @@ function returnOneZeroFromString(stringToCheck: string) {
 export function customerPending() {
   return {
     type: CUSTOMER_PENDING
-  };
-}
-
-export function customerPendingOff() {
-  return {
-    type: CUSTOMER_PENDING_OFF
   };
 }
 
@@ -79,6 +72,83 @@ export function customerSinglePageSelected(resp: {}) {
 }
 
 // Call to electron main with ipcRenderer to get server data for customer list
+
+export function handleDeleteCustomer() {
+
+  console.log("Delete Customer Clicked in actions!");
+  return (dispatch: Dispatch, getState: GetCustomerState) => {
+
+    console.log("single customer state", getState());
+
+    const customerNoteIDList = Object.keys(getState().customer.singleCustomerInfo.customerNotes.noteList)
+
+
+
+    const mainIPCRequest = {
+      request: 'deleteCustomer',
+      customerID: getState().customer.singleCustomerInfo.customer.id,
+      customerNoteIDList
+    };
+
+
+    console.log("Main Request ", mainIPCRequest);
+
+
+
+
+
+
+    // Function needs to be inside the return dispatch scope
+    const handleDeleteCustomerResp = (
+      _event: {},
+      resp: { error: {} }
+    ) => {
+
+
+      console.log("delete customer resp from actions",resp);
+
+
+      if (isObjEmpty(resp.error)) {
+
+        dispatch(customerPending());
+        dispatch(toggleSuccessModalState('Customer Has Been Deleted!'));
+
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(customerError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleDeleteCustomerResp);
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(customerPending());
+    ipcRenderer.on('asynchronous-reply', handleDeleteCustomerResp);
+  };
+
+
+
+
+
+}
+
 export function handleCustomerSearchForm(customerName: { customerSearch: string }) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
 
@@ -116,7 +186,7 @@ export function handleCustomerSearchForm(customerName: { customerSearch: string 
         dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
         // If request isn't in the server
       } else if (isObjEmpty(resp.customer)) {
-        dispatch(customerPendingOff())
+        dispatch(customerPending());
         dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
       } else {
         // If errors are not specified above, then pass whole error
@@ -270,8 +340,6 @@ export function requestCustomerList() {
     if (state.customer.customerList.length < 2) {
       dispatch(pullRequestCustomerListData());
     }
-
-
   };
 }
 

@@ -102,6 +102,35 @@ div.add-customer-note-wrapper > div {
   display: flex;
 }
 
+.main-single-customer > div:first-child > div {
+  margin: auto;
+}
+
+.delete-btn > button {
+  color: red;
+}
+
+.delete-btn:hover > button {
+  background-color: red;
+  color: black;
+}
+
+.list-customer-note-wrapper > div:first-child > button {
+  margin: auto;
+}
+
+div.add-customer-note-wrapper > div:first-child > form > div > button {
+  margin: auto;
+}
+
+div.add-customer-note-wrapper > div:first-child > form > div > div > button {
+  margin: auto;
+}
+
+.main-single-customer > div:first-child > div:last-child > button {
+  width: 150px;
+}
+
 .single-customer-note > div:first-child > div {
   display: flex;
 }
@@ -132,22 +161,6 @@ div.add-customer-note-wrapper > div:last-child {
 div.add-customer-note-wrapper > div:first-child > form > div {
   width: 100%;
   display: flex;
-}
-
-div.add-customer-note-wrapper > div > button {
-  margin: auto;
-}
-
-.main-single-customer > div:first-child > button {
-  margin: auto;
-}
-
-.list-customer-note-wrapper > div:first-child > button {
-  margin: auto;
-}
-
-div.add-customer-note-wrapper > div:first-child > form > div > button {
-  margin: auto;
 }
 
 .single-customer-note-wrapper > div:first-child > div:first-child {
@@ -196,25 +209,11 @@ div.add-customer-note-wrapper > div:first-child > form > div:last-child {
   margin: 10px 0;
 }
 
-div.add-customer-note-wrapper > div:first-child > form > div > div > button {
-  margin: auto;
-}
-
-.single-main-customer-info
-  > div:first-child
-  > div:not(:nth-child(3))
-  > div:first-child {
+.single-main-customer-info > div:first-child > div:not(:nth-child(3)) > div:first-child {
   width: 125px;
 }
 
-.single-main-customer-info
-  > div:last-child
-  > div:last-child
-  > div
-  > div
-  > div
-  > div:first-child
-  > div:first-child {
+.single-main-customer-info > div:last-child > div:last-child > div > div > div > div:first-child > div:first-child {
   width: 67px;
 }
 
@@ -259,18 +258,6 @@ div.add-customer-note-wrapper > div:first-child > form > div > div > button {
   display: flex;
   flex-wrap: wrap;
   padding: 5px 0;
-}
-
-.single-customer-note-wrapper > div:first-child > div:last-child > button {
-  color: red;
-}
-
-.single-customer-note-wrapper
-  > div:first-child
-  > div:last-child
-  > button:hover {
-  background-color: red;
-  color: black;
 }
 
 .single-customer-note-wrapper > div:nth-child(2) > div > textarea {
