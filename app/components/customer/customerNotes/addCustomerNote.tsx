@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
@@ -12,6 +14,13 @@ interface DispatchProps {
 
 interface CustomerNoteState {
   customerNoteDataCheck: boolean;
+}
+
+function charCheck(value: string) {
+  let changeCharString = value;
+  // Disabled pretty checks here, need to keep the \ and quotes the way they are
+  changeCharString = changeCharString.replace(/[`]/g, '\"').replace(/[']/g, '\"').replace(/["]/g, '\"');
+  return changeCharString;
 }
 
 const CustomerAddNote = (
@@ -47,6 +56,7 @@ const CustomerAddNote = (
           aria-multiline
           rows="15"
           onChange={checkTextArea}
+          normalize={charCheck}
         />
       </div>
       <div>

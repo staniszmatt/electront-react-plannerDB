@@ -24,26 +24,14 @@ interface ReturnData {
 }
 
 async function updateCustomerNote(request: Request) {
-  console.log("request", request);
   let returnData: ReturnData = {
     error: {}
   };
-  let jsonCustomerNoteText = request.customerNoteText;
-  console.log("before json string", jsonCustomerNoteText);
-  jsonCustomerNoteText = JSON.stringify(jsonCustomerNoteText)
-
-
-  console.log("JSON String:", jsonCustomerNoteText)
-
-
-
-
-
   // Update to customerNote
   try {
     const db = await pool.connect();
     const query = `UPDATE customerNote
-      SET customerNoteText = '${jsonCustomerNoteText}'
+      SET customerNoteText = '${request.customerNoteText}'
         OUTPUT inserted.id, SUSER_NAME() LoggedInUser,  GETDATE() as dateStamp
           WHERE id = ${request.customerNoteID}`;
     const data = await db.query(query);

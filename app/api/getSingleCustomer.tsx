@@ -128,16 +128,8 @@ async function singleCustomer(request: Request) {
               userID: item.userID,
               changeNoteDescription: item.changeNoteDescription
             };
-            console.log("before parse", item.customerNoteText)
-            // const parseNoteText = item.customerNoteText.replace(/[\\*]/g, '');
-            const parseNoteText = item.customerNoteText.replace(
-              // eslint-disable-next-line no-useless-concat
-              new RegExp('\\b' + '\\*' + '\\b'),
-              ''
-            );
-            console.log("after parse", parseNoteText)
             const customerNote = {
-              customerNoteText: parseNoteText,
+              customerNoteText: item.customerNoteText,
               changeNoteList: []
             };
 

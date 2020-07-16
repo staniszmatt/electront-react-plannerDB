@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -18,26 +20,11 @@ function toUpperCase(value: string) {
   return value && value.toUpperCase();
 }
 
-function charCheck(
-  value: string | number,
-  _previousValue: string,
-  _allValues: {},
-  _previousAllValues: {}
-) {
-  const lastCharCheck = value.slice(value.length - 1);
-  const returnString = value.slice(0, -1);
-
-  if (
-    lastCharCheck === '\\' ||
-    lastCharCheck === "'" ||
-    lastCharCheck === '`'
-  ) {
-    const testStringTempCheck = `${returnString}"`;
-    debugger;
-    return testStringTempCheck;
-  }
-  debugger;
-  return value;
+function charCheck(value: string) {
+  let changeCharString = value;
+  // Disabled pretty checks here, need to keep the \ and quotes the way they are
+  changeCharString = changeCharString.replace(/[`]/g, '\"').replace(/[']/g, '\"').replace(/["]/g, '\"');
+  return changeCharString;
 }
 
 const CustomerAddFormComponent = (

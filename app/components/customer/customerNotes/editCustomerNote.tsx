@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
@@ -17,14 +19,10 @@ interface CustomerNoteState {
   customerNoteDataCheck: boolean;
 }
 
-function charCheck(
-  value: string | number,
-  _previousValue: string,
-  _allValues: {},
-  _previousAllValues: {}
-) {
+function charCheck(value: string) {
   let changeCharString = value;
-  changeCharString = changeCharString.replace(/[`]/g, '"').replace(/[']/g, '"');
+  // Disabled pretty checks here, need to keep the \ and quotes the way they are
+  changeCharString = changeCharString.replace(/[`]/g, '\"').replace(/[']/g, '\"').replace(/["]/g, '\"');
   return changeCharString;
 }
 

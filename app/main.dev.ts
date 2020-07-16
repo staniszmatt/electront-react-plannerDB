@@ -130,8 +130,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
   let requestToSend: any = () => {};
   let switchFail = false;
 
-  console.log('request: ', arg);
-
   switch (arg.request) {
     // Get Requests Here.
     case 'getCustomerList':
@@ -159,7 +157,6 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       requestToSend = deleteCustomerNote;
       break;
     default:
-      console.log('ERROR, Request does not match allowed requests!');
       switchFail = true;
       break;
   }
