@@ -52,7 +52,8 @@ interface Props {
       };
       customerNotes: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        noteList: {} | any;
+        noteList: { length: PropertyKey } | any;
+        error: string | { length: PropertyKey };
       };
       singleCustomerNoteID: number;
     };
@@ -83,6 +84,7 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function CustomerHeadTable(props: Props) {
+  console.log("Single Customer Props:", props);
   const {
     handleEditCustomerForm,
     handleAddCustomerNote,
@@ -215,6 +217,16 @@ function CustomerHeadTable(props: Props) {
   const renderCustomerNotes = () => {
     const customerNoteList = singleCustomer.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
+    console.log('Single Customer Displayt Props', singleCustomer);
+
+    if (singleCustomer.customerNotes.success === 'false') {
+      return <div>FAILED TO GET CUSTOMER NOTES!</div>;
+      // eslint-disable-next-line no-else-return
+    }
+
+    if (singleCustomer.customerNotes.success === 'empty') {
+      return <div>NO NOTES HAVE BEEN ADDED!</div>;
+    }
 
     Object.keys(customerNoteList).forEach(
       (noteListKey: string, objIndex: number) => {
