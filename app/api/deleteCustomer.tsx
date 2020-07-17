@@ -40,20 +40,7 @@ async function deleteCustomer(request: Request) {
     customerNoteDeleteSuccess: {}
   };
 
-  const customerSuccessDeleteNote = {
-    success: '',
-    data: {},
-    error: {},
-    customerSuccessDeleteChangeNote: {
-      success: {
-        success: '',
-        data: {}
-      },
-      error: {}
-    }
-  };
-
-  console.log("REquest ", request);
+  console.log('Request Data: ', request);
 
   /**
    * Deleting customer!
@@ -63,84 +50,131 @@ async function deleteCustomer(request: Request) {
    * Last delete the customer
    */
 
-  // If there are notes, delete them, otherwise, send back that there were none to delete.
-  if (request.customerNoteIDList.length > 0) {
-    request.customerNoteIDList.map(async (value: number, _index: number) => {
-      // Stop if note list is empty!
-      console.log('Note ID:', value);
-      const noteID = value.toString();
 
 
 
-      // Create the object for each note in map function.
-      returnData.customerNoteDeleteSuccess[noteID] = customerSuccessDeleteNote;
 
-      console.log('start of return data delete note', returnData);
 
-      try {
-        const db = await pool.connect();
-        const deleteNoteChangeNoteQuery = `DELETE changeNote
-            WHERE typeID = ${value} AND typeCategory = 'customerNote'`;
-        const deleteNoteChangeNoteData = await db.query(deleteNoteChangeNoteQuery);
-        console.log('customer delete note return data for change notes', deleteNoteChangeNoteData);
 
-        if (deleteNoteChangeNoteData) {
-          returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Success';
-          returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.data = deleteNoteChangeNoteData;
-          console.log('return data delete change notes', returnData);
-          // Delete the note here.
+
+
+
+
+
+
+
+
+
+
+
+  try {
+    // Var for customerSuccessDeleteChangeNote on mapped delete notes
+    const customerDeleteNotesResp = await Promise.all(
+      request.customerNoteIDList.map(async (value: number) => {
+
+
+        const customerNoteDeleteSuccess = {};
+        const customerSuccessDeleteNote = {
+          success: '',
+          data: {},
+          error: {},
+          customerSuccessDeleteChangeNote: {
+            success: {
+              success: '',
+              data: {}
+            },
+            error: {}
+          }
+        };
+
+        console.log('Note ID:', value);
+        const noteID = value.toString();
+        // Create the object for each note in map function.
+        customerNoteDeleteSuccess[noteID] = customerSuccessDeleteNote;
+
+        console.log('start of return data delete note', returnData);
+        // If there are notes, delete them, otherwise, send back that there were none to delete.
+        if (request.customerNoteIDList.length > 0) {
           try {
-            const deleteNoteQuery = `
-              DELETE customerNote
-                WHERE customerID = ${request.customerID}`;
-            const deleteNoteData = await db.query(deleteNoteQuery);
-            console.log('delete note data', deleteNoteData);
-            if (deleteNoteData.rowsAffected.length > 0) {
-              returnData.customerNoteDeleteSuccess[noteID].success = 'Success';
-              returnData.customerNoteDeleteSuccess[noteID].data = deleteNoteData;
+            const db = await pool.connect();
+            const deleteNoteChangeNoteQuery = `DELETE changeNote
+                WHERE typeID = ${value} AND typeCategory = 'customerNote'`;
+            const deleteNoteChangeNoteData = await db.query(deleteNoteChangeNoteQuery);
+            console.log('customer delete note return data for change notes', deleteNoteChangeNoteData);
 
-              console.log('delete customer note final return data', returnData);
+            if (deleteNoteChangeNoteData) {
+              customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Success';
+              customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.data = deleteNoteChangeNoteData;
+              console.log('return data delete change notes', customerNoteDeleteSuccess);
+              // Delete the note here.
+              try {
+                const deleteNoteQuery = `
+                  DELETE customerNote
+                    WHERE customerID = ${request.customerID}`;
+                const deleteNoteData = await db.query(deleteNoteQuery);
+                console.log('delete note data', deleteNoteData);
+                if (deleteNoteData.rowsAffected.length > 0) {
+                  customerNoteDeleteSuccess[noteID].success = 'Success';
+                  customerNoteDeleteSuccess[noteID].data = deleteNoteData;
 
+                  console.log('delete customer note final return data', customerNoteDeleteSuccess);
+
+                } else {
+                  customerNoteDeleteSuccess[noteID].success = 'Failed';
+                  customerNoteDeleteSuccess[noteID].data = deleteNoteData;
+                  console.log('delete customer note final return data error', customerNoteDeleteSuccess);
+                }
+              } catch (err) {
+                customerNoteDeleteSuccess[noteID].success = 'Failed to delete customer note!';
+                customerNoteDeleteSuccess[noteID].error = err;
+                console.log('delete customer note final return data error', customerNoteDeleteSuccess);
+              }
             } else {
-              returnData.customerNoteDeleteSuccess[noteID].success = 'Failed';
-              returnData.customerNoteDeleteSuccess[noteID].data = deleteNoteData;
-              console.log('delete customer note final return data error', returnData);
+              customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Failed to delete note, change notes.';
+              customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.data = deleteNoteChangeNoteData;
+              customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.error = {
+                error: 'Something went wrong deleting the notes, change notes'
+              };
+              console.log('delete customer note  return change note data error', customerNoteDeleteSuccess);
             }
+            console.log("final return customer note data", customerNoteDeleteSuccess)
+            return customerNoteDeleteSuccess;
           } catch (err) {
-            returnData.customerNoteDeleteSuccess[noteID].success = 'Failed to delete customer note!';
-            returnData.customerNoteDeleteSuccess[noteID].error = err;
-            console.log('delete customer note final return data error', returnData);
+            console.log('Main error ', err);
+            customerNoteDeleteSuccess[noteID].error = {
+              error: err,
+              errorMsg: 'Something went wrong deleting customer!'
+            };
+            console.log('delete customer note  note data error', customerNoteDeleteSuccess);
+            return customerNoteDeleteSuccess;
+            // returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.push(customerSuccessDeleteChangeNote);
           }
         } else {
-          returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Failed to delete note, change notes.';
-          returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.data = deleteNoteChangeNoteData;
-          returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.error = {
-            error: 'Something went wrong deleting the notes, change notes'
+          console.log('final map error ');
+          customerNoteDeleteSuccess[noteID].error = {
+            error: err,
+            errorMsg: 'Something went wrong deleting customer!'
           };
-          console.log('delete customer note  return change note data error', returnData);
+          console.log('delete customer note  note data error', customerNoteDeleteSuccess);
+          return customerNoteDeleteSuccess;
         }
-      } catch (err) {
-        console.log('Main error ', err);
-        returnData.error = {
-          error: err,
-          errorMsg: 'Something went wrong deleting customer!'
-        };
-        console.log('delete customer note  note data error', returnData);
-        // returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.push(customerSuccessDeleteChangeNote);
-      }
-    });
-  } else {
-    returnData.customerNoteDeleteSuccess = 'No note to delete.';
-    console.log('first returndata return error', returnData);
+      })
+    );
+
+    returnData.customerNoteDeleteSuccess = customerDeleteNotesResp;
+
+    if (customerDeleteNotesResp) {
+
+      return returnData;
+    }
+  } catch (err) {
+    returnData.error = {
+      error: err,
+      errorMsg: 'delete customer error'
+    }
+    console.log("error!", err)
+    return returnData;
   }
-
-  // Deleting customer note change notes for each customer note ID.success
-
-
-  // TODO: The End of the delete note section, Delete customer, Change notes and customer from here.
-  console.log(" Ending Return Data", returnData);
-  return returnData;
-
 }
 
 export default deleteCustomer;
