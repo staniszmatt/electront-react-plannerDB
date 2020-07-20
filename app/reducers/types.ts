@@ -25,12 +25,19 @@ export type singleCustomer = {
   customerName: string;
   id: number;
   success: string;
-  customerNotes: {
-    error: string;
-    noteList: {};
-    success: string;
-  };
   error: {};
+};
+
+export type CustomerNotes = {
+  error: string;
+  noteList: {
+    [index: number]: {
+      changeNoteList: {
+        list: [];
+      };
+    };
+  };
+  success: string;
 };
 
 export type customerStateType = {
@@ -45,6 +52,7 @@ export type customerStateType = {
     customerList: [{ customerName: string }];
     singleCustomerInfo: {
       customer: singleCustomer;
+      customerNotes: CustomerNotes;
     };
     singleCustomerNoteID: number;
     error: [];

@@ -145,9 +145,9 @@ async function singleCustomer(request: Request) {
           returnData.customerNotes.success = 'Success';
         } else {
           returnData.customerNotes = {
-            success: 'false',
+            success: 'empty',
             noteList: customerNoteData.recordset,
-            error: 'Failed Getting Customer Notes.'
+            error: 'empty'
           };
         }
       } catch (error) {

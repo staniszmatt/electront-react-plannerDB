@@ -10,7 +10,8 @@ import {
   handleEditCustomerForm,
   handleAddCustomerNote,
   handleEditCustomerNote,
-  handleDeleteCustomerNote
+  handleDeleteCustomerNote,
+  handleDeleteCustomer
 } from '../../../actions/customerActions';
 import {
   toggleWarningModalState,
@@ -31,6 +32,7 @@ interface Props {
   handleEditCustomerNote: () => {};
   handleDeleteCustomerNote: (deleteProps: {}) => {};
   toggleWarningModalState: (warningModalResp: {}) => {};
+  handleDeleteCustomer: () => {};
   toggleModalState: () => {};
   customer: {
     singleCustomerInfo: {
@@ -50,7 +52,8 @@ interface Props {
       };
       customerNotes: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        noteList: {} | any;
+        noteList: { length: PropertyKey } | any;
+        error: string | { length: PropertyKey };
       };
       singleCustomerNoteID: number;
     };
@@ -71,6 +74,7 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
       handleAddCustomerNote,
       handleEditCustomerNote,
       handleDeleteCustomerNote,
+      handleDeleteCustomer,
       toggleWarningModalState,
       toggleModalState,
       reset
@@ -80,11 +84,13 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function CustomerHeadTable(props: Props) {
+  console.log("Single Customer Props:", props);
   const {
     handleEditCustomerForm,
     handleAddCustomerNote,
     handleEditCustomerNote,
     handleDeleteCustomerNote,
+    handleDeleteCustomer,
     toggleWarningModalState,
     toggleModalState
   } = props;
@@ -198,7 +204,7 @@ function CustomerHeadTable(props: Props) {
   const handleDeleteNoteClick = (_event: {}, deleteProps: {}) => {
     const warningModalResp = {
       warningMsg: 'Do you really want to delete this customer note?',
-      handleDeleteCustomerNote: () => {
+      actionFunction: () => {
         handleDeleteCustomerNote(deleteProps);
       },
       closeModal: () => {
@@ -211,6 +217,16 @@ function CustomerHeadTable(props: Props) {
   const renderCustomerNotes = () => {
     const customerNoteList = singleCustomer.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
+    console.log('Single Customer Displayt Props', singleCustomer);
+
+    if (singleCustomer.customerNotes.success === 'false') {
+      return <div>FAILED TO GET CUSTOMER NOTES!</div>;
+      // eslint-disable-next-line no-else-return
+    }
+
+    if (singleCustomer.customerNotes.success === 'empty') {
+      return <div>NO NOTES HAVE BEEN ADDED!</div>;
+    }
 
     Object.keys(customerNoteList).forEach(
       (noteListKey: string, objIndex: number) => {
@@ -235,7 +251,7 @@ function CustomerHeadTable(props: Props) {
                   ClickHandler={editCustomerNote}
                 />
               </div>
-              <div>
+              <div className={styles['delete-btn']}>
                 <Btn
                   props={noteListKey}
                   buttonName="Delete Note"
@@ -307,10 +323,28 @@ function CustomerHeadTable(props: Props) {
     handleEditCustomerForm(singleCustomer.customer.customerName);
   };
 
+  const deleteCustomer = () => {
+    const warningModalResp = {
+      warningMsg: 'Do you really want to delete this customer note?',
+      actionFunction: () => {
+        handleDeleteCustomer();
+      },
+      closeModal: () => {
+        toggleModalState();
+      }
+    };
+    toggleWarningModalState(warningModalResp);
+  };
+
   return (
     <div className={styles['main-single-customer']}>
       <div>
-        <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
+        <div>
+          <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
+        </div>
+        <div className={styles['delete-btn']}>
+          <Btn buttonName="DELETE CUSTOMER" ClickHandler={deleteCustomer} />
+        </div>
       </div>
       <div className={styles['single-main-customer-info']}>
         <div>

@@ -6,17 +6,17 @@ import ModalBtn from '../buttonFunctions/buttonClickHandler';
 interface Props {
   props: {
     warningMsg: string;
-    handleDeleteCustomerNote: () => {};
+    actionFunction: () => {};
     closeModal: () => {};
   };
 }
 
 export default function WarningModal(props: Props) {
-  const { handleDeleteCustomerNote } = props.props;
+  const { actionFunction } = props.props;
   const { closeModal } = props.props;
 
   const handDeleteBtn = () => {
-    handleDeleteCustomerNote();
+    actionFunction();
     closeModal();
   };
 

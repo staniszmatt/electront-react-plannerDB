@@ -21,6 +21,7 @@ import postCustomerNote from './api/postCustomerNote';
 import updateCustomer from './api/updateCustomer';
 import updateCustomerNote from './api/updateCustomerNote';
 import deleteCustomerNote from './api/deleteCustomerNote';
+import deleteCustomer from './api/deleteCustomer';
 
 export default class AppUpdater {
   constructor() {
@@ -155,6 +156,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     // Delete Requests Here
     case 'deleteCustomerNote':
       requestToSend = deleteCustomerNote;
+      break;
+    case 'deleteCustomer':
+      requestToSend = deleteCustomer;
       break;
     default:
       switchFail = true;
