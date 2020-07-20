@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.customer-head-container {
+.page-head-container {
   display: inline-flex;
   width: 100%;
   background-color: #8080802b;
@@ -11,7 +11,7 @@
   position: fixed;
 }
 
-.customer-data {
+.page-data {
   margin-top: 100px;
   margin-left: 15px;
   overflow: hidden;

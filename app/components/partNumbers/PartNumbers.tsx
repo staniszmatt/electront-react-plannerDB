@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../customer/Customer.css';
+import styles from '../styling/pageHeaderBar.css';
 import PartNumberBtn from '../buttonFunctions/buttonClickHandler';
 import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField';
 
@@ -23,7 +23,7 @@ export default function PartNumbers(props: Props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles['customer-head-container']}>
+      <div className={styles['page-head-container']}>
         <div className={styles.btnContainer}>
           <PartNumberBtn
             buttonName="List Part Numbers"
@@ -36,7 +36,7 @@ export default function PartNumbers(props: Props) {
         </div>
         <PartNumSearchFormComponent onSubmit={handlePartNumSearchForm} />
       </div>
-      <div className={styles['customer-data']}>
+      <div className={styles['page-data']}>
         <div>TESTING PART NUMBER PAGE</div>
       </div>
     </div>

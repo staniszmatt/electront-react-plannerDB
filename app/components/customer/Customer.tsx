@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import styles from './Customer.css';
+import styles from '../styling/pageHeaderBar.css';
 import CustomerBtn from '../buttonFunctions/buttonClickHandler';
 import CustomerHeadTable from './customerList/customerHeaderTable';
 import CustomerErrorDisplay from '../../errorComponents/ErrorComponent';
@@ -63,7 +63,7 @@ export default function Customer(props: Props) {
   } = props;
   return (
     <div className={styles.container}>
-      <div className={styles['customer-head-container']}>
+      <div className={styles['page-head-container']}>
         <div className={styles.btnContainer}>
           <CustomerBtn
             buttonName="List Customers"
@@ -76,7 +76,7 @@ export default function Customer(props: Props) {
         </div>
         <CustomerSearchForm onSubmit={handleCustomerSearchForm} />
       </div>
-      <div className={styles["customer-data"]}>
+      <div className={styles["page-data"]}>
         {props.customer.loadingState && <div>LOADING</div>}
         {props.customer.errorState && <CustomerErrorDisplay props={props.customer.error} />}
         {props.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customerList} />}
