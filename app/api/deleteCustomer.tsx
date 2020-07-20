@@ -1,9 +1,8 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-else-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import 'mssql/msnodesqlv8';
-import { ReactReduxContext } from 'react-redux';
 import pool from '../config/config';
-import postNewChangeNote from './postChangeNote';
 
 interface Request {
   request: string;
@@ -25,22 +24,32 @@ interface List {
       error?: {};
     };
   };
-};
+}
 
 interface ReturnData {
   error?: {};
   success?: string;
+  resp: {};
   customerNoteDeleteSuccess?: List | string | any;
+  customerChangeNote?: {
+    resp: {};
+    success: string;
+    error: {};
+  } | any;
 }
 
 async function deleteCustomer(request: Request) {
   const returnData: ReturnData = {
     error: {},
     success: '',
-    customerNoteDeleteSuccess: {}
+    resp: {},
+    customerNoteDeleteSuccess: {},
+    customerChangeNote: {
+      resp: {},
+      success: '',
+      error: {}
+    }
   };
-
-  console.log('Request Data: ', request);
 
   /**
    * Deleting customer!
@@ -50,30 +59,11 @@ async function deleteCustomer(request: Request) {
    * Last delete the customer
    */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   try {
     // Var for customerSuccessDeleteChangeNote on mapped delete notes
     const customerDeleteNotesResp = await Promise.all(
       request.customerNoteIDList.map(async (value: number) => {
-
-
-        const customerNoteDeleteSuccess = {};
+        const customerNoteDeleteSuccess: any = {};
         const customerSuccessDeleteNote = {
           success: '',
           data: {},
@@ -87,12 +77,10 @@ async function deleteCustomer(request: Request) {
           }
         };
 
-        console.log('Note ID:', value);
         const noteID = value.toString();
         // Create the object for each note in map function.
         customerNoteDeleteSuccess[noteID] = customerSuccessDeleteNote;
 
-        console.log('start of return data delete note', returnData);
         // If there are notes, delete them, otherwise, send back that there were none to delete.
         if (request.customerNoteIDList.length > 0) {
           try {
@@ -100,34 +88,28 @@ async function deleteCustomer(request: Request) {
             const deleteNoteChangeNoteQuery = `DELETE changeNote
                 WHERE typeID = ${value} AND typeCategory = 'customerNote'`;
             const deleteNoteChangeNoteData = await db.query(deleteNoteChangeNoteQuery);
-            console.log('customer delete note return data for change notes', deleteNoteChangeNoteData);
 
             if (deleteNoteChangeNoteData) {
               customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Success';
               customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.data = deleteNoteChangeNoteData;
-              console.log('return data delete change notes', customerNoteDeleteSuccess);
+
               // Delete the note here.
               try {
                 const deleteNoteQuery = `
                   DELETE customerNote
                     WHERE customerID = ${request.customerID}`;
                 const deleteNoteData = await db.query(deleteNoteQuery);
-                console.log('delete note data', deleteNoteData);
+
                 if (deleteNoteData.rowsAffected.length > 0) {
                   customerNoteDeleteSuccess[noteID].success = 'Success';
                   customerNoteDeleteSuccess[noteID].data = deleteNoteData;
-
-                  console.log('delete customer note final return data', customerNoteDeleteSuccess);
-
                 } else {
                   customerNoteDeleteSuccess[noteID].success = 'Failed';
                   customerNoteDeleteSuccess[noteID].data = deleteNoteData;
-                  console.log('delete customer note final return data error', customerNoteDeleteSuccess);
                 }
               } catch (err) {
                 customerNoteDeleteSuccess[noteID].success = 'Failed to delete customer note!';
                 customerNoteDeleteSuccess[noteID].error = err;
-                console.log('delete customer note final return data error', customerNoteDeleteSuccess);
               }
             } else {
               customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.success.success = 'Failed to delete note, change notes.';
@@ -135,46 +117,71 @@ async function deleteCustomer(request: Request) {
               customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.error = {
                 error: 'Something went wrong deleting the notes, change notes'
               };
-              console.log('delete customer note  return change note data error', customerNoteDeleteSuccess);
             }
-            console.log("final return customer note data", customerNoteDeleteSuccess)
             return customerNoteDeleteSuccess;
           } catch (err) {
-            console.log('Main error ', err);
             customerNoteDeleteSuccess[noteID].error = {
               error: err,
               errorMsg: 'Something went wrong deleting customer!'
             };
-            console.log('delete customer note  note data error', customerNoteDeleteSuccess);
             return customerNoteDeleteSuccess;
             // returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.push(customerSuccessDeleteChangeNote);
           }
         } else {
-          console.log('final map error ');
           customerNoteDeleteSuccess[noteID].error = {
-            error: err,
             errorMsg: 'Something went wrong deleting customer!'
           };
-          console.log('delete customer note  note data error', customerNoteDeleteSuccess);
           return customerNoteDeleteSuccess;
         }
       })
     );
 
     returnData.customerNoteDeleteSuccess = customerDeleteNotesResp;
-
+    // Delete Customer Change Notes Here
     if (customerDeleteNotesResp) {
+      // TODO: Start Delete Customer Notes and then customer
+      // return returnData;
+      try {
+        const db = await pool.connect();
+        const deleteCustomerChangeNoteQuery = `DELETE changeNote
+            WHERE typeID = ${request.customerID} AND typeCategory = 'customer'`;
+        const deleteCustomerChangeNoteData: {} = await db.query(deleteCustomerChangeNoteQuery);
 
-      return returnData;
+        if (deleteCustomerChangeNoteData) {
+          returnData.customerChangeNote.success = 'Success';
+          returnData.customerChangeNote.error = {};
+          returnData.customerChangeNote.resp = deleteCustomerChangeNoteData;
+          // Delete Customer Here
+          try {
+            const deleteCustomerQuery = `
+            DELETE customer
+              WHERE id = ${request.customerID}`;
+            const deleteCustomerData = await db.query(deleteCustomerQuery);
+            if (deleteCustomerData) {
+              returnData.success = 'Success';
+              returnData.resp = deleteCustomerData;
+              return returnData;
+            }
+          } catch (err) {
+            returnData.error = err;
+            returnData.success = 'Failed';
+            return returnData;
+          }
+        }
+      } catch (err) {
+        returnData.error = err;
+      }
     }
   } catch (err) {
     returnData.error = {
       error: err,
       errorMsg: 'delete customer error'
     }
-    console.log("error!", err)
     return returnData;
   }
+  returnData.success = 'Failed';
+  returnData.error = { error: 'Something went wrong deleting customer!'};
+  return returnData;
 }
 
 export default deleteCustomer;
