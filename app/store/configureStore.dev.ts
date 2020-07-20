@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
@@ -31,7 +32,7 @@ const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState: {
+const configureStore = (initialState?: {
   // counter?: number | counterStateType;
   customer?:
     | {
@@ -45,7 +46,8 @@ const configureStore = (initialState: {
         customerList: [];
         singleCustomerInfo: {};
         error: [];
-      }
+        // eslint-disable-next-line prettier/prettier
+      } | any
     | customerStateType;
   modals?:
     | {
@@ -54,7 +56,8 @@ const configureStore = (initialState: {
         successModalState: boolean;
         warningModalState: boolean;
         modalMessage: string;
-      }
+        // eslint-disable-next-line prettier/prettier
+      } | any
     | modalStateType;
 }) => {
   // Redux Configuration
