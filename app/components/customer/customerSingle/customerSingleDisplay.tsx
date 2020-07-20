@@ -54,6 +54,7 @@ interface Props {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         noteList: { length: PropertyKey } | any;
         error: string | { length: PropertyKey };
+        success: string;
       };
       singleCustomerNoteID: number;
     };
@@ -84,7 +85,6 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function CustomerHeadTable(props: Props) {
-  console.log("Single Customer Props:", props);
   const {
     handleEditCustomerForm,
     handleAddCustomerNote,
@@ -217,7 +217,6 @@ function CustomerHeadTable(props: Props) {
   const renderCustomerNotes = () => {
     const customerNoteList = singleCustomer.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
-    console.log('Single Customer Displayt Props', singleCustomer);
 
     if (singleCustomer.customerNotes.success === 'false') {
       return <div>FAILED TO GET CUSTOMER NOTES!</div>;

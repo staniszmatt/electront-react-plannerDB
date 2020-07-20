@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -18,7 +19,7 @@ interface Props {
     errorModalState: boolean;
     successModalState: boolean;
     warningModalState: boolean;
-    modalMessage: string;
+    modalMessage: any;
   };
 }
 
