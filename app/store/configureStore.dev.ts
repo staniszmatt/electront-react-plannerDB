@@ -7,6 +7,7 @@ import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
 // import * as counterActions from '../actions/counterActions';
 import * as customerActions from '../actions/customerActions';
+import * as partNumbersActions from '../actions/partNumbersActions';
 import * as modalActions from '../actions/modalActions';
 import {
   customerStateType,
@@ -38,6 +39,7 @@ const configureStore = (initialState?: {
   partNumbers?:
     | {
         loadingState: boolean;
+        loadPartAddPage: boolean;
       }
     | any
     | partNumbersStateType;
@@ -94,6 +96,7 @@ const configureStore = (initialState?: {
   // Redux DevTools Configuration
   const actionCreators = {
     ...customerActions,
+    ...partNumbersActions,
     ...modalActions,
     // ...counterActions,
     ...routerActions

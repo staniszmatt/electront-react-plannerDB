@@ -9,6 +9,7 @@ import {
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 export const PARTNUM_LOADING = 'PARTNUM_LOADING';
+export const PARTNUM_LOAD_ADD_PAGE = 'PARTNUM_LOAD_ADD_PAGE';
 
 
 // Un-used arguments setup
@@ -29,6 +30,12 @@ export const PARTNUM_LOADING = 'PARTNUM_LOADING';
 export function partNumLoading() {
   return {
     type: PARTNUM_LOADING
+  };
+}
+
+export function partNumLoadAddPage() {
+  return {
+    type: PARTNUM_LOAD_ADD_PAGE
   };
 }
 

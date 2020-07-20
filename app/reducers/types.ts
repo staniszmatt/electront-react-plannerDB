@@ -5,8 +5,9 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 // };
 
 export type partNumbersStateType = {
-  partNumbers: {
+  partnumbers: {
     loadingState: boolean;
+    loadPartAddPage: boolean;
   };
 };
 
@@ -68,10 +69,12 @@ export type customerStateType = {
 // export type GetState = () => counterStateType;
 export type GetCustomerState = () => customerStateType;
 export type GetErrorModalState = () => modalStateType;
+export type GetPartNumbersState = () => partNumbersStateType;
 
 export type Store =
   | ReduxStore<customerStateType, Action<string>>
-  | ReduxStore<modalStateType, Action<string>>;
+  | ReduxStore<modalStateType, Action<string>>
+  | ReduxStore<partNumbersStateType, Action<string>>;
 // | ReduxStore<counterStateType, Action<string>>
 
 export type Dispatch = ReduxDispatch<Action<string>>;

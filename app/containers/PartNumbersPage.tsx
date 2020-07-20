@@ -2,7 +2,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import PartNumbers from '../components/partNumbers/PartNumbers';
 import {
-  partNumLoading,
+  partNumLoadAddPage,
   handlePartNumSearchForm,
   handlePartNumberAddForm,
   handleListPartNum
@@ -11,14 +11,14 @@ import { partNumbersStateType } from '../reducers/types';
 
 function mapStateToProps(state: partNumbersStateType) {
   return {
-    partNumbers: state.partNumbers
+    partNumbers: state.partnumbers
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch<null>) {
   return bindActionCreators(
     {
-      partNumLoading,
+      partNumLoadAddPage,
       handlePartNumSearchForm,
       handlePartNumberAddForm,
       handleListPartNum

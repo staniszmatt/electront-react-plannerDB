@@ -6,6 +6,7 @@ import { reducer as fromReducer } from 'redux-form';
 // import {  } from 'react-modal';
 // import counter from './counter';
 import customer from './customer';
+import partnumbers from './partnumbers';
 import modals from './modals';
 
 // const { customer } = customerCombineForReducer;
@@ -17,6 +18,7 @@ export default function createRootReducer(history: History) {
     form: fromReducer,
     // counter,
     modals,
-    customer
+    customer,
+    partnumbers
   });
 }

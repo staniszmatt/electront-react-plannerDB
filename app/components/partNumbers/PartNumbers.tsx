@@ -1,14 +1,19 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styles from '../styling/pageHeaderBar.css';
 import PartNumberBtn from '../buttonFunctions/buttonClickHandler';
 import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField';
+import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
 
 interface Props {
   handlePartNumSearchForm: () => {};
   handlePartNumberAddForm: () => {};
   handleListPartNum: () => {};
-  props: {
+  partNumLoadAddPage: () => {};
+  part
+  partNumbers: {
     loadingState: boolean;
+    loadPartAddPage: boolean;
   };
 }
 
@@ -16,8 +21,11 @@ export default function PartNumbers(props: Props) {
   const {
     handlePartNumSearchForm,
     handlePartNumberAddForm,
-    handleListPartNum
+    handleListPartNum,
+    partNumLoadAddPage
   } = props;
+
+  console.log("load add page state: ", props.partNumbers.loadPartAddPage)
 
   console.log('partNumber Props:', props);
 
@@ -31,13 +39,15 @@ export default function PartNumbers(props: Props) {
           />
           <PartNumberBtn
             buttonName="Add Part Number"
-            ClickHandler={handlePartNumberAddForm}
+            ClickHandler={partNumLoadAddPage}
           />
         </div>
         <PartNumSearchFormComponent onSubmit={handlePartNumSearchForm} />
       </div>
       <div className={styles['page-data']}>
-        <div>TESTING PART NUMBER PAGE</div>
+        {props.partNumbers.loadPartAddPage && (
+          <PartNumAddFormComponent onSubmit={handlePartNumberAddForm} />
+        )}
       </div>
     </div>
   );
