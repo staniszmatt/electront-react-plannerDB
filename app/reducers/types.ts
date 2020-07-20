@@ -4,6 +4,12 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 //   counter: number;
 // };
 
+export type partNumbersStateType = {
+  partNumbers: {
+    loadingState: boolean;
+  };
+};
+
 export type modalStateType = {
   modals: {
     modalState: boolean;

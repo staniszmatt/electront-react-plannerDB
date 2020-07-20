@@ -10,7 +10,8 @@ import * as customerActions from '../actions/customerActions';
 import * as modalActions from '../actions/modalActions';
 import {
   customerStateType,
-  modalStateType
+  modalStateType,
+  partNumbersStateType
   // counterStateType
 } from '../reducers/types';
 
@@ -34,6 +35,12 @@ const rootReducer = createRootReducer(history);
 
 const configureStore = (initialState?: {
   // counter?: number | counterStateType;
+  partNumbers?:
+    | {
+        loadingState: boolean;
+      }
+    | any
+    | partNumbersStateType;
   customer?:
     | {
         loadingState: boolean;
@@ -47,7 +54,8 @@ const configureStore = (initialState?: {
         singleCustomerInfo: {};
         error: [];
         // eslint-disable-next-line prettier/prettier
-      } | any
+      }
+    | any
     | customerStateType;
   modals?:
     | {
@@ -57,7 +65,8 @@ const configureStore = (initialState?: {
         warningModalState: boolean;
         modalMessage: string;
         // eslint-disable-next-line prettier/prettier
-      } | any
+      }
+    | any
     | modalStateType;
 }) => {
   // Redux Configuration

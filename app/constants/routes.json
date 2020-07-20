@@ -1,4 +1,5 @@
 {
   "HOME": "/",
-  "CUSTOMER": "/customer"
+  "CUSTOMER": "/customer",
+  "PARTNUMBERS": "/partNumbers"
 }
