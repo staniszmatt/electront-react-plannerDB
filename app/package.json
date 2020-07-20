@@ -14,5 +14,12 @@
     "postinstall": "yarn electron-rebuild"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "msnodesqlv8": "^1.1.8",
+    "mssql": "^6.2.0"
+  },
+  "devDependencies": {
+    "@types/react-modal": "^3.10.6",
+    "@types/redux-form": "^8.2.6"
+  }
 }

@@ -1,0 +1,15 @@
+.errorContainer {
+  width: 100%;
+  padding-top: 20px;
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+.errorRowContainer {
+  width: 100%;
+  display: inline-flex;
+}
+
+.errorName {
+  padding-right: 5px;
+}

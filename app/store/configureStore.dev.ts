@@ -1,11 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
-import * as counterActions from '../actions/counter';
-import { counterStateType } from '../reducers/types';
+// import * as counterActions from '../actions/counterActions';
+import * as customerActions from '../actions/customerActions';
+import * as modalActions from '../actions/modalActions';
+import {
+  customerStateType,
+  modalStateType
+  // counterStateType
+} from '../reducers/types';
 
 declare global {
   interface Window {
@@ -25,7 +32,34 @@ const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState?: counterStateType) => {
+const configureStore = (initialState?: {
+  // counter?: number | counterStateType;
+  customer?:
+    | {
+        loadingState: boolean;
+        errorState: boolean;
+        loadedCustomerListState: boolean;
+        loadedCustomerAddState: boolean;
+        loadCustomerAddPage: boolean;
+        loadCustomerSinglePage: boolean;
+        loadCustomerEditPage: boolean;
+        customerList: [];
+        singleCustomerInfo: {};
+        error: [];
+        // eslint-disable-next-line prettier/prettier
+      } | any
+    | customerStateType;
+  modals?:
+    | {
+        modalState: boolean;
+        errorModalState: boolean;
+        successModalState: boolean;
+        warningModalState: boolean;
+        modalMessage: string;
+        // eslint-disable-next-line prettier/prettier
+      } | any
+    | modalStateType;
+}) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -50,7 +84,9 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
+    ...customerActions,
+    ...modalActions,
+    // ...counterActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

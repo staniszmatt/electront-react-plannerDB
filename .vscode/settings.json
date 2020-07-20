@@ -26,5 +26,36 @@
     "test/**/__snapshots__": true,
     "yarn.lock": true,
     "*.{css,sass,scss}.d.ts": true
-  }
+  },
+  "cSpell.words": [
+    "Amila",
+    "Rangaraj",
+    "Vikram",
+    "Welihinda",
+    "browserslist",
+    "compat",
+    "customerlist",
+    "develar",
+    "devtron",
+    "eslintignore",
+    "esnext",
+    "fbjs",
+    "fontawesome",
+    "nsis",
+    "opencollective",
+    "postlint",
+    "preinstall",
+    "prestart",
+    "prettierrc",
+    "spectron",
+    "stylelintrc",
+    "submenu",
+    "tapable",
+    "testcafe",
+    "unhide",
+    "vfile",
+    "webm",
+    "webp",
+    "woff"
+  ]
 }

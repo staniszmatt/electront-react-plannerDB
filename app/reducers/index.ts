@@ -1,11 +1,22 @@
 import { combineReducers } from 'redux';
+// import { reducer as formReducer } from 'redux-form';
 import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
-import counter from './counter';
+import { reducer as fromReducer } from 'redux-form';
+// import {  } from 'react-modal';
+// import counter from './counter';
+import customer from './customer';
+import modals from './modals';
+
+// const { customer } = customerCombineForReducer;
+// const { errorModal } = errorModalCombineForReducer;
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
-    counter
+    form: fromReducer,
+    // counter,
+    modals,
+    customer
   });
 }

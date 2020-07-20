@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint global-require: off, no-console: off */
-
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -8,11 +8,20 @@
  * When running `yarn build` or `yarn build-main`, this file is compiled to
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  */
+import 'mssql/msnodesqlv8';
 import path from 'path';
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import getCustomerList from './api/getCustomerList';
+import getSingleCustomer from './api/getSingleCustomer';
+import postNewCustomer from './api/postNewCustomer';
+import postCustomerNote from './api/postCustomerNote';
+import updateCustomer from './api/updateCustomer';
+import updateCustomerNote from './api/updateCustomerNote';
+import deleteCustomerNote from './api/deleteCustomerNote';
+import deleteCustomer from './api/deleteCustomer';
 
 export default class AppUpdater {
   constructor() {
@@ -68,6 +77,8 @@ const createWindow = async () => {
           }
   });
 
+  mainWindow.maximize();
+
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -114,4 +125,57 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+ipcMain.on('asynchronous-message', async (event, arg) => {
+  let requestToSend: any = () => {};
+  let switchFail = false;
+
+  switch (arg.request) {
+    // Get Requests Here.
+    case 'getCustomerList':
+      requestToSend = getCustomerList;
+      break;
+    case 'getSearchCustomer':
+      requestToSend = getSingleCustomer;
+      break;
+    // Post Requests Here.
+    case 'postAddCustomer':
+      requestToSend = postNewCustomer;
+      break;
+    case 'postCustomerNote':
+      requestToSend = postCustomerNote;
+      break;
+    // Update Requests Here.
+    case 'updateCustomer':
+      requestToSend = updateCustomer;
+      break;
+    case 'updateCustomerNote':
+      requestToSend = updateCustomerNote;
+      break;
+    // Delete Requests Here
+    case 'deleteCustomerNote':
+      requestToSend = deleteCustomerNote;
+      break;
+    case 'deleteCustomer':
+      requestToSend = deleteCustomer;
+      break;
+    default:
+      switchFail = true;
+      break;
+  }
+  if (switchFail) {
+    event.sender.send('asynchronous-reply', {
+      error: {
+        switchFail: `No Request found for ${arg.request}`
+      }
+    });
+    return;
+  }
+  try {
+    const data = await requestToSend(arg);
+    event.sender.send('asynchronous-reply', data);
+  } catch (err) {
+    event.sender.send('asynchronous-reply', err);
+  }
 });

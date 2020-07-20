@@ -1,0 +1,39 @@
+.main-table {
+  width: 100%;
+}
+
+.main-table caption {
+  font-size: 25px;
+}
+
+.main-table thead tr {
+  font-size: 18px;
+  display: block;
+  max-width: 1025px;
+}
+
+.main-table thead tr th {
+  width: 15%;
+  font-weight: unset;
+}
+
+.t-body {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  height: 550px;
+  text-align: center;
+}
+
+.t-body tr td {
+  width: 15%;
+}
+
+.t-row > button > td:first-child {
+  color: #00ee;
+  text-decoration: underline;
+}
+
+.t-row > button > td:first-child:hover {
+  cursor: pointer;
+}

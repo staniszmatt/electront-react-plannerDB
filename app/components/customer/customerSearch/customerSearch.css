@@ -1,0 +1,31 @@
+.form-main-container {
+  display: inline-flex;
+  margin: auto;
+}
+
+.form-main-container button {
+  font-family: serif;
+  border-radius: 3px;
+  filter: drop-shadow(1.5px 1.5px 1.5px black);
+  width: 60px;
+  height: 25px;
+  margin: 5px;
+}
+
+.form-main-container button:hover {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+.form-main-container button:active {
+  background-color: cornflowerblue;
+  cursor: pointer;
+  box-shadow: 1px 1px rgba(255, 255, 255, 0.2);
+  transform: scale(0.97);
+  outline: 1px black;
+}
+
+.form-main-container button:focus {
+  outline: thin;
+}
