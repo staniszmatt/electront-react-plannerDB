@@ -20,6 +20,8 @@ const enhancer = applyMiddleware(thunk, router);
 function configureStore(initialState?: {
   partNumbers?:
     | {
+        errorState: boolean;
+        error: {};
         loadingState: boolean;
         loadPartAddPage: boolean;
       }

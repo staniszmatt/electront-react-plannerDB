@@ -7,6 +7,7 @@ import CustomerHeadTable from './customerList/customerHeaderTable';
 import CustomerErrorDisplay from '../../errorComponents/ErrorComponent';
 import CustomerSearchForm from './customerSearch/customerSearchField';
 import CustomerAddFormComponent from './customerAdd/customerAdd';
+import LoadingScreen from '../LoadingDisplay';
 import CustomerSingleDisplay from './customerSingle/customerSingleDisplay';
 import CustomerEditFormComponent from './customerEdit/customerEditPage';
 
@@ -63,6 +64,7 @@ export default function Customer(props: Props) {
   } = props;
   return (
     <div className={styles.container}>
+      {props.customer.loadingState && <LoadingScreen />}
       <div className={styles['page-head-container']}>
         <div className={styles.btnContainer}>
           <CustomerBtn
@@ -77,7 +79,6 @@ export default function Customer(props: Props) {
         <CustomerSearchForm onSubmit={handleCustomerSearchForm} />
       </div>
       <div className={styles["page-data"]}>
-        {props.customer.loadingState && <div>LOADING</div>}
         {props.customer.errorState && <CustomerErrorDisplay props={props.customer.error} />}
         {props.customer.loadedCustomerListState && <CustomerHeadTable props={props.customer.customerList} />}
         {props.customer.loadCustomerAddPage && <CustomerAddFormComponent onSubmit={handleCustomerAddForm} />}

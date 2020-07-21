@@ -266,6 +266,7 @@ export function pullRequestCustomerListData() {
       request: 'getCustomerList'
     };
     const handlePullCustomerListData = (_event: {}, resp: { list: [] }) => {
+
       if (resp.list.length > 0) {
         dispatch(customerListReceived(resp));
       } else {

@@ -38,6 +38,8 @@ const configureStore = (initialState?: {
   // counter?: number | counterStateType;
   partNumbers?:
     | {
+        errorState: boolean;
+        error: {};
         loadingState: boolean;
         loadPartAddPage: boolean;
       }

@@ -6,6 +6,8 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 
 export type partNumbersStateType = {
   partnumbers: {
+    errorState: boolean;
+    error: {};
     loadingState: boolean;
     loadPartAddPage: boolean;
   };

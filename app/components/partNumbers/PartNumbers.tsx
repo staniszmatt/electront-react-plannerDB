@@ -3,6 +3,8 @@ import React from 'react';
 import styles from '../styling/pageHeaderBar.css';
 import PartNumberBtn from '../buttonFunctions/buttonClickHandler';
 import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField';
+import PartNumberErrorDisplay from '../../errorComponents/ErrorComponent';
+import LoadingScreen from '../LoadingDisplay';
 import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
 
 interface Props {
@@ -10,8 +12,9 @@ interface Props {
   handlePartNumberAddForm: () => {};
   handleListPartNum: () => {};
   partNumLoadAddPage: () => {};
-  part
   partNumbers: {
+    errorState: boolean;
+    error: {};
     loadingState: boolean;
     loadPartAddPage: boolean;
   };
@@ -31,6 +34,7 @@ export default function PartNumbers(props: Props) {
 
   return (
     <div className={styles.container}>
+      {props.partNumbers.loadingState && <LoadingScreen />}
       <div className={styles['page-head-container']}>
         <div className={styles.btnContainer}>
           <PartNumberBtn
@@ -45,6 +49,9 @@ export default function PartNumbers(props: Props) {
         <PartNumSearchFormComponent onSubmit={handlePartNumSearchForm} />
       </div>
       <div className={styles['page-data']}>
+        {props.partNumbers.errorState && (
+          <PartNumberErrorDisplay props={props.partNumbers.error} />
+        )}
         {props.partNumbers.loadPartAddPage && (
           <PartNumAddFormComponent onSubmit={handlePartNumberAddForm} />
         )}
