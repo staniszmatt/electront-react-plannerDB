@@ -6,6 +6,8 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
+import FormYesNo from '../../forms/formYesNo';
+import FormTextArea from '../../forms/formTextArea';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
 import styles from './customerAdd.css';
@@ -51,89 +53,36 @@ const CustomerAddFormComponent = (
           type="text"
           format={toUpperCase}
         />
-        <label>
-          General Standards Approved:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerGenStatus"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerGenStatus"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label>
-          RS Standards Approved:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerRSStatus"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerRSStatus"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label>
-          Customer Active:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerActive"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerActive"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label className={styles['customer-notes-form']}>
-          Customer Notes:
-          <div>
-            <Field
-              label="Customer Notes:"
-              component="textarea"
-              name="customerNote"
-              type="textarea"
-              aria-multiline
-              rows="15"
-              normalize={charCheck}
-            />
-          </div>
-        </label>
+
+        <Field
+          label="General Standards Approved:"
+          name="customerGenStatus"
+          component={FormYesNo}
+          type="radio"
+        />
+
+        <Field
+          label="RS Standards Approved:"
+          name="customerRSStatus"
+          component={FormYesNo}
+          type="radio"
+        />
+
+        <Field
+          label="Customer Active:"
+          name="customerActive"
+          component={FormYesNo}
+          type="radio"
+        />
+
+        <Field
+          label="Customer Notes:"
+          name="customerNote"
+          component={FormTextArea}
+          rows="15"
+          normalize={charCheck}
+        />
+
       </div>
       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>

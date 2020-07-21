@@ -43,11 +43,8 @@ export default function FormDropDown(props: Props) {
 
   return (
     <div className={styles['form-container']}>
-      <label className={styles['form-label-input']} htmlFor={name}>
-        {label}
-      </label>
+      <label htmlFor={name}>{label}</label>
       <select
-        className={styles['form-field']}
         type={type || 'select'}
         checked={checkedValue}
         defaultValue={defaultValue}

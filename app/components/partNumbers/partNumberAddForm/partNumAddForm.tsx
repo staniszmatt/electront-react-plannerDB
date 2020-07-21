@@ -67,21 +67,17 @@ const PartNumAddFormComponent = (
           name="partSerialNumReq"
           component={FormYesNo}
           type="radio"
-          data={materialType}
         />
         <Field
           label="Set for Production:"
           name="partSetForProduction"
           component={FormYesNo}
           type="radio"
-          data={materialType}
         />
         <Field
           label="Part Number Notes:"
           name="partNumberNote"
           component={FormTextArea}
-          type="textarea"
-
           rows="15"
           normalize={charCheck}
         />

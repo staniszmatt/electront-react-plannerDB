@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Field, reduxForm, InjectedFormProps } from 'redux-form';
+import { Field } from 'redux-form';
 import FormRadioInput from './formRadioInput';
 import styles from './formInput.css';
 
@@ -22,13 +22,9 @@ interface Props {
 
 export default function FormYesNo(props: Props) {
   const {
-    checkedValue,
-    defaultValue,
-    disabled,
-    input,
     name,
     label,
-    type = 'text',
+    type,
     meta: { error, touched }
   } = props;
   return (
@@ -41,7 +37,7 @@ export default function FormYesNo(props: Props) {
             <Field
               name={props.input.name}
               component={FormRadioInput}
-              type="radio"
+              type={type}
               value="yes"
             />
           </label>
@@ -50,7 +46,7 @@ export default function FormYesNo(props: Props) {
             <Field
               name={props.input.name}
               component={FormRadioInput}
-              type="radio"
+              type={type}
               value="no"
             />
           </label>
