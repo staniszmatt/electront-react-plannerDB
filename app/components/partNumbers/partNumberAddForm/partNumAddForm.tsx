@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -5,10 +6,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import DropdownList from 'react-widgets/lib/DropdownList'
 import FormInput from '../../forms/formInput';
+import FormDropDown from '../../forms/formDropDown';
+import FormTextArea from '../../forms/formTextArea';
+import FormYesNo from '../../forms/formYesNo';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
-import '../../forms/formInput.css';
 import styles from './partNumAddForm.css';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -32,11 +34,14 @@ const PartNumAddFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
-  const material = [
-    { material: 'INCO', value: 'INCO' },
-    { material: 'CREST', value: 'CREST' },
-    { material: 'TIT', value: 'TIT' }
-  ];
+
+  const materialType = [
+    'INCONEL',
+    'ALUMINUM',
+    'TITANIUM',
+    'STAINLESS'
+  ]
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -51,95 +56,35 @@ const PartNumAddFormComponent = (
           format={toUpperCase}
         />
         <Field
-          label="Customer Code Name:"
-          component={DropdownList}
-          name="customerCodeName"
-          type="text"
-          format={toUpperCase}
+          label="Material Type:"
+          name="materialType"
+          component={FormDropDown}
+          type="select"
+          data={materialType}
         />
-        <label>
-          General Standards Approved:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerGenStatus"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerGenStatus"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label>
-          RS Standards Approved:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerRSStatus"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerRSStatus"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label>
-          Customer Active:
-          <div>
-            <label>
-              Yes
-              <Field
-                name="customerActive"
-                component={FormInput}
-                type="radio"
-                value="yes"
-              />
-            </label>
-            <label>
-              No
-              <Field
-                name="customerActive"
-                component={FormInput}
-                type="radio"
-                value="no"
-              />
-            </label>
-          </div>
-        </label>
-        <label className={styles['customer-notes-form']}>
-          Customer Notes:
-          <div>
-            <Field
-              label="Customer Notes:"
-              component="textarea"
-              name="customerNote"
-              type="textarea"
-              aria-multiline
-              rows="15"
-              normalize={charCheck}
-            />
-          </div>
-        </label>
+        <Field
+          label="Serial Number Required:"
+          name="partSerialNumReq"
+          component={FormYesNo}
+          type="radio"
+          data={materialType}
+        />
+        <Field
+          label="Set for Production:"
+          name="partSetForProduction"
+          component={FormYesNo}
+          type="radio"
+          data={materialType}
+        />
+        <Field
+          label="Part Number Notes:"
+          name="partNumberNote"
+          component={FormTextArea}
+          type="textarea"
+
+          rows="15"
+          normalize={charCheck}
+        />
       </div>
       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
@@ -147,50 +92,39 @@ const PartNumAddFormComponent = (
 };
 
 interface Values {
-  customerName: string;
-  customerCodeName: string;
-  customerGenStatus: string;
-  customerRSStatus: string;
-  customerActive: string;
+  partNumber: string;
+  materialType: string;
+  partSerialNumReq: string;
+  partSetForProduction: string;
 }
 
 function validate(values: Values) {
   const {
-    customerName,
-    customerCodeName,
-    customerGenStatus,
-    customerRSStatus,
-    customerActive
+    partNumber,
+    materialType,
+    partSerialNumReq,
+    partSetForProduction
   } = values;
-
+console.log("validation, values:", values);
   const errors: any = {};
 
-  if (!customerName) {
-    errors.customerName = 'Please Enter a Customer Name!';
+  if (!partNumber) {
+    errors.partNumber = 'Please Enter a Part Number!';
   }
-  if (customerName) {
-    if (customerName.length > 32) {
-      errors.customerName = 'Customer name is to long!';
+  if (partNumber) {
+    if (partNumber.length > 32) {
+      errors.partNumber = 'Part Number is too long!';
     }
   }
-  if (!customerCodeName) {
-    errors.customerCodeName = 'Please Enter a Customer Name!';
+  if (!materialType) {
+    errors.materialType = 'Please Enter a Material Type!';
   }
-  if (customerCodeName) {
-    if (customerCodeName.length > 6) {
-      errors.customerCodeName = 'Code name is too long! 6 Characters or less.';
-    }
+
+  if (!partSerialNumReq) {
+    errors.partSerialNumReq = 'Please Select if Part Requires a Serial Number!';
   }
-  if (!customerGenStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
-  }
-  if (!customerRSStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
-  }
-  if (!customerActive) {
-    errors.customerActive = 'Please Select if Customer is Active!';
+  if (!partSetForProduction) {
+    errors.partSetForProduction = 'Please Select if Approved for Production!';
   }
   return errors;
 }
