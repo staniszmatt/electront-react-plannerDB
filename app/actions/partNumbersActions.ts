@@ -11,20 +11,16 @@ import isObjEmpty from '../helpFunctions/isObjEmpty';
 export const PARTNUM_LOADING = 'PARTNUM_LOADING';
 export const PARTNUM_LOAD_ADD_PAGE = 'PARTNUM_LOAD_ADD_PAGE';
 
-
-// Un-used arguments setup
-// type unused = unknown;
-
 // Helper Functions
-// function returnOneZeroFromString(stringToCheck: string) {
-//   if (stringToCheck === null) {
-//     return null;
-//   }
-//   if (stringToCheck === 'yes') {
-//     return 1;
-//   }
-//   return 0;
-// }
+function returnOneZeroFromString(stringToCheck: string) {
+  if (stringToCheck === null) {
+    return null;
+  }
+  if (stringToCheck === 'yes') {
+    return 1;
+  }
+  return 0;
+}
 
 // Reducer function calls
 export function partNumLoading() {
@@ -55,10 +51,67 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
   }
 }
 
-export function handlePartNumberAddForm(props) {
-  console.log('Handle Add Part Number Form, props', props);
+export function handlePartNumberAddForm(partNumToAdd: {
+  materialType: string;
+  partNumber: string;
+  partNumberNote: string;
+  partSerialNumReq: string;
+  partSetForProduction: string;
+}) {
+  console.log('Handle Add Part Number Form, props', partNumToAdd);
+
   return (dispatch: Dispatch, getState: GetCustomerState) => {
-    console.log('Handle Add Part Number Form, state', getState())
+    console.log('Handle Add Part Number Form, state', getState());
+
+    const sendPartSerialNumReq = returnOneZeroFromString(partNumToAdd.partSerialNumReq);
+    const sendPartSetForProduction = returnOneZeroFromString(partNumToAdd.partSetForProduction)
+
+    const mainIPCRequest = {
+      request: 'postAddPartNumber',
+      partNumberName: partNumToAdd.partNumber,
+      partNumberMaterial: partNumToAdd.materialType,
+      partNumberSerialNumberRequired: sendPartSerialNumReq,
+      partNumberSetForProduction: sendPartSetForProduction
+    }
+
+    console.log('add part number action, ipc request:', mainIPCRequest);
+
+
+
+
+    // const handleAddPartNumberResp = (
+    //   _event: {},
+    //   resp: { error: { number: number } }
+    // ) => {
+      // if (isObjEmpty(resp.error)) {
+      //   const searchFormObj = {
+      //     customerSearch: mainIPCRequest.customerName
+      //   };
+
+      //   dispatch(reset('customerAddForm'));
+      //   dispatch(handleCustomerSearchForm(searchFormObj));
+      //   // eslint-disable-next-line no-prototype-builtins
+      //   if(!resp.hasOwnProperty('customerNote')) {
+      //     dispatch(toggleErrorModalState('RELOAD APP! Failed to add customer note! Possibly character issue.'));
+      //   }
+      // } else if (resp.error.number === 2627) {
+      //   // eslint-disable-next-line prettier/prettier
+      //   dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
+      //   dispatch(customerAddPageSelected());
+      // } else {
+      //   // If errors are not specified above, then pass whole error
+      //   dispatch(customerError(resp));
+      // }
+      // // This prevents adding a listener every time this function is called on ipcRenderOn
+      // ipcRenderer.removeListener('asynchronous-reply', handleAddPartNumberResp);
+    // };
+    // ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    // dispatch(customerPending());
+    // ipcRenderer.on('asynchronous-reply', handleAddPartNumberResp);
+
+
+
+
   }
 }
 
