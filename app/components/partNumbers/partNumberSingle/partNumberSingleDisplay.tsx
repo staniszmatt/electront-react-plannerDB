@@ -13,6 +13,7 @@ import {
   // handleDeleteCustomerNote,
   // handleDeleteCustomer
 } from '../../../actions/partNumbersActions';
+import NoteList from '../../notesList';
 import {
   toggleWarningModalState,
   toggleModalState
@@ -93,8 +94,6 @@ function PartNumberSingleDisplay(props: Props) {
   const partNumberNoteList = props.props.partNumberNotes.noteList;
 
 
-
-  debugger;
   // const {
     // handleEditCustomerForm,
     // handleAddCustomerNote,
@@ -352,6 +351,10 @@ function PartNumberSingleDisplay(props: Props) {
             <div>{renderChangeNoteRow(partNumberChangeNoteList)}</div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <NoteList props={partNumberNoteList} />
       </div>
 
       {/** TODO: Setup Notes Section here! */}

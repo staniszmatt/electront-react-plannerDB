@@ -2,23 +2,28 @@ import React, { useState } from 'react';
 import SingleChangeNote from './singleChangeNote';
 import AddNote from './addNote';
 import EditNote from './editNote';
+import Btn from './buttonFunctions/buttonClickHandler';
+import styles from './customer/customerSingle/customerSingleDisplay.css';
 
 interface Props {
-  noteType: string;
-  noteList: {
-    [id: number]: {
-      changeNoteList: [];
-    };
-  };
-  editNote: () => {};
-  deleteNote: () => {};
-  addNote: () => {};
-  handleAdd: () => {};
-  handleEdit: () => {};
-  handleDelete: () => {};
+  // noteType: string;
+  // noteList: {
+  //   [id: number]: {
+  //     changeNoteList: [];
+  //   };
+  // };
+  // editNote: () => {};
+  // deleteNote: () => {};
+  // addNote: () => {};
+  // handleAdd: () => {};
+  // handleEdit: () => {};
+  // handleDelete: () => {};
 }
 
 export default function noteList(props: Props) {
+  console.log('notes, props', props);
+  const noteList = props.props;
+
 
 
 
@@ -41,16 +46,16 @@ export default function noteList(props: Props) {
   });
 
   const addCustomerNote = () => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: false,
-      addNote: true,
-      editNote: false,
-      noteInfo: {
-        noteID: null,
-        noteText: ''
-      }
-    });
+    // setNoteDisplayState({
+    //   ...noteDisplayState,
+    //   listNotes: false,
+    //   addNote: true,
+    //   editNote: false,
+    //   noteInfo: {
+    //     noteID: null,
+    //     noteText: ''
+    //   }
+    // });
   };
 
   const editCustomerNote = (
@@ -62,35 +67,39 @@ export default function noteList(props: Props) {
       };
     }
   ) => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: false,
-      addNote: false,
-      editNote: true,
-      noteInfo: {
-        noteID: editNoteProps.props.noteID,
-        noteText: editNoteProps.props.noteText
-      }
-    });
+    // setNoteDisplayState({
+    //   ...noteDisplayState,
+    //   listNotes: false,
+    //   addNote: false,
+    //   editNote: true,
+    //   noteInfo: {
+    //     noteID: editNoteProps.props.noteID,
+    //     noteText: editNoteProps.props.noteText
+    //   }
+    // });
   };
 
   const cancelNote = () => {
     // Clear forms if canceled.
-    reset('customerEditNote');
-    reset('customerAddNote');
+    // reset('customerEditNote');
+    // reset('customerAddNote');
 
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: true,
-      addNote: false,
-      editNote: false,
-      noteInfo: {
-        noteID: null,
-        noteText: ''
-      }
-    });
+    // setNoteDisplayState({
+    //   ...noteDisplayState,
+    //   listNotes: true,
+    //   addNote: false,
+    //   editNote: false,
+    //   noteInfo: {
+    //     noteID: null,
+    //     noteText: ''
+    //   }
+    // });
   };
 
+
+  const handleDeleteNoteClick = () => {
+    console.log('temp delete handler');
+  }
 
 
   const renderChangeNoteRow = (list: { forEach: Function }) => {
@@ -109,7 +118,9 @@ export default function noteList(props: Props) {
   };
 
   const renderCustomerNotes = () => {
-    const customerNoteList = singleCustomer.customerNotes.noteList;
+    // TODO: missing the note text from props!
+    debugger;
+
     const returnNoteLists: JSX.Element[] = [];
 
     if (singleCustomer.customerNotes.success === 'false') {
@@ -121,15 +132,15 @@ export default function noteList(props: Props) {
       return <div>NO NOTES HAVE BEEN ADDED!</div>;
     }
 
-    Object.keys(customerNoteList).forEach(
+    Object.keys(noteList).forEach(
       (noteListKey: string, objIndex: number) => {
         const noteListNumber = parseInt(noteListKey, 10);
         const returnNotes = (
           // eslint-disable-next-line react/no-array-index-key
           <div
             // eslint-disable-next-line react/no-array-index-key
-            key={`customerNotes${objIndex}`}
-            id={`customerNoteID-${noteListKey}`}
+            key={`note${objIndex}`}
+            id={`noteID-${noteListKey}`}
             className={styles['single-customer-note-wrapper']}
           >
             <div>
@@ -138,7 +149,7 @@ export default function noteList(props: Props) {
                 <Btn
                   props={{
                     noteID: noteListKey,
-                    noteText: customerNoteList[noteListNumber].customerNoteText
+                    noteText: noteList[noteListNumber].noteText
                   }}
                   buttonName="Edit Note"
                   ClickHandler={editCustomerNote}
@@ -155,7 +166,7 @@ export default function noteList(props: Props) {
             <div>
               <div>
                 <textarea disabled={true}>
-                  {customerNoteList[noteListNumber].customerNoteText}
+                  {noteList[noteListNumber].noteText}
                 </textarea>
               </div>
             </div>
@@ -163,7 +174,7 @@ export default function noteList(props: Props) {
               <div>
                 <div>
                   {renderChangeNoteRow(
-                    customerNoteList[noteListNumber].changeNoteList
+                    noteList[noteListNumber].changeNoteList
                   )}
                 </div>
               </div>
@@ -183,6 +194,7 @@ export default function noteList(props: Props) {
   return (
     <div className={styles['single-customer-notes']}>
       <div>
+
         {noteDisplayState.listNotes && (
           <div className={styles['list-customer-note-wrapper']}>
             <div>
@@ -192,7 +204,7 @@ export default function noteList(props: Props) {
             <div>{renderCustomerNotes()}</div>
           </div>
         )}
-
+{/**
         {noteDisplayState.addNote && (
           <div className={styles['add-customer-note-wrapper']}>
             <div>
@@ -206,7 +218,8 @@ export default function noteList(props: Props) {
             </div>
           </div>
         )}
-
+*/}
+{/**
         {noteDisplayState.editNote && (
           <div className={styles['add-customer-note-wrapper']}>
             <div>
@@ -220,6 +233,8 @@ export default function noteList(props: Props) {
             </div>
           </div>
         )}
+
+*/}
       </div>
     </div>
   );
