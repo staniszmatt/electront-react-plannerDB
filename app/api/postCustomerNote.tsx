@@ -54,7 +54,6 @@ async function postCustomerNote(request: Request) {
           success: 'Success',
           changeNoteData
         };
-        // TODO: Add CustomerNote post here
       } catch (error) {
         returnData.error = error;
       }

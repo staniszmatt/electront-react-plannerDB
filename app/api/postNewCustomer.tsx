@@ -27,7 +27,7 @@ interface ReturnData {
   newCustomer?: {
     success: string;
     newCustomerData: {};
-    error?: {} | string;
+    error: {} | string;
   };
 }
 
@@ -99,7 +99,8 @@ async function postNewCustomer(request: Request) {
       }
       returnData.newCustomer = {
         success: 'Success',
-        newCustomerData: data
+        newCustomerData: data,
+        error: {}
       };
     } else {
       returnData.newCustomer = {

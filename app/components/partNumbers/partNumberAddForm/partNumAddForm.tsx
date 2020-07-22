@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -6,11 +7,11 @@
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
-import FormYesNo from '../../forms/formYesNo';
+import FormDropDown from '../../forms/formDropDown';
 import FormTextArea from '../../forms/formTextArea';
+import FormYesNo from '../../forms/formYesNo';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
-import '../../forms/formInput.css';
-import styles from './customerAdd.css';
+import styles from './partNumAddForm.css';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface FormProps {}
@@ -29,10 +30,18 @@ function charCheck(value: string) {
   return changeCharString;
 }
 
-const CustomerAddFormComponent = (
+const PartNumAddFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
+
+  const materialType = [
+    'INCONEL',
+    'ALUMINUM',
+    'TITANIUM',
+    'STAINLESS'
+  ]
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -40,49 +49,38 @@ const CustomerAddFormComponent = (
     >
       <div>
         <Field
-          label="Customer Name:"
+          label="Part Number:"
           component={FormInput}
-          name="customerName"
+          name="partNumber"
           type="text"
           format={toUpperCase}
         />
         <Field
-          label="Customer Code Name:"
-          component={FormInput}
-          name="customerCodeName"
-          type="text"
-          format={toUpperCase}
+          label="Material Type:"
+          name="materialType"
+          component={FormDropDown}
+          type="select"
+          data={materialType}
         />
-
         <Field
-          label="General Standards Approved:"
-          name="customerGenStatus"
+          label="Serial Number Required:"
+          name="partSerialNumReq"
           component={FormYesNo}
           type="radio"
         />
-
         <Field
-          label="RS Standards Approved:"
-          name="customerRSStatus"
+          label="Set for Production:"
+          name="partSetForProduction"
           component={FormYesNo}
           type="radio"
         />
-
         <Field
-          label="Customer Active:"
-          name="customerActive"
-          component={FormYesNo}
-          type="radio"
-        />
-
-        <Field
-          label="Customer Notes:"
-          name="customerNote"
+          label="Part Number Notes:"
+          name="partNumberNote"
           component={FormTextArea}
           rows="15"
           normalize={charCheck}
         />
-
       </div>
       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
     </form>
@@ -90,56 +88,45 @@ const CustomerAddFormComponent = (
 };
 
 interface Values {
-  customerName: string;
-  customerCodeName: string;
-  customerGenStatus: string;
-  customerRSStatus: string;
-  customerActive: string;
+  partNumber: string;
+  materialType: string;
+  partSerialNumReq: string;
+  partSetForProduction: string;
 }
 
 function validate(values: Values) {
   const {
-    customerName,
-    customerCodeName,
-    customerGenStatus,
-    customerRSStatus,
-    customerActive
+    partNumber,
+    materialType,
+    partSerialNumReq,
+    partSetForProduction
   } = values;
-
+console.log("validation, values:", values);
   const errors: any = {};
 
-  if (!customerName) {
-    errors.customerName = 'Please Enter a Customer Name!';
+  if (!partNumber) {
+    errors.partNumber = 'Please Enter a Part Number!';
   }
-  if (customerName) {
-    if (customerName.length > 32) {
-      errors.customerName = 'Customer name is to long!';
+  if (partNumber) {
+    if (partNumber.length > 32) {
+      errors.partNumber = 'Part Number is too long!';
     }
   }
-  if (!customerCodeName) {
-    errors.customerCodeName = 'Please Enter a Customer Name!';
+  if (!materialType) {
+    errors.materialType = 'Please Enter a Material Type!';
   }
-  if (customerCodeName) {
-    if (customerCodeName.length > 6) {
-      errors.customerCodeName = 'Code name is too long! 6 Characters or less.';
-    }
+
+  if (!partSerialNumReq) {
+    errors.partSerialNumReq = 'Please Select if Part Requires a Serial Number!';
   }
-  if (!customerGenStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerGenStatus = 'Please Select if General Standard Status is Approved!';
-  }
-  if (!customerRSStatus) {
-    // eslint-disable-next-line prettier/prettier
-    errors.customerRSStatus = 'Please Select if RS Standard Status is Approved!';
-  }
-  if (!customerActive) {
-    errors.customerActive = 'Please Select if Customer is Active!';
+  if (!partSetForProduction) {
+    errors.partSetForProduction = 'Please Select if Approved for Production!';
   }
   return errors;
 }
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddForm',
+  form: 'partNumberAddForm',
   validate,
   destroyOnUnmount: false
-})(CustomerAddFormComponent);
+})(PartNumAddFormComponent);

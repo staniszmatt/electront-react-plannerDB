@@ -20,7 +20,7 @@ export default function CustomerErrorRow(props: Props) {
   return (
     <div className={styles.errorRowContainer}>
       <div className={styles.errorName}>{keyName}:</div>
-      <div className={styles.errorData}>{error}</div>
+      <div>{error}</div>
     </div>
   );
 }

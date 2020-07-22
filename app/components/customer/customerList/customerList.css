@@ -29,7 +29,7 @@
   width: 15%;
 }
 
-.t-row > button > td:first-child {
+.t-row > td:first-child > button {
   color: #00ee;
   text-decoration: underline;
 }

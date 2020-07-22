@@ -4,34 +4,55 @@ form {
 }
 
 .form-container {
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
+  text-align: left;
+  display: block;
 }
 
-.form-field {
+.form-container > div {
+  padding: 0 5px;
+}
+
+.form-container > input {
   margin: auto;
   text-transform: uppercase;
 }
 
-.form-label-input {
+.form-container > label {
   padding: 5px;
   margin-right: 5px;
-  font-size: 20px;
 }
 
-label.form-label {
-  color: rgb(43, 110, 217);
-  font: bolder;
-  font-size: 20px;
-  background-color: rgba(217, 225, 232);
-  border-radius: 5px;
-  border: none;
-  padding: 4px;
-}
-
-.form-container > p {
-  font-size: 18px;
+.form-container > p,
+.radio-container > p {
+  font-size: inherit;
   margin: 0;
   color: red;
+  padding: 5px 10px;
+}
+
+.radio-input {
+  display: inline-flex;
+}
+
+.radio-container > div {
+  display: inline-flex;
+  padding: 0 5px;
+}
+
+.textarea-container > div {
+  padding: 5px;
+}
+
+.radio-container > div > label {
+  padding-right: 10px;
+}
+
+.radio-container > div > div > label {
+  padding: 0 5px;
+}
+
+
+.textarea-container > div:last-child > textarea {
+  width: 98%;
+  max-width: 800px;
 }

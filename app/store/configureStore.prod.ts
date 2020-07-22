@@ -4,7 +4,12 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
 import createRootReducer from '../reducers';
-import { Store, customerStateType, modalStateType } from '../reducers/types';
+import {
+  Store,
+  customerStateType,
+  modalStateType,
+  partNumbersStateType
+} from '../reducers/types';
 // import { Store, customerStateType, counterStateType } from '../reducers/types';
 
 const history = createHashHistory();
@@ -13,6 +18,15 @@ const router = routerMiddleware(history);
 const enhancer = applyMiddleware(thunk, router);
 
 function configureStore(initialState?: {
+  partNumbers?:
+    | {
+        errorState: boolean;
+        error: {};
+        loadingState: boolean;
+        loadPartAddPage: boolean;
+      }
+    | any
+    | partNumbersStateType;
   customer?:
     | {
         loadingState: boolean;

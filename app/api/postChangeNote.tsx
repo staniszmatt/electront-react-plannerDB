@@ -9,10 +9,21 @@ interface Request {
   changeNoteDateStamp: string;
 }
 
+interface ReturnData {
+  changeNoteData: {
+    success: string;
+    error: {};
+    changeNoteData: {};
+  };
+}
+
 async function postNewChangeNote(request: Request) {
-  let returnData = {
-    changeNoteData: {},
-    error: {}
+  const returnData: ReturnData = {
+    changeNoteData: {
+      error: {},
+      success: '',
+      changeNoteData: {}
+    }
   };
   // Post to add a new change note
   try {
@@ -35,22 +46,18 @@ async function postNewChangeNote(request: Request) {
     const changeNoteData = await db.query(query);
     // If customer add worked, then create the change note to show when customer was created
     if (changeNoteData.recordset[0].id) {
-      returnData.changeNoteData = {
-        success: 'Success',
-        changeNoteID: changeNoteData.recordset[0].id,
-        changeNoteData
-      };
+      returnData.changeNoteData.success = 'Success';
+      returnData.changeNoteData.changeNoteData = changeNoteData;
     } else {
-      returnData.changeNoteData = {
-        success: 'Failed to create change note',
-        returnedData: changeNoteData
+      returnData.changeNoteData.success = 'Error on resp from adding change note!';
+      returnData.changeNoteData.changeNoteData = changeNoteData;
+      returnData.changeNoteData.error = {
+        errorMsg: 'Error occurred on response from server adding change note!'
       };
     }
   } catch (err) {
-    returnData = {
-      changeNoteData: {},
-      error: err
-    };
+    returnData.changeNoteData.error = err;
+    returnData.changeNoteData.success = 'Failed';
   }
   return returnData;
 }

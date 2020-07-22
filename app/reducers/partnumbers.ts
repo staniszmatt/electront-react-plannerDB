@@ -1,8 +1,15 @@
 import { Action } from 'redux';
-import { PARTNUM_LOADING } from '../actions/partNumbersActions';
+import {
+  PARTNUM_LOADING,
+  PARTNUM_LOAD_ADD_PAGE,
+  PARTNUM_ERROR_PAGE
+} from '../actions/partNumbersActions';
 
 const IState = {
-  loadingState: false
+  errorState: false,
+  error: {},
+  loadingState: false,
+  loadPartAddPage: false
 };
 export interface PartNumbersAction extends Action {
   type: string;
@@ -17,7 +24,26 @@ export default function customer(state = IState, action: PartNumbersAction) {
     case PARTNUM_LOADING:
       return {
         ...state,
-        loadingState: !state.loadingState
+        errorState: false,
+        error: {},
+        loadingState: !state.loadingState,
+        loadPartAddPage: false
+      };
+    case PARTNUM_LOAD_ADD_PAGE:
+      return {
+        ...state,
+        errorState: false,
+        error: {},
+        loadingState: false,
+        loadPartAddPage: true
+      };
+    case PARTNUM_ERROR_PAGE:
+      return {
+        ...state,
+        errorState: true,
+        error: action.resp,
+        loadingState: false,
+        loadPartAddPage: false
       };
     default:
       return state;

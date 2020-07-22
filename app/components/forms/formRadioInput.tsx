@@ -25,12 +25,11 @@ export default function FormField(props: Props) {
     input,
     name,
     label,
-    type = 'text',
-    meta: { error, touched }
+    type = 'text'
   } = props;
 
   return (
-    <div className={styles['form-container']}>
+    <div className={styles['radio-input']}>
       <label htmlFor={name}>{label}</label>
       <input
         {...input}
@@ -40,7 +39,6 @@ export default function FormField(props: Props) {
         disabled={disabled}
         id={name}
       />
-      <p className="red-text darken-2">{touched && error}</p>
     </div>
   );
 }

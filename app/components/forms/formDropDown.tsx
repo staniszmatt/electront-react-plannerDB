@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
@@ -8,6 +10,7 @@ interface Props {
   defaultValue: string;
   disabled: boolean;
   input: string;
+  data: {} | any;
   label: string;
   type: string;
   name: string;
@@ -17,29 +20,41 @@ interface Props {
   };
 }
 
-export default function FormField(props: Props) {
+export default function FormDropDown(props: Props) {
   const {
     checkedValue,
     defaultValue,
     disabled,
     input,
+    data,
     name,
     label,
     type = 'text',
     meta: { error, touched }
   } = props;
 
+  const renderOptions = (option: string) => {
+    return (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    );
+  };
+
   return (
     <div className={styles['form-container']}>
       <label htmlFor={name}>{label}</label>
-      <input
-        {...input}
-        type={type || 'text'}
+      <select
+        type={type || 'select'}
         checked={checkedValue}
         defaultValue={defaultValue}
         disabled={disabled}
         id={name}
-      />
+        {...input}
+      >
+        <option key="blankOption" />
+        {data.map(renderOptions)}
+      </select>
       <p className="red-text darken-2">{touched && error}</p>
     </div>
   );

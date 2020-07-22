@@ -71,9 +71,11 @@ function CustomerRow(props: Props) {
 
   return (
     <tr className={styles['t-row']} id={newID}>
-      <button type="button" onClick={handleClickCustomerButton}>
-        <td>{customerName}</td>
-      </button>
+      <td>
+        <button type="button" onClick={handleClickCustomerButton}>
+          {customerName}
+        </button>
+      </td>
       <td>{customerCodeName}</td>
       <td>{genStd}</td>
       <td>{rsStd}</td>

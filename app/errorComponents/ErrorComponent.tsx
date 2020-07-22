@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from 'react';
@@ -5,7 +6,7 @@ import ErrorRow from './ErrorRow';
 import styles from './error.css';
 
 interface Props {
-  props: {};
+  props: { error?: {} } | any;
 }
 
 export default function CustomerErrorDisplay(props: Props) {
@@ -13,9 +14,17 @@ export default function CustomerErrorDisplay(props: Props) {
   if (props.props === undefined) {
     return null;
   }
+
   const renderErrorRows = () => {
-    const errors: any = props.props;
-    const customerErrorRow = Object.keys(errors).map((key: any) => {
+    let errors: any = {};
+    // Checking where the error message is
+    if (props.props.hasOwnProperty('error')) {
+      errors = props.props.error;
+    } else {
+      errors = props.props;
+    }
+    // const errors: {} = props.props;
+    const customerErrorRow = Object.keys(errors).map((key: string) => {
       return (
         <div className={styles.errorContainer} key="error">
           <ErrorRow key={key} props={{ keyName: key, error: errors[key] }} />
