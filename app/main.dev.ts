@@ -16,6 +16,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
 import getSingleCustomer from './api/getSingleCustomer';
+import getSinglePartNumber from './api/getSinglePartNumber';
 import postNewCustomer from './api/postNewCustomer';
 import postCustomerNote from './api/postCustomerNote';
 import postNewPartNumber from './api/postNewPartNumber';
@@ -139,6 +140,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       break;
     case 'getSearchCustomer':
       requestToSend = getSingleCustomer;
+      break;
+    case 'getSearchPartNumber':
+      requestToSend = getSinglePartNumber;
       break;
     // Post Requests Here.
     case 'postAddCustomer':

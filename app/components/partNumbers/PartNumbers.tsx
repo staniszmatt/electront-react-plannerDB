@@ -6,6 +6,7 @@ import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField
 import PartNumberErrorDisplay from '../../errorComponents/ErrorComponent';
 import LoadingScreen from '../LoadingDisplay';
 import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
+import PartNumberSingleDisplay from './partNumberSingle/partNumberSingleDisplay';
 
 interface Props {
   handlePartNumSearchForm: () => {};
@@ -17,6 +18,8 @@ interface Props {
     error: {};
     loadingState: boolean;
     loadPartAddPage: boolean;
+    loadSinglePartNumberPage: boolean;
+    singlePartNumber: {};
   };
 }
 
@@ -54,6 +57,9 @@ export default function PartNumbers(props: Props) {
         )}
         {props.partNumbers.loadPartAddPage && (
           <PartNumAddFormComponent onSubmit={handlePartNumberAddForm} />
+        )}
+        {props.partNumbers.loadSinglePartNumberPage && (
+          <PartNumberSingleDisplay props={props.partNumbers.singlePartNumber} />
         )}
       </div>
     </div>

@@ -21,7 +21,7 @@ import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
 import EditCustomerNote from '../customerNotes/editCustomerNote';
 import Btn from '../../buttonFunctions/buttonClickHandler';
-import styles from './customerSingle.css';
+import styles from './customerSingleDisplay.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 import CustomerChangeNoteRow from '../../singleChangeNote';
 
@@ -164,34 +164,14 @@ function CustomerHeadTable(props: Props) {
     });
   };
 
-  const renderChangeNoteRow = () => {
+  const renderChangeNoteRow = (list: { forEach: Function }) => {
     const returnNotes: JSX.Element[] = [];
 
-    singleCustomer.customer.changeNoteList.list.forEach(
-      (note: {}, arrIndex: number) => {
-        returnNotes.push(
-          <CustomerChangeNoteRow
-            // eslint-disable-next-line react/no-array-index-key
-            key={`customerChangeNote${arrIndex}`}
-            // @ts-ignore: Type '{}' is missing
-            props={note}
-          />
-        );
-      }
-    );
-    return returnNotes;
-  };
-
-  const renderRow = (noteArray: []) => {
-    const returnNotes: JSX.Element[] = [];
-    // TODO: Figure out how to fix the typescript rule here,
-    // Either need to fix this rule our add " : {} " to the end of the other to component file interfaces
-    // and fix them.
-    noteArray.forEach((note: {}, arrIndex: number) => {
+    list.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
         <CustomerChangeNoteRow
           // eslint-disable-next-line react/no-array-index-key
-          key={`customerNote${arrIndex}`}
+          key={`customerChangeNote${arrIndex}`}
           // @ts-ignore: Type '{}' is missing
           props={note}
         />
@@ -214,6 +194,7 @@ function CustomerHeadTable(props: Props) {
   };
 
   const renderCustomerNotes = () => {
+    debugger;
     const customerNoteList = singleCustomer.customerNotes.noteList;
     const returnNoteLists: JSX.Element[] = [];
 
@@ -267,7 +248,9 @@ function CustomerHeadTable(props: Props) {
             <div>
               <div>
                 <div>
-                  {renderRow(customerNoteList[noteListNumber].changeNoteList)}
+                  {renderChangeNoteRow(
+                    customerNoteList[noteListNumber].changeNoteList
+                  )}
                 </div>
               </div>
             </div>
@@ -361,10 +344,13 @@ function CustomerHeadTable(props: Props) {
             <div>Change History:</div>
           </div>
           <div>
-            <div>{renderChangeNoteRow()}</div>
+            <div>
+              {renderChangeNoteRow(singleCustomer.customer.changeNoteList.list)}
+            </div>
           </div>
         </div>
       </div>
+
       <div className={styles['single-customer-notes']}>
         <div>
           {noteDisplayState.listNotes && (
@@ -406,6 +392,8 @@ function CustomerHeadTable(props: Props) {
           )}
         </div>
       </div>
+
+
     </div>
   );
 }
