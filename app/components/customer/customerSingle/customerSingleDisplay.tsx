@@ -20,11 +20,10 @@ import {
 import { customerStateType } from '../../../reducers/types';
 import AddCustomerNote from '../customerNotes/addCustomerNote';
 import EditCustomerNote from '../customerNotes/editCustomerNote';
-import CustomerNoteRow from './customerSingleNotes';
 import Btn from '../../buttonFunctions/buttonClickHandler';
 import styles from './customerSingle.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import CustomerChangeNoteRow from './customerSingleChangeNote';
+import CustomerChangeNoteRow from '../../singleChangeNote';
 
 interface Props {
   handleEditCustomerForm: (customerInfo: string) => {};
@@ -190,7 +189,7 @@ function CustomerHeadTable(props: Props) {
     // and fix them.
     noteArray.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
-        <CustomerNoteRow
+        <CustomerChangeNoteRow
           // eslint-disable-next-line react/no-array-index-key
           key={`customerNote${arrIndex}`}
           // @ts-ignore: Type '{}' is missing
