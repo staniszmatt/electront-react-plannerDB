@@ -72,7 +72,9 @@ export function handlePartNumberAddForm(partNumToAdd: {
       partNumberName: partNumToAdd.partNumber,
       partNumberMaterial: partNumToAdd.materialType,
       partNumberSerialNumberRequired: sendPartSerialNumReq,
-      partNumberSetForProduction: sendPartSetForProduction
+      partNumberSetForProduction: sendPartSetForProduction,
+      partNumberNoteText: partNumToAdd.partNumberNote
+
     }
 
     console.log('add part number action, ipc request:', mainIPCRequest);
