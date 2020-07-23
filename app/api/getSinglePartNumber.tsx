@@ -43,7 +43,8 @@ interface ReturnData {
         };
         error: string;
         success: string;
-        noteText: string;
+        typeID: number;
+        type: string;
       }
     | {}
     | any;
@@ -112,12 +113,12 @@ async function getSinglePartNumber(request: Request) {
         `;
         const partNumberNoteData = await db.query(noteQuery);
 
-        console.log("note return ", partNumberNoteData)
-
         if (partNumberNoteData.recordset.length > 0) {
           returnData.partNumberNotes = {
             noteList: {},
             error: {},
+            typeID: data.recordset[0].id,
+            type: 'partNumber',
             success: 'Success'
           };
 

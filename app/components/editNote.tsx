@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
+import FormBtn from './buttonFunctions/buttonClickHandler';
 
 interface FormProps {
   any: unknown;
@@ -17,7 +17,7 @@ interface DispatchProps {
 
 interface CustomerNoteState {
   // TODO: Change to displaySubmitBtn
-  customerNoteDataCheck: boolean;
+  noteDataCheck: boolean;
 }
 
 function charCheck(value: string) {
@@ -27,26 +27,26 @@ function charCheck(value: string) {
   return changeCharString;
 }
 
-const CustomerAddNote = (
+const EditNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
   // eslint-disable-next-line react/destructuring-assignment
   const { noteText } = props.props;
-  const [customerNoteState, setCustomerNoteState] = useState<
-    CustomerNoteState | { customerNoteDataCheck: boolean }
-  >({ customerNoteDataCheck: false });
+  const [noteState, setCustomerNoteState] = useState<
+    CustomerNoteState | { noteDataCheck: boolean }
+  >({ noteDataCheck: false });
   // State is for hiding submit button if nothing is changed or text field is empty.
   const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== '') {
       setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: true
+        ...noteState,
+        noteDataCheck: true
       });
     } else {
       setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: false
+        ...noteState,
+        noteDataCheck: false
       });
     }
   };
@@ -57,7 +57,7 @@ const CustomerAddNote = (
         <Field
           label="Add Notes:"
           component="textarea"
-          name="updateCustomerNote"
+          name="updateNote"
           type="textarea"
           aria-multiline
           rows="15"
@@ -67,7 +67,7 @@ const CustomerAddNote = (
         />
       </div>
       <div>
-        {customerNoteState.customerNoteDataCheck && (
+        {noteState.noteDataCheck && (
           <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
         )}
       </div>
@@ -76,5 +76,5 @@ const CustomerAddNote = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerEditNote'
-})(CustomerAddNote);
+  form: 'editNote'
+})(EditNote);

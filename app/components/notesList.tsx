@@ -1,31 +1,54 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable prefer-destructuring */
 import React, { useState } from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { reset } from 'redux-form';
+import { connect } from 'react-redux';
+import {
+  toggleWarningModalState,
+  toggleModalState
+} from '../actions/modalActions';
+import { modalStateType } from '../reducers/types';
 import SingleChangeNote from './singleChangeNote';
 import AddNote from './addNote';
 import EditNote from './editNote';
 import Btn from './buttonFunctions/buttonClickHandler';
-import styles from './customer/customerSingle/customerSingleDisplay.css';
+import styles from './notesList.css';
+import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 interface Props {
-  // noteType: string;
-  // noteList: {
-  //   [id: number]: {
-  //     changeNoteList: [];
-  //   };
-  // };
-  // editNote: () => {};
-  // deleteNote: () => {};
-  // addNote: () => {};
-  // handleAdd: () => {};
-  // handleEdit: () => {};
-  // handleDelete: () => {};
+  props: {
+    state: {
+      notes: {}
+    }
+  };
 }
 
-export default function noteList(props: Props) {
+function mapStateToProps(state: modalStateType) {
+  return {
+    modals: state.modals
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch<null>) {
+  return bindActionCreators(
+    {
+      toggleWarningModalState,
+      toggleModalState,
+      reset
+    },
+    dispatch
+  );
+}
+
+function noteList(props: Props) {
   console.log('notes, props', props);
-  const noteList = props.props;
 
+  const noteList = props.props.state.noteList;
+  const { handleAddNote, handleEditNote, handleDeleteNote } = props.props;
 
-
+  const { toggleWarningModalState, toggleModalState, reset } = props;
 
   const [noteDisplayState, setNoteDisplayState] = useState<{
     listNotes: boolean;
@@ -45,20 +68,21 @@ export default function noteList(props: Props) {
     }
   });
 
-  const addCustomerNote = () => {
-    // setNoteDisplayState({
-    //   ...noteDisplayState,
-    //   listNotes: false,
-    //   addNote: true,
-    //   editNote: false,
-    //   noteInfo: {
-    //     noteID: null,
-    //     noteText: ''
-    //   }
-    // });
+  const addNote = () => {
+    console.log('temp add note log');
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: false,
+      addNote: true,
+      editNote: false,
+      noteInfo: {
+        noteID: null,
+        noteText: ''
+      }
+    });
   };
 
-  const editCustomerNote = (
+  const editNote = (
     _event: {},
     editNoteProps: {
       props: {
@@ -67,41 +91,48 @@ export default function noteList(props: Props) {
       };
     }
   ) => {
-    console.log('temp edit btn function call');
-    // setNoteDisplayState({
-    //   ...noteDisplayState,
-    //   listNotes: false,
-    //   addNote: false,
-    //   editNote: true,
-    //   noteInfo: {
-    //     noteID: editNoteProps.props.noteID,
-    //     noteText: editNoteProps.props.noteText
-    //   }
-    // });
+    console.log('temp edit btn function call, editNoteProps', editNoteProps);
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: false,
+      addNote: false,
+      editNote: true,
+      noteInfo: {
+        noteID: editNoteProps.props.noteID,
+        noteText: editNoteProps.props.noteText
+      }
+    });
   };
+
+  const handleDeleteNoteClick = (_event: {}, deleteProps: {}) => {
+    const warningModalResp = {
+      warningMsg: 'Do you really want to delete this note?',
+      actionFunction: () => {
+        handleDeleteNote(deleteProps);
+      },
+      closeModal: () => {
+        toggleModalState();
+      }
+    };
+    toggleWarningModalState(warningModalResp);
+  }
 
   const cancelNote = () => {
     // Clear forms if canceled.
-    // reset('customerEditNote');
-    // reset('customerAddNote');
+    reset('editNote');
+    reset('addNote');
 
-    // setNoteDisplayState({
-    //   ...noteDisplayState,
-    //   listNotes: true,
-    //   addNote: false,
-    //   editNote: false,
-    //   noteInfo: {
-    //     noteID: null,
-    //     noteText: ''
-    //   }
-    // });
+    setNoteDisplayState({
+      ...noteDisplayState,
+      listNotes: true,
+      addNote: false,
+      editNote: false,
+      noteInfo: {
+        noteID: null,
+        noteText: ''
+      }
+    });
   };
-
-
-  const handleDeleteNoteClick = () => {
-    console.log('temp delete handler');
-  }
-
 
   const renderChangeNoteRow = (list: { forEach: Function }) => {
     const returnNotes: JSX.Element[] = [];
@@ -110,7 +141,7 @@ export default function noteList(props: Props) {
       returnNotes.push(
         <SingleChangeNote
           // eslint-disable-next-line react/no-array-index-key
-          key={`customerChangeNote${arrIndex}`}
+          key={`changeNote${arrIndex}`}
           props={note}
         />
       );
@@ -119,116 +150,82 @@ export default function noteList(props: Props) {
   };
 
   const renderCustomerNotes = () => {
-    // TODO: missing the note text from props!
-
     const returnNoteLists: JSX.Element[] = [];
 
-    if (noteList.success === 'false') {
-      return <div>FAILED TO GET CUSTOMER NOTES!</div>;
-      // eslint-disable-next-line no-else-return
-    }
-
-    if (noteList.success === 'empty') {
+    if (isObjEmpty(noteList)) {
       return <div>NO NOTES HAVE BEEN ADDED!</div>;
     }
 
-    const list = noteList.noteList;
-
-    Object.keys(list).forEach((noteListKey: string, objIndex: number) => {
-        const noteListNumber = parseInt(noteListKey, 10);
-        const returnNotes = (
+    Object.keys(noteList).forEach((noteListKey: string, objIndex: number) => {
+      const noteListNumber = parseInt(noteListKey, 10);
+      const returnNotes = (
+        // eslint-disable-next-line react/no-array-index-key
+        <div
           // eslint-disable-next-line react/no-array-index-key
-          <div
-            // eslint-disable-next-line react/no-array-index-key
-            key={`note${objIndex}`}
-            id={`noteID-${noteListKey}`}
-            className={styles['single-customer-note-wrapper']}
-          >
+          key={`note${objIndex}`}
+          id={`noteID-${noteListKey}`}
+          className={styles['single-note-wrapper']}
+        >
+          <div>
+            <div>{`Note:${objIndex + 1}`}</div>
             <div>
-              <div>{`Note:${objIndex + 1}`}</div>
-              <div>
-                <Btn
-                  props={{
-                    noteID: noteListKey,
-                    noteText: list[noteListNumber].noteText
-                  }}
-                  buttonName="Edit Note"
-                  ClickHandler={editCustomerNote}
-                />
-              </div>
-              <div className={styles['delete-btn']}>
-                <Btn
-                  props={noteListKey}
-                  buttonName="Delete Note"
-                  ClickHandler={handleDeleteNoteClick}
-                />
-              </div>
+              <Btn
+                props={{
+                  noteID: noteListKey,
+                  noteText: noteList[noteListNumber].noteText
+                }}
+                buttonName="Edit Note"
+                ClickHandler={editNote}
+              />
             </div>
-            <div>
-              <div>
-                <textarea disabled>
-                  {list[noteListNumber].noteText}
-                </textarea>
-              </div>
+            <div className={styles['delete-btn']}>
+              <Btn
+                props={noteListKey}
+                buttonName="Delete Note"
+                ClickHandler={handleDeleteNoteClick}
+              />
             </div>
-
-
-            <div>
-              <div>
-                <div>
-                  {renderChangeNoteRow(list[noteListNumber].changeNoteList)}
-                </div>
-              </div>
-            </div>
-
-
           </div>
-        );
-        returnNoteLists.push(returnNotes);
-      }
-    );
+          <div>
+            <div>
+              <textarea disabled>{noteList[noteListNumber].noteText}</textarea>
+            </div>
+          </div>
+          <div>
+            <div>
+              <div>
+                {renderChangeNoteRow(noteList[noteListNumber].changeNoteList)}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+      returnNoteLists.push(returnNotes);
+    });
     return returnNoteLists;
   };
 
-
-
-
-
   return (
-    <div className={styles['single-customer-notes']}>
+    <div className={styles['single-notes']}>
       <div>
 
         {noteDisplayState.listNotes && (
-          <div className={styles['list-customer-note-wrapper']}>
+          <div className={styles['list-note-wrapper']}>
             <div>
-              <div>Customer Notes:</div>
-              <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
+              <div>Part Number Notes:</div>
+              <Btn buttonName="Add Note" ClickHandler={addNote} />
             </div>
             <div>{renderCustomerNotes()}</div>
           </div>
         )}
-{/**
+
         {noteDisplayState.addNote && (
-          <div className={styles['add-customer-note-wrapper']}>
+          <div className={styles['add-note-wrapper']}>
             <div>
               <AddNote
-                props={singleCustomer.customer}
-                onSubmit={handleAddCustomerNote}
-              />
-            </div>
-            <div>
-              <Btn buttonName="Cancel" ClickHandler={cancelNote} />
-            </div>
-          </div>
-        )}
-*/}
-{/**
-        {noteDisplayState.editNote && (
-          <div className={styles['add-customer-note-wrapper']}>
-            <div>
-              <EditCustomerNote
-                props={noteDisplayState.customerNote}
-                onSubmit={handleEditCustomerNote}
+                props={noteDisplayState.noteInfo}
+                // eslint-disable-next-line react/destructuring-assignment
+                onSubmit={handleAddNote}
               />
             </div>
             <div>
@@ -237,8 +234,25 @@ export default function noteList(props: Props) {
           </div>
         )}
 
-*/}
+
+        {noteDisplayState.editNote && (
+          <div className={styles['add-note-wrapper']}>
+            <div>
+              <EditNote
+                props={noteDisplayState.noteInfo}
+                onSubmit={handleEditNote}
+              />
+            </div>
+            <div>
+              <Btn buttonName="Cancel" ClickHandler={cancelNote} />
+            </div>
+          </div>
+        )}
+
+
       </div>
     </div>
   );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(noteList);

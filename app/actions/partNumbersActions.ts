@@ -14,6 +14,9 @@ export const PARTNUM_LOAD_ADD_PAGE = 'PARTNUM_LOAD_ADD_PAGE';
 export const PARTNUM_ERROR_PAGE = 'PARTNUM_ERROR_PAGE';
 export const PARTNUM_LOAD_SINGLE_PAGE = 'PARTNUM_LOAD_SINGLE_PAGE';
 
+// Un-used arguments setup
+type unused = unknown;
+
 // Helper Functions
 function returnOneZeroFromString(stringToCheck: string) {
   if (stringToCheck === null) {
@@ -53,6 +56,31 @@ export function partNumberSinglePage(resp: {}) {
   };
 }
 
+export function handleAddPartNumNote(noteRequest: {addNote: string}) {
+  console.log('handleAddPartNumber Note', noteRequest)
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
+    console.log("handle add part number note, props", noteRequest);
+  }
+}
+
+export function handleEditPartNumNote(noteRequest: {updateNote: string}, _e: unused, props: { props: { noteID: number } }) {
+  console.log('handleEditPartNumber Note', noteRequest);
+  console.log('handle edit part number props:', props);
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    console.log("handle add part number note, getState", getState());
+    console.log("handle add part number note, props", noteRequest);
+  }
+}
+
+export function handleDeletePartNumNote(noteRequest: {updateNote: string}) {
+  console.log('handleDeletePartNumber Note', noteRequest)
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
+    console.log("handle add part number note, props", noteRequest);
+  }
+}
+
 
 export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
@@ -65,22 +93,19 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
       dispatch(toggleErrorModalState('Search Was Empty!'));
       return;
     }
-
-    // Stop if same search already displayed
-    // if (state.partNumberList.length === 1) {
-    //   if (state.partNumberList[0].partNumberName === partNumName.partNumSearch) {
-    //     return;
-    //   }
-    // }
+// debugger;
+//     // TODO: Setup once display list is completed
+//     // Stop if same search already displayed
+//     if (state.partNumberList.length === 1) {
+//       if (state.partNumberList[0].partNumberName === partNumName.partNumSearch) {
+//         return;
+//       }
+//     }
 
     const mainIPCRequest = {
       request: 'getSearchPartNumber',
       partNumberName: `${partNumName.partNumSearch}`
     };
-
-
-
-
     const handlePartNumberSearchFormResp = (
       _event: {},
       resp: {
@@ -88,7 +113,6 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
         error: {};
       }
     ) => {
-
 
       if (!isObjEmpty(resp.singlePartNumber)) {
         dispatch(partNumberSinglePage(resp));
@@ -106,10 +130,6 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(partNumLoading());
     ipcRenderer.on('asynchronous-reply', handlePartNumberSearchFormResp);
-
-
-
-
   }
 }
 

@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
+import FormBtn from './buttonFunctions/buttonClickHandler';
 
 interface FormProps {
   any: unknown;
@@ -24,7 +24,7 @@ function charCheck(value: string) {
   return changeCharString;
 }
 
-const CustomerAddNote = (
+const AddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
@@ -62,7 +62,7 @@ const CustomerAddNote = (
       </div>
       <div>
         {customerNoteState.customerNoteDataCheck && (
-          <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+          <FormBtn props={props} buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
         )}
       </div>
     </form>
@@ -70,5 +70,5 @@ const CustomerAddNote = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddNote'
-})(CustomerAddNote);
+  form: 'addNote'
+})(AddNote);

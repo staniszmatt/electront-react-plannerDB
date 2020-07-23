@@ -24,6 +24,7 @@ interface ReturnData {
 }
 
 async function updateCustomerNote(request: Request) {
+  console.log('Customer Change Note Request: ', request);
   let returnData: ReturnData = {
     error: {}
   };

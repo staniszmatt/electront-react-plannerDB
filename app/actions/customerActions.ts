@@ -190,11 +190,12 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
 
 export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _e: unused, props: { props: { noteID: number } }) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
+    debugger;
     const state = getState()
     const mainIPCRequest = {
       request: 'updateCustomerNote',
       customerNoteID: `${props.props.noteID}`,
-      customerNoteText: `${customerNoteRequest.updateCustomerNote}`,
+      customerNoteText: `${customerNoteRequest.updateNote}`,
       changeNoteDescription: 'Modified customer note.'
     };
 

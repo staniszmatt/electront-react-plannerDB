@@ -5,10 +5,9 @@ export const TOGGLE_SUCCESS_MODAL_STATE = 'TOGGLE_SUCCESS_MODAL_STATE';
 export const TOGGLE_MODAL_STATE = 'TOGGLE_MODAL_STATE';
 export const TOGGLE_WARNING_MODAL_STATE = 'TOGGLE_WARNING_MODAL_STATE';
 // Reducer function calls
-export function toggleModalState(resp: string) {
+export function toggleModalState() {
   return {
-    type: TOGGLE_MODAL_STATE,
-    resp
+    type: TOGGLE_MODAL_STATE
   };
 }
 
