@@ -5,7 +5,10 @@ async function customerList() {
   let returnData = {};
   try {
     const db = await pool.connect();
-    const query = `select * from customer`;
+    const query = `
+      select * from customer
+        ORDER BY customerName ASC
+    `;
     const data = await db.query(query);
 
     if (data.recordset.length > 0) {
