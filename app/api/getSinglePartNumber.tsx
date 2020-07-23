@@ -43,6 +43,7 @@ interface ReturnData {
         };
         error: string;
         success: string;
+        noteText: string;
       }
     | {}
     | any;
@@ -50,7 +51,7 @@ interface ReturnData {
 
 interface Item {
   partNumberNoteID: number;
-  noteText: string;
+  partNumberNoteText: string;
   changeNoteDateStamp: string;
   changeNoteID: number;
   typeCategory: string;
@@ -110,10 +111,13 @@ async function getSinglePartNumber(request: Request) {
                 WHERE (n.partNumberID = ${data.recordset[0].id})
         `;
         const partNumberNoteData = await db.query(noteQuery);
+
+        console.log("note return ", partNumberNoteData)
+
         if (partNumberNoteData.recordset.length > 0) {
           returnData.partNumberNotes = {
             noteList: {},
-            error: '',
+            error: {},
             success: 'Success'
           };
 
@@ -127,7 +131,7 @@ async function getSinglePartNumber(request: Request) {
               changeNoteDescription: item.changeNoteDescription
             };
             const note = {
-              noteText: item.noteText,
+              noteText: item.partNumberNoteText,
               changeNoteList: []
             };
 

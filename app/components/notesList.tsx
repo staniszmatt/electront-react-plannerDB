@@ -67,6 +67,7 @@ export default function noteList(props: Props) {
       };
     }
   ) => {
+    console.log('temp edit btn function call');
     // setNoteDisplayState({
     //   ...noteDisplayState,
     //   listNotes: false,
@@ -119,21 +120,21 @@ export default function noteList(props: Props) {
 
   const renderCustomerNotes = () => {
     // TODO: missing the note text from props!
-    debugger;
 
     const returnNoteLists: JSX.Element[] = [];
 
-    if (singleCustomer.customerNotes.success === 'false') {
+    if (noteList.success === 'false') {
       return <div>FAILED TO GET CUSTOMER NOTES!</div>;
       // eslint-disable-next-line no-else-return
     }
 
-    if (singleCustomer.customerNotes.success === 'empty') {
+    if (noteList.success === 'empty') {
       return <div>NO NOTES HAVE BEEN ADDED!</div>;
     }
 
-    Object.keys(noteList).forEach(
-      (noteListKey: string, objIndex: number) => {
+    const list = noteList.noteList;
+
+    Object.keys(list).forEach((noteListKey: string, objIndex: number) => {
         const noteListNumber = parseInt(noteListKey, 10);
         const returnNotes = (
           // eslint-disable-next-line react/no-array-index-key
@@ -149,7 +150,7 @@ export default function noteList(props: Props) {
                 <Btn
                   props={{
                     noteID: noteListKey,
-                    noteText: noteList[noteListNumber].noteText
+                    noteText: list[noteListNumber].noteText
                   }}
                   buttonName="Edit Note"
                   ClickHandler={editCustomerNote}
@@ -165,20 +166,22 @@ export default function noteList(props: Props) {
             </div>
             <div>
               <div>
-                <textarea disabled={true}>
-                  {noteList[noteListNumber].noteText}
+                <textarea disabled>
+                  {list[noteListNumber].noteText}
                 </textarea>
               </div>
             </div>
+
+
             <div>
               <div>
                 <div>
-                  {renderChangeNoteRow(
-                    noteList[noteListNumber].changeNoteList
-                  )}
+                  {renderChangeNoteRow(list[noteListNumber].changeNoteList)}
                 </div>
               </div>
             </div>
+
+
           </div>
         );
         returnNoteLists.push(returnNotes);

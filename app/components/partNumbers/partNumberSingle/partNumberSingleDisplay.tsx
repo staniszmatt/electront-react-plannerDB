@@ -91,7 +91,7 @@ function PartNumberSingleDisplay(props: Props) {
 
   const partNumberInfo = props.props.singlePartNumber;
   const partNumberChangeNoteList = props.props.singlePartNumber.changeNoteList.list;
-  const partNumberNoteList = props.props.partNumberNotes.noteList;
+  const partNumberNoteList = props.props.partNumberNotes;
 
 
   // const {
@@ -204,7 +204,6 @@ function PartNumberSingleDisplay(props: Props) {
   // };
 
   // const renderCustomerNotes = () => {
-  //   debugger;
   //   const customerNoteList = singleCustomer.customerNotes.noteList;
   //   const returnNoteLists: JSX.Element[] = [];
 
