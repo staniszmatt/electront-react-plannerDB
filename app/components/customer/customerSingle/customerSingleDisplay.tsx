@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable no-shadow */
-import React, { useState } from 'react';
+import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { reset } from 'redux-form';
 import { connect } from 'react-redux';
@@ -18,18 +18,19 @@ import {
   toggleModalState
 } from '../../../actions/modalActions';
 import { customerStateType } from '../../../reducers/types';
-import AddCustomerNote from '../customerNotes/addCustomerNote';
-import EditCustomerNote from '../customerNotes/editCustomerNote';
-import CustomerNoteRow from './customerSingleNotes';
+import NoteList from '../../notesList';
 import Btn from '../../buttonFunctions/buttonClickHandler';
-import styles from './customerSingle.css';
+import styles from './customerSingleDisplay.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import CustomerChangeNoteRow from './customerSingleChangeNote';
+import CustomerChangeNoteRow from '../../singleChangeNote';
+
+// Un-used arguments setup
+type unused = unknown;
 
 interface Props {
   handleEditCustomerForm: (customerInfo: string) => {};
-  handleAddCustomerNote: () => {};
-  handleEditCustomerNote: () => {};
+  handleAddCustomerNote: (noteRequest: {}) => {};
+  handleEditCustomerNote: (noteRequest: {}, _e: unused, props: {}) => {};
   handleDeleteCustomerNote: (deleteProps: {}) => {};
   toggleWarningModalState: (warningModalResp: {}) => {};
   handleDeleteCustomer: () => {};
@@ -94,190 +95,42 @@ function CustomerHeadTable(props: Props) {
     toggleWarningModalState,
     toggleModalState
   } = props;
+  const customerNoteList = {
+    handleAddNote: (noteRequest: { addNote: string }) => {
+      handleAddCustomerNote(noteRequest);
+    },
+    handleEditNote: (
+      noteRequest: { updateNote: string },
+      _e: unused,
+      props: { props: { noteID: number } }
+    ) => {
+      handleEditCustomerNote(noteRequest, _e, props);
+    },
+    handleDeleteNote: (deleteProps: {}) => {
+      handleDeleteCustomerNote(deleteProps);
+    },
+    state: {
+      noteList: props.customer.singleCustomerInfo.customerNotes.noteList,
+      itemID: props.customer.singleCustomerInfo.customer.id
+    }
+  };
+
   const singleCustomer = props.customer.singleCustomerInfo;
-  // useState setup with typescript defaults
-  const [noteDisplayState, setNoteDisplayState] = useState<{
-    listNotes: boolean;
-    addNote: boolean;
-    editNote: boolean;
-    customerNote: {
-      noteID: number | null;
-      noteText: string;
-    };
-  }>({
-    listNotes: true,
-    addNote: false,
-    editNote: false,
-    customerNote: {
-      noteID: null,
-      noteText: ''
-    }
-  });
 
-  const addCustomerNote = () => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: false,
-      addNote: true,
-      editNote: false,
-      customerNote: {
-        noteID: null,
-        noteText: ''
-      }
-    });
-  };
-
-  const editCustomerNote = (
-    _event: {},
-    editNoteProps: {
-      props: {
-        noteID: number;
-        noteText: string;
-      };
-    }
-  ) => {
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: false,
-      addNote: false,
-      editNote: true,
-      customerNote: {
-        noteID: editNoteProps.props.noteID,
-        noteText: editNoteProps.props.noteText
-      }
-    });
-  };
-
-  const cancelNote = () => {
-    // Clear forms if canceled.
-    reset('customerEditNote');
-    reset('customerAddNote');
-
-    setNoteDisplayState({
-      ...noteDisplayState,
-      listNotes: true,
-      addNote: false,
-      editNote: false,
-      customerNote: {
-        noteID: null,
-        noteText: ''
-      }
-    });
-  };
-
-  const renderChangeNoteRow = () => {
+  const renderChangeNoteRow = (list: { forEach: Function }) => {
     const returnNotes: JSX.Element[] = [];
 
-    singleCustomer.customer.changeNoteList.list.forEach(
-      (note: {}, arrIndex: number) => {
-        returnNotes.push(
-          <CustomerChangeNoteRow
-            // eslint-disable-next-line react/no-array-index-key
-            key={`customerChangeNote${arrIndex}`}
-            // @ts-ignore: Type '{}' is missing
-            props={note}
-          />
-        );
-      }
-    );
-    return returnNotes;
-  };
-
-  const renderRow = (noteArray: []) => {
-    const returnNotes: JSX.Element[] = [];
-    // TODO: Figure out how to fix the typescript rule here,
-    // Either need to fix this rule our add " : {} " to the end of the other to component file interfaces
-    // and fix them.
-    noteArray.forEach((note: {}, arrIndex: number) => {
+    list.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
-        <CustomerNoteRow
+        <CustomerChangeNoteRow
           // eslint-disable-next-line react/no-array-index-key
-          key={`customerNote${arrIndex}`}
+          key={`customerChangeNote${arrIndex}`}
           // @ts-ignore: Type '{}' is missing
           props={note}
         />
       );
     });
     return returnNotes;
-  };
-
-  const handleDeleteNoteClick = (_event: {}, deleteProps: {}) => {
-    const warningModalResp = {
-      warningMsg: 'Do you really want to delete this customer note?',
-      actionFunction: () => {
-        handleDeleteCustomerNote(deleteProps);
-      },
-      closeModal: () => {
-        toggleModalState();
-      }
-    };
-    toggleWarningModalState(warningModalResp);
-  };
-
-  const renderCustomerNotes = () => {
-    const customerNoteList = singleCustomer.customerNotes.noteList;
-    const returnNoteLists: JSX.Element[] = [];
-
-    if (singleCustomer.customerNotes.success === 'false') {
-      return <div>FAILED TO GET CUSTOMER NOTES!</div>;
-      // eslint-disable-next-line no-else-return
-    }
-
-    if (singleCustomer.customerNotes.success === 'empty') {
-      return <div>NO NOTES HAVE BEEN ADDED!</div>;
-    }
-
-    Object.keys(customerNoteList).forEach(
-      (noteListKey: string, objIndex: number) => {
-        const noteListNumber = parseInt(noteListKey, 10);
-        const returnNotes = (
-          // eslint-disable-next-line react/no-array-index-key
-          <div
-            // eslint-disable-next-line react/no-array-index-key
-            key={`customerNotes${objIndex}`}
-            id={`customerNoteID-${noteListKey}`}
-            className={styles['single-customer-note-wrapper']}
-          >
-            <div>
-              <div>{`Note:${objIndex + 1}`}</div>
-              <div>
-                <Btn
-                  props={{
-                    noteID: noteListKey,
-                    noteText: customerNoteList[noteListNumber].customerNoteText
-                  }}
-                  buttonName="Edit Note"
-                  ClickHandler={editCustomerNote}
-                />
-              </div>
-              <div className={styles['delete-btn']}>
-                <Btn
-                  props={noteListKey}
-                  buttonName="Delete Note"
-                  ClickHandler={handleDeleteNoteClick}
-                />
-              </div>
-            </div>
-            <div>
-              <div>
-                <textarea disabled={true}>
-                  {customerNoteList[noteListNumber].customerNoteText}
-                </textarea>
-              </div>
-            </div>
-            <div>
-              <div>
-                <div>
-                  {renderRow(customerNoteList[noteListNumber].changeNoteList)}
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-        returnNoteLists.push(returnNotes);
-      }
-    );
-    return returnNoteLists;
   };
 
   const renderBooleanData = () => {
@@ -362,50 +215,14 @@ function CustomerHeadTable(props: Props) {
             <div>Change History:</div>
           </div>
           <div>
-            <div>{renderChangeNoteRow()}</div>
+            <div>
+              {renderChangeNoteRow(singleCustomer.customer.changeNoteList.list)}
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles['single-customer-notes']}>
-        <div>
-          {noteDisplayState.listNotes && (
-            <div className={styles['list-customer-note-wrapper']}>
-              <div>
-                <div>Customer Notes:</div>
-                <Btn buttonName="Add Note" ClickHandler={addCustomerNote} />
-              </div>
-              <div>{renderCustomerNotes()}</div>
-            </div>
-          )}
-
-          {noteDisplayState.addNote && (
-            <div className={styles['add-customer-note-wrapper']}>
-              <div>
-                <AddCustomerNote
-                  props={singleCustomer.customer}
-                  onSubmit={handleAddCustomerNote}
-                />
-              </div>
-              <div>
-                <Btn buttonName="Cancel" ClickHandler={cancelNote} />
-              </div>
-            </div>
-          )}
-
-          {noteDisplayState.editNote && (
-            <div className={styles['add-customer-note-wrapper']}>
-              <div>
-                <EditCustomerNote
-                  props={noteDisplayState.customerNote}
-                  onSubmit={handleEditCustomerNote}
-                />
-              </div>
-              <div>
-                <Btn buttonName="Cancel" ClickHandler={cancelNote} />
-              </div>
-            </div>
-          )}
-        </div>
+      <div>
+        <NoteList props={customerNoteList} />
       </div>
     </div>
   );

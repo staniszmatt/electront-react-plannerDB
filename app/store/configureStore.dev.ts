@@ -42,6 +42,8 @@ const configureStore = (initialState?: {
         error: {};
         loadingState: boolean;
         loadPartAddPage: boolean;
+        loadSinglePartNumberPage: boolean;
+        singlePartNumber: {};
       }
     | any
     | partNumbersStateType;

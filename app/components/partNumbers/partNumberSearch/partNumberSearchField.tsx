@@ -18,6 +18,10 @@ const PartNumSearchFormComponent = (
 ) => {
   const { handleSubmit, onSubmit } = props;
 
+  function toUpperCase(value: string) {
+    return value && value.toUpperCase();
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['form-main-container']}>
@@ -26,6 +30,7 @@ const PartNumSearchFormComponent = (
           component={FormInput}
           name="partNumSearch"
           type="text"
+          format={toUpperCase}
         />
         <button type="button" onClick={handleSubmit(onSubmit)}>
           Submit

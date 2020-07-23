@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import * as React from 'react';
-import styles from './customerSingle.css';
+import styles from './singleChangeNote.css';
 
 interface Props {
   props: {
@@ -23,7 +23,7 @@ export default function CustomerChangeNoteRow(props: Props) {
 
   return (
     <div
-      className={styles['single-customer-note']}
+      className={styles['single-change-note']}
       id={`ChangeNoteID-${changeNoteID}`}
     >
       <div>

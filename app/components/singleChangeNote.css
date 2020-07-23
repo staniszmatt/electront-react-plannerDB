@@ -1,0 +1,22 @@
+.single-change-note > div:first-child > div {
+  display: flex;
+  font-size: 12px;
+}
+
+.single-change-note > div:first-child > div > div:first-child {
+  margin-right: 5px;
+  min-width: 80px;
+}
+
+.single-change-note > div:first-child > div > div:last-child {
+
+}
+
+.single-change-note {
+  display: flex;
+  margin: 5px;
+}
+
+.single-change-note:nth-child(even) {
+  background-color: #80808042;
+}

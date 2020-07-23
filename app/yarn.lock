@@ -608,10 +608,10 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-msnodesqlv8@^1.1.8:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/msnodesqlv8/-/msnodesqlv8-1.1.8.tgz#9e3282518e57c37bbc3b94c7c0d70a61db8aba4d"
-  integrity sha512-ory7RsY0d9IEVUiQvogNX4x5b4YoZV0IBQ+V3fkKowJm8kG7XZCVFJCMzRoZXsutzD4sRwtzOLDNyqsuB+LoVg==
+msnodesqlv8@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/msnodesqlv8/-/msnodesqlv8-2.0.0.tgz#10967ec88d37bfde025e05c3310aecd0ad42c072"
+  integrity sha512-HTatAXOqZfGnSl4CXBvIe4OCHSxa4P1Gbldum6HPhr767Z4CK6/SdlqB+Dd0O7ekQoc3ZVxKOZqhaMaYxgIuSQ==
   dependencies:
     prebuild-install "^5.3.5"
 

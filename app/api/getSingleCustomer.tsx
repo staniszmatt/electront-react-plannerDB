@@ -7,6 +7,7 @@ interface Request {
   customerName: string;
 }
 
+
 interface List {
   push?: any;
   [index: number]: {
@@ -129,7 +130,7 @@ async function singleCustomer(request: Request) {
               changeNoteDescription: item.changeNoteDescription
             };
             const customerNote = {
-              customerNoteText: item.customerNoteText,
+              noteText: item.customerNoteText,
               changeNoteList: []
             };
 

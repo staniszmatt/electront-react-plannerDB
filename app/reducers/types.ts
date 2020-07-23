@@ -10,6 +10,8 @@ export type partNumbersStateType = {
     error: {};
     loadingState: boolean;
     loadPartAddPage: boolean;
+    loadSinglePartNumberPage: boolean;
+    singlePartNumber: {};
   };
 };
 

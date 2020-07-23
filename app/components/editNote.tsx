@@ -1,19 +1,23 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
+import FormBtn from './buttonFunctions/buttonClickHandler';
 
 interface FormProps {
   any: unknown;
 }
 interface DispatchProps {
   onSubmit: () => {};
-  props: {};
+  props: {
+    noteText: string;
+  };
 }
 
 interface CustomerNoteState {
-  customerNoteDataCheck: boolean;
+  // TODO: Change to displaySubmitBtn
+  noteDataCheck: boolean;
 }
 
 function charCheck(value: string) {
@@ -23,24 +27,26 @@ function charCheck(value: string) {
   return changeCharString;
 }
 
-const CustomerAddNote = (
+const EditNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
-  const [customerNoteState, setCustomerNoteState] = useState<
-    CustomerNoteState | { customerNoteDataCheck: boolean }
-  >({ customerNoteDataCheck: false });
-
+  // eslint-disable-next-line react/destructuring-assignment
+  const { noteText } = props.props;
+  const [noteState, setCustomerNoteState] = useState<
+    CustomerNoteState | { noteDataCheck: boolean }
+  >({ noteDataCheck: false });
+  // State is for hiding submit button if nothing is changed or text field is empty.
   const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== '') {
       setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: true
+        ...noteState,
+        noteDataCheck: true
       });
     } else {
       setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: false
+        ...noteState,
+        noteDataCheck: false
       });
     }
   };
@@ -51,16 +57,17 @@ const CustomerAddNote = (
         <Field
           label="Add Notes:"
           component="textarea"
-          name="addCustomerNote"
+          name="updateNote"
           type="textarea"
           aria-multiline
           rows="15"
           onChange={checkTextArea}
+          defaultValue={noteText}
           normalize={charCheck}
         />
       </div>
       <div>
-        {customerNoteState.customerNoteDataCheck && (
+        {noteState.noteDataCheck && (
           <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
         )}
       </div>
@@ -69,5 +76,5 @@ const CustomerAddNote = (
 };
 
 export default reduxForm<FormProps, DispatchProps>({
-  form: 'customerAddNote'
-})(CustomerAddNote);
+  form: 'editNote'
+})(EditNote);

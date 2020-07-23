@@ -136,8 +136,7 @@ export function handleCustomerSearchForm(customerName: { customerSearch: string 
       }
     ) => {
       if (!isObjEmpty(resp.customer)) {
-        dispatch(customerSinglePageSelected(resp));} else if (resp.error.name === 'RequestError') {
-        // If request isn't in the server
+        dispatch(customerSinglePageSelected(resp));
       } else if (isObjEmpty(resp.customer)) {
         dispatch(customerPending());
         dispatch(toggleErrorModalState(`Customer "${customerName.customerSearch}" was not found! Check the spelling or add "${customerName.customerSearch}"`));
@@ -191,11 +190,12 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
 
 export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _e: unused, props: { props: { noteID: number } }) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
+    debugger;
     const state = getState()
     const mainIPCRequest = {
       request: 'updateCustomerNote',
       customerNoteID: `${props.props.noteID}`,
-      customerNoteText: `${customerNoteRequest.updateCustomerNote}`,
+      customerNoteText: `${customerNoteRequest.updateNote}`,
       changeNoteDescription: 'Modified customer note.'
     };
 
