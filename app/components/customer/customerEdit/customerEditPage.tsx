@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
+import FormRadioInput from '../../forms/formRadioInput';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
 import styles from './customerEditPage.css';
@@ -123,7 +124,7 @@ const CustomerEditFormComponent = (
               Yes
               <Field
                 name="customerGenStd"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="yes"
                 checkedValue={checkRadioState.customerGenStd}
@@ -134,7 +135,7 @@ const CustomerEditFormComponent = (
               No
               <Field
                 name="customerGenStd"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="no"
                 checkedValue={!checkRadioState.customerGenStd}
@@ -150,7 +151,7 @@ const CustomerEditFormComponent = (
               Yes
               <Field
                 name="customerRsStd"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="yes"
                 checkedValue={checkRadioState.customerRsStd}
@@ -161,7 +162,7 @@ const CustomerEditFormComponent = (
               No
               <Field
                 name="customerRsStd"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="no"
                 checkedValue={!checkRadioState.customerRsStd}
@@ -177,7 +178,7 @@ const CustomerEditFormComponent = (
               Yes
               <Field
                 name="customerActive"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="yes"
                 checkedValue={checkRadioState.customerActive}
@@ -188,7 +189,7 @@ const CustomerEditFormComponent = (
               No
               <Field
                 name="customerActive"
-                component={FormInput}
+                component={FormRadioInput}
                 type="radio"
                 value="no"
                 checkedValue={!checkRadioState.customerActive}
