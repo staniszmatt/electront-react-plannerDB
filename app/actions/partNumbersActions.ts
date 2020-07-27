@@ -72,14 +72,14 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
       dispatch(toggleErrorModalState('Search Was Empty!'));
       return;
     }
-// debugger;
-//     // TODO: Setup once display list is completed
-//     // Stop if same search already displayed
-//     if (state.partNumberList.length === 1) {
-//       if (state.partNumberList[0].partNumberName === partNumName.partNumSearch) {
-//         return;
-//       }
-//     }
+    // TODO: Setup once display list is completed
+    // Stop if same search already displayed
+
+    if (!isObjEmpty(state.singlePartNumber)) {
+      if (state.singlePartNumber.singlePartNumber.partNumberName === partNumName.partNumSearch) {
+        return;
+      }
+    }
 
     const mainIPCRequest = {
       request: 'getSearchPartNumber',
@@ -204,14 +204,6 @@ export function handleListPartNum() {
   }
 }
 
-
-
-
-
-
-
-
-
 export function handleEditPartNumForm(partNumberName: number) {
   console.log('Handle Edit Part Number clicked, partNumberName', partNumberName);
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
@@ -221,7 +213,6 @@ export function handleEditPartNumForm(partNumberName: number) {
     dispatch(partNumLoading());
   }
 }
-
 
 export function handleDeletePartNumber() {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {

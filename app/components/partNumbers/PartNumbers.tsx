@@ -21,7 +21,9 @@ interface Props {
     loadPartAddPage: boolean;
     loadSinglePartNumberPage: boolean;
     loadPartNumberListPage: boolean;
-    partNumberList: {};
+    partNumberList: {
+      list: [];
+    };
     singlePartNumber: {};
   };
 }

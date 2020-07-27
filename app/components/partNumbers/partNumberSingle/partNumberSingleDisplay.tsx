@@ -33,8 +33,12 @@ interface Props {
   toggleModalState: () => {};
   handleAddPartNumNote: (noteRequest: {}) => {};
   handleEditPartNumForm: (id: number) => {};
-  handleEditPartNumNote: () => {};
-  handleDeletePartNumNote: () => {};
+  handleEditPartNumNote: (
+    noteRequest: { updateNote: string },
+    _e: unused,
+    props: { props: { noteID: number } }
+  ) => {};
+  handleDeletePartNumNote: (deleteProps: { updateNote: string }) => {};
   handleDeletePartNumber: () => {};
   partNumbers: {
     singlePartNumber: {
