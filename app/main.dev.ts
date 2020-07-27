@@ -15,6 +15,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import getCustomerList from './api/getCustomerList';
+import getPartNumberList from './api/getPartNumberList';
 import getSingleCustomer from './api/getSingleCustomer';
 import getSinglePartNumber from './api/getSinglePartNumber';
 import postNewCustomer from './api/postNewCustomer';
@@ -137,6 +138,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
     // Get Requests Here.
     case 'getCustomerList':
       requestToSend = getCustomerList;
+      break;
+    case 'getPartNumberList':
+      requestToSend = getPartNumberList;
       break;
     case 'getSearchCustomer':
       requestToSend = getSingleCustomer;

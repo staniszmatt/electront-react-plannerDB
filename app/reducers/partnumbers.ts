@@ -3,7 +3,8 @@ import {
   PARTNUM_LOADING,
   PARTNUM_LOAD_ADD_PAGE,
   PARTNUM_ERROR_PAGE,
-  PARTNUM_LOAD_SINGLE_PAGE
+  PARTNUM_LOAD_SINGLE_PAGE,
+  PARTNUM_LOAD_LIST_PAGE
 } from '../actions/partNumbersActions';
 
 const IState = {
@@ -12,6 +13,8 @@ const IState = {
   loadingState: false,
   loadPartAddPage: false,
   loadSinglePartNumberPage: false,
+  loadPartNumberListPage: false,
+  partNumberList: {},
   singlePartNumber: {}
 };
 export interface PartNumbersAction extends Action {
@@ -32,6 +35,8 @@ export default function customer(state = IState, action: PartNumbersAction) {
         loadingState: !state.loadingState,
         loadPartAddPage: false,
         loadSinglePartNumberPage: false,
+        loadPartNumberListPage: false,
+        partNumberList: {},
         singlePartNumber: {}
       };
     case PARTNUM_LOAD_ADD_PAGE:
@@ -42,6 +47,8 @@ export default function customer(state = IState, action: PartNumbersAction) {
         loadingState: false,
         loadPartAddPage: true,
         loadSinglePartNumberPage: false,
+        loadPartNumberListPage: false,
+        partNumberList: {},
         singlePartNumber: {}
       };
     case PARTNUM_ERROR_PAGE:
@@ -52,6 +59,8 @@ export default function customer(state = IState, action: PartNumbersAction) {
         loadingState: false,
         loadPartAddPage: false,
         loadSinglePartNumberPage: false,
+        loadPartNumberListPage: false,
+        partNumberList: {},
         singlePartNumber: {}
       };
     case PARTNUM_LOAD_SINGLE_PAGE:
@@ -62,7 +71,21 @@ export default function customer(state = IState, action: PartNumbersAction) {
         loadingState: false,
         loadPartAddPage: false,
         loadSinglePartNumberPage: true,
+        loadPartNumberListPage: false,
+        partNumberList: {},
         singlePartNumber: action.resp
+      };
+    case PARTNUM_LOAD_LIST_PAGE:
+      return {
+        ...state,
+        errorState: false,
+        error: {},
+        loadingState: false,
+        loadPartAddPage: false,
+        loadSinglePartNumberPage: false,
+        loadPartNumberListPage: true,
+        partNumberList: action.resp,
+        singlePartNumber: {}
       };
     default:
       return state;

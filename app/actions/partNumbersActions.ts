@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 /* eslint-disable prettier/prettier */
 import { ipcRenderer } from 'electron';
 import { reset } from 'redux-form';
@@ -7,12 +8,12 @@ import {
   toggleSuccessModalState
 } from './modalActions';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
-import { stat } from 'fs';
 
 export const PARTNUM_LOADING = 'PARTNUM_LOADING';
 export const PARTNUM_LOAD_ADD_PAGE = 'PARTNUM_LOAD_ADD_PAGE';
 export const PARTNUM_ERROR_PAGE = 'PARTNUM_ERROR_PAGE';
 export const PARTNUM_LOAD_SINGLE_PAGE = 'PARTNUM_LOAD_SINGLE_PAGE';
+export const PARTNUM_LOAD_LIST_PAGE = 'PARTNUM_LOAD_LIST_PAGE';
 
 // Un-used arguments setup
 type unused = unknown;
@@ -56,6 +57,13 @@ export function partNumberSinglePage(resp: {}) {
   };
 }
 
+export function partNumberListPage(resp: {}) {
+  return {
+    type: PARTNUM_LOAD_LIST_PAGE,
+    resp
+  };
+}
+
 export function handleAddPartNumNote(noteRequest: {addNote: string}) {
   console.log('handleAddPartNumber Note', noteRequest)
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
@@ -84,9 +92,6 @@ export function handleDeletePartNumNote(noteRequest: {updateNote: string}) {
 
 export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log('Handle Part Number Search Form, state:', getState())
-    console.log('Handle Part Number Search Form, partNumName', partNumName);
-
     const state = getState().partnumbers;
 
     if (partNumName.partNumSearch === 'undefined' || isObjEmpty(partNumName)) {
@@ -140,14 +145,9 @@ export function handlePartNumberAddForm(partNumToAdd: {
   partSerialNumReq: string;
   partSetForProduction: string;
 }) {
-  console.log('Handle Add Part Number Form, props', partNumToAdd);
-
-  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log('Handle Add Part Number Form, state', getState().partnumbers);
-
+  return (dispatch: Dispatch) => {
     const sendPartSerialNumReq = returnOneZeroFromString(partNumToAdd.partSerialNumReq);
-    const sendPartSetForProduction = returnOneZeroFromString(partNumToAdd.partSetForProduction)
-
+    const sendPartSetForProduction = returnOneZeroFromString(partNumToAdd.partSetForProduction);
     const mainIPCRequest = {
       request: 'postNewPartNumber',
       partNumberName: partNumToAdd.partNumber,
@@ -155,31 +155,18 @@ export function handlePartNumberAddForm(partNumToAdd: {
       partNumberSerialNumberRequired: sendPartSerialNumReq,
       partNumberSetForProduction: sendPartSetForProduction,
       partNumberNoteText: partNumToAdd.partNumberNote
-
     }
-
-    console.log('add part number action, ipc request:', mainIPCRequest);
-
-
-
 
     const handleAddPartNumberResp = (
       _event: {},
       resp: {partNumberAdd: { error: { number: number } } }
     ) => {
-
       if (isObjEmpty(resp.partNumberAdd.error)) {
         const searchFormObj = {
           partNumSearch: mainIPCRequest.partNumberName
         };
-
         dispatch(reset('partNumberAddForm'));
         dispatch(handlePartNumSearchForm(searchFormObj));
-
-        // eslint-disable-next-line no-prototype-builtins
-        if(!resp.hasOwnProperty('partNumberNote')) {
-          dispatch(toggleErrorModalState('RELOAD APP! Failed to add part number note! Possibly character issue.'));
-        }
       } else if (resp.partNumberAdd.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
         dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
@@ -194,16 +181,49 @@ export function handlePartNumberAddForm(partNumToAdd: {
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(partNumLoading());
     ipcRenderer.on('asynchronous-reply', handleAddPartNumberResp);
-
-
-
-
   }
 }
 
-export function handleListPartNum(props) {
-  console.log('Handle list Part Number Form, props', props);
-  return (dispatch: Dispatch, getState: GetCustomerState) => {
-    console.log('Handle list Part Number Form, state', getState())
+export function handleListPartNum() {
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    const state = getState().partnumbers
+    // Stop if list already loaded
+    if (state.loadPartNumberListPage) {
+      return;
+    }
+
+    const mainRequest = {
+      request: 'getPartNumberList'
+    };
+
+    const handlePartNumberListDataResp = (_event: unused, resp: { list: [] }) => {
+      if (resp.list.length > 0) {
+        dispatch(partNumberListPage(resp));
+      } else {
+        dispatch(partNumberError(resp));
+      }
+      ipcRenderer.removeListener('asynchronous-reply', handlePartNumberListDataResp);
+    }
+
+    ipcRenderer.send('asynchronous-message', mainRequest);
+    dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handlePartNumberListDataResp);
+  }
+}
+
+
+
+
+
+
+
+
+
+export function handleEditPartNumForm(partNumberName: string) {
+  console.log('Handle Edit Part Number clicked, partNumberName', partNumberName);
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    const state = getState().partnumbers;
+    console.log("handle edit part number state:", state);
+    dispatch(partNumLoading());
   }
 }

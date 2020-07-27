@@ -25,6 +25,8 @@ function configureStore(initialState?: {
         loadingState: boolean;
         loadPartAddPage: boolean;
         loadSinglePartNumberPage: boolean;
+        loadPartNumberListPage: boolean;
+        partNumberList: {};
         singlePartNumber: {};
       }
     | any
