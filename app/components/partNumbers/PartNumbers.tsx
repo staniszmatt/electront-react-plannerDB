@@ -4,6 +4,7 @@ import styles from '../styling/pageHeaderBar.css';
 import PartNumberBtn from '../buttonFunctions/buttonClickHandler';
 import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField';
 import PartNumberErrorDisplay from '../../errorComponents/ErrorComponent';
+import PartNumberListHeader from './partNumberList/partNumberListHeader';
 import LoadingScreen from '../LoadingDisplay';
 import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
 import PartNumberSingleDisplay from './partNumberSingle/partNumberSingleDisplay';
@@ -19,6 +20,8 @@ interface Props {
     loadingState: boolean;
     loadPartAddPage: boolean;
     loadSinglePartNumberPage: boolean;
+    loadPartNumberListPage: boolean;
+    partNumberList: {};
     singlePartNumber: {};
   };
 }
@@ -30,10 +33,6 @@ export default function PartNumbers(props: Props) {
     handleListPartNum,
     partNumLoadAddPage
   } = props;
-
-  console.log("load add page state: ", props.partNumbers.loadPartAddPage)
-
-  console.log('partNumber Props:', props);
 
   return (
     <div className={styles.container}>
@@ -60,6 +59,9 @@ export default function PartNumbers(props: Props) {
         )}
         {props.partNumbers.loadSinglePartNumberPage && (
           <PartNumberSingleDisplay props={props.partNumbers.singlePartNumber} />
+        )}
+        {props.partNumbers.loadPartNumberListPage && (
+          <PartNumberListHeader props={props.partNumbers.partNumberList.list} />
         )}
       </div>
     </div>

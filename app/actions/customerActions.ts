@@ -290,9 +290,7 @@ export function requestCustomerList() {
       // Need to stop process if the list is already loaded and displayed.
       return;
     }
-    if (state.customer.customerList.length < 2) {
-      dispatch(pullRequestCustomerListData());
-    }
+    dispatch(pullRequestCustomerListData());
   };
 }
 

@@ -11,6 +11,8 @@ export type partNumbersStateType = {
     loadingState: boolean;
     loadPartAddPage: boolean;
     loadSinglePartNumberPage: boolean;
+    loadPartNumberListPage: boolean;
+    partNumberList: {};
     singlePartNumber: {};
   };
 };

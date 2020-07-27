@@ -1,13 +1,13 @@
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 
-async function customerList() {
+async function partNumberList() {
   let returnData = {};
   try {
     const db = await pool.connect();
     const query = `
-      select * from customer
-        ORDER BY customerName ASC
+      SELECT * FROM partNumber
+        ORDER BY partNumberName ASC
     `;
     const data = await db.query(query);
 
@@ -20,7 +20,7 @@ async function customerList() {
       returnData = {
         list: [],
         error: {
-          empty: 'No Data Found For Customers'
+          empty: 'No Data Found For Part Numbers'
         }
       };
     }
@@ -34,4 +34,4 @@ async function customerList() {
   }
 }
 
-export default customerList;
+export default partNumberList;

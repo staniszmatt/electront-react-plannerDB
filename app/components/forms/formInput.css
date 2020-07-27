@@ -32,6 +32,15 @@ form {
 
 .radio-input {
   display: inline-flex;
+
+}
+
+.radio-input > label {
+  display: none;
+}
+
+.radio-input > input {
+  margin: 0 10px;
 }
 
 .radio-container > div {
