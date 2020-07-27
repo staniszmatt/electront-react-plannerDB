@@ -64,32 +64,6 @@ export function partNumberListPage(resp: {}) {
   };
 }
 
-export function handleAddPartNumNote(noteRequest: {addNote: string}) {
-  console.log('handleAddPartNumber Note', noteRequest)
-  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
-    console.log("handle add part number note, props", noteRequest);
-  }
-}
-
-export function handleEditPartNumNote(noteRequest: {updateNote: string}, _e: unused, props: { props: { noteID: number } }) {
-  console.log('handleEditPartNumber Note', noteRequest);
-  console.log('handle edit part number props:', props);
-  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log("handle add part number note, getState", getState());
-    console.log("handle add part number note, props", noteRequest);
-  }
-}
-
-export function handleDeletePartNumNote(noteRequest: {updateNote: string}) {
-  console.log('handleDeletePartNumber Note', noteRequest)
-  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
-    console.log("handle add part number note, props", noteRequest);
-  }
-}
-
-
 export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
     const state = getState().partnumbers;
@@ -138,6 +112,25 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
   }
 }
 
+
+
+export function handleEditPartNumNote(noteRequest: {updateNote: string}, _e: unused, props: { props: { noteID: number } }) {
+  console.log('handleEditPartNumber Note', noteRequest);
+  console.log('handle edit part number props:', props);
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    console.log("handle add part number note, getState", getState());
+    console.log("handle add part number note, props", noteRequest);
+  }
+}
+
+export function handleDeletePartNumNote(noteRequest: {updateNote: string}) {
+  console.log('handleDeletePartNumber Note', noteRequest)
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
+    console.log("handle add part number note, props", noteRequest);
+  }
+}
+
 export function handlePartNumberAddForm(partNumToAdd: {
   materialType: string;
   partNumber: string;
@@ -169,7 +162,7 @@ export function handlePartNumberAddForm(partNumToAdd: {
         dispatch(handlePartNumSearchForm(searchFormObj));
       } else if (resp.partNumberAdd.error.number === 2627) {
         // eslint-disable-next-line prettier/prettier
-        dispatch(toggleErrorModalState('Error Customer or code already name already used!'));
+        dispatch(toggleErrorModalState('Error part number name already used!'));
         dispatch(partNumLoadAddPage());
       } else {
         // If errors are not specified above, then pass whole error
@@ -219,11 +212,51 @@ export function handleListPartNum() {
 
 
 
-export function handleEditPartNumForm(partNumberName: string) {
+export function handleEditPartNumForm(partNumberName: number) {
   console.log('Handle Edit Part Number clicked, partNumberName', partNumberName);
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    debugger;
     const state = getState().partnumbers;
     console.log("handle edit part number state:", state);
     dispatch(partNumLoading());
+  }
+}
+
+
+export function handleDeletePartNumber() {
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    debugger;
+  }
+}
+
+export function handleAddPartNumNote(noteRequest: { addNote: string }) {
+  console.log('handle add part number note, request:', noteRequest);
+  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
+    const state = getState();
+    const mainIPCRequest = {
+      request: 'postPartNumberNote',
+      partNumberID: `${state.partnumbers.singlePartNumber.singlePartNumber.id}`,
+      partNumberNoteText: `${noteRequest.addNote}`,
+      changeNoteDescription: 'Added note to current part number.'
+    };
+
+    const handleAddPartNumberNoteResp = (
+      _event: {},
+      resp: { partNumberNoteData: { error: {} } }
+    ) => {
+      if (isObjEmpty(resp.partNumberNoteData.error)) {
+        const searchFormObj = {
+          partNumSearch: state.partnumbers.singlePartNumber.singlePartNumber.partNumberName
+        };
+        dispatch(reset('addNote'));
+        dispatch(handlePartNumSearchForm(searchFormObj));
+      } else {
+        dispatch(partNumberError(resp.partNumberNoteData.error))
+      }
+      ipcRenderer.removeListener('asynchronous-reply', handleAddPartNumberNoteResp);
+    }
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handleAddPartNumberNoteResp);
   }
 }

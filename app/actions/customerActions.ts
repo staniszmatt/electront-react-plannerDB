@@ -188,7 +188,7 @@ export function handleDeleteCustomerNote(customerID: { props: number }) {
   };
 }
 
-export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote: string}, _e: unused, props: { props: { noteID: number } }) {
+export function handleEditCustomerNote(customerNoteRequest: {updateNote: string}, _e: unused, props: { props: { noteID: number } }) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
     const mainIPCRequest = {
@@ -224,13 +224,12 @@ export function handleEditCustomerNote(customerNoteRequest: {updateCustomerNote:
 }
 
 export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string}) {
-
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
     const mainIPCRequest = {
       request: 'postCustomerNote',
       customerID: `${state.customer.singleCustomerInfo.customer.id}`,
-      customerNote: `${customerNoteRequest.addCustomerNote}`,
+      customerNote: `${customerNoteRequest.addNote}`,
       changeNoteDescription: 'Added customer note to current customer.'
     };
 
@@ -243,7 +242,7 @@ export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: str
         const searchFormObj = {
           customerSearch: state.customer.singleCustomerInfo.customer.customerName
         };
-        dispatch(reset('customerAddNote'));
+        dispatch(reset('addNote'));
         dispatch(toggleSuccessModalState('Customer Update Complete!'));
         dispatch(handleCustomerSearchForm(searchFormObj));
       } else {
@@ -290,7 +289,9 @@ export function requestCustomerList() {
       // Need to stop process if the list is already loaded and displayed.
       return;
     }
-    dispatch(pullRequestCustomerListData());
+    if (state.customer.customerList.length < 2) {
+      dispatch(pullRequestCustomerListData());
+    }
   };
 }
 

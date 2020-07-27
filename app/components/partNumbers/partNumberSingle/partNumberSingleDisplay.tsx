@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 import {
   handleAddPartNumNote,
   handleEditPartNumNote,
-  handleDeletePartNumNote
+  handleDeletePartNumNote,
+  handleEditPartNumForm,
+  handleDeletePartNumber
 } from '../../../actions/partNumbersActions';
 import NoteList from '../../notesList';
 import {
@@ -20,7 +22,7 @@ import { partNumbersStateType } from '../../../reducers/types';
 import Btn from '../../buttonFunctions/buttonClickHandler';
 import styles from '../../customer/customerSingle/customerSingleDisplay.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import CustomerChangeNoteRow from '../../singleChangeNote';
+import ChangeNoteRow from '../../singleChangeNote';
 
 // Un-used arguments setup
 type unused = unknown;
@@ -29,34 +31,34 @@ interface Props {
   toggleWarningModalState: (warningModalResp: {}) => {};
   // handleDeleteCustomer: () => {};
   toggleModalState: () => {};
+  handleAddPartNumNote: (noteRequest: {}) => {};
+  handleEditPartNumForm: (id: number) => {};
+  handleEditPartNumNote: () => {};
+  handleDeletePartNumNote: () => {};
+  handleDeletePartNumber: () => {};
   partNumbers: {
-    singlePartNumber: {};
-  };
-  props: {
-    partNumberNotes: {
-      noteList: {
-        [id: number]: {
-          changeNoteList: [];
-        }
-      };
-    };
     singlePartNumber: {
-      changeNoteList: {
-        list: [
-          {
-            changeNoteDateStamp: string;
-            changeNoteDescription: string;
-            changeNoteID: number;
-            typeCategory: string;
-            userID: string;
-          }
-        ];
+      partNumberNotes: {
+        noteList: [];
       };
-      id: number;
-      partNumberMaterial: string;
-      partNumberName: string;
-      partNumberSerialNumberRequired: boolean;
-      partNumberSetForProduction: boolean;
+      singlePartNumber: {
+        changeNoteList: {
+          list: [
+            {
+              changeNoteDateStamp: string;
+              changeNoteDescription: string;
+              changeNoteID: number;
+              typeCategory: string;
+              userID: string;
+            }
+          ];
+        };
+        id: number;
+        partNumberMaterial: string;
+        partNumberName: string;
+        partNumberSerialNumberRequired: boolean;
+        partNumberSetForProduction: boolean;
+      };
     };
   };
 }
@@ -74,6 +76,8 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
       handleAddPartNumNote,
       handleEditPartNumNote,
       handleDeletePartNumNote,
+      handleEditPartNumForm,
+      handleDeletePartNumber,
       toggleWarningModalState,
       toggleModalState
     },
@@ -82,10 +86,19 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function PartNumberSingleDisplay(props: Props) {
-
-  console.log('Single part number page, props:', props);
-  const partNumberInfo = props.props.singlePartNumber;
-  const partNumberChangeNoteList = props.props.singlePartNumber.changeNoteList.list;
+  console.log('single part number display, props', props);
+  const {
+    handleAddPartNumNote,
+    handleEditPartNumNote,
+    handleDeletePartNumNote,
+    handleEditPartNumForm,
+    handleDeletePartNumber,
+    toggleWarningModalState,
+    toggleModalState
+  } = props;
+  const partNumberInfo = props.partNumbers.singlePartNumber.singlePartNumber;
+  // eslint-disable-next-line prettier/prettier
+  const partNumberChangeNoteList = props.partNumbers.singlePartNumber.singlePartNumber.changeNoteList.list;
   const partNumberNoteList = {
     handleAddNote: (noteRequest: { addNote: string }) => {
       handleAddPartNumNote(noteRequest);
@@ -111,7 +124,7 @@ function PartNumberSingleDisplay(props: Props) {
 
     list.forEach((note: {}, arrIndex: number) => {
       returnNotes.push(
-        <CustomerChangeNoteRow
+        <ChangeNoteRow
           // eslint-disable-next-line react/no-array-index-key
           key={`changeNote${arrIndex}`}
           // @ts-ignore: Type '{}' is missing
@@ -130,6 +143,7 @@ function PartNumberSingleDisplay(props: Props) {
       // eslint-disable-next-line react/prop-types
       partNumberSetForProduction
     } = partNumberInfo;
+
     // Setup boolean to string to add to row data
     const serialNumReq = booleanToStringYesNo(partNumberSerialNumberRequired);
     const setForProd = booleanToStringYesNo(partNumberSetForProduction);
@@ -152,30 +166,32 @@ function PartNumberSingleDisplay(props: Props) {
   };
 
   // Setup so Action isn't called until the button is clicked.
-  const editCustomer = () => {
-    console.log('edit partNumber');
-    // handleEditCustomerForm(singleCustomer.customer.customerName);
+  const editPartNumber = () => {
+    handleEditPartNumForm(
+      props.partNumbers.singlePartNumber.singlePartNumber.id
+    );
   };
 
   const deleteCustomer = () => {
     console.log('Delete PartNumber');
-    // const warningModalResp = {
-    //   warningMsg: 'Do you really want to delete this customer note?',
-    //   actionFunction: () => {
-    //     handleDeleteCustomer();
-    //   },
-    //   closeModal: () => {
-    //     toggleModalState();
-    //   }
-    // };
-    // toggleWarningModalState(warningModalResp);
+    const warningModalResp = {
+      warningMsg:
+        'Do you really want to delete the part number and everything referenced to it?',
+      actionFunction: () => {
+        handleDeletePartNumber();
+      },
+      closeModal: () => {
+        toggleModalState();
+      }
+    };
+    toggleWarningModalState(warningModalResp);
   };
 
   return (
     <div className={styles['main-single-customer']}>
       <div>
         <div>
-          <Btn buttonName="Edit Customer" ClickHandler={editCustomer} />
+          <Btn buttonName="Edit Customer" ClickHandler={editPartNumber} />
         </div>
         <div className={styles['delete-btn']}>
           <Btn buttonName="DELETE CUSTOMER" ClickHandler={deleteCustomer} />

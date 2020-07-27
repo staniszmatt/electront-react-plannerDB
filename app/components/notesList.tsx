@@ -18,10 +18,21 @@ import styles from './notesList.css';
 import isObjEmpty from '../helpFunctions/isObjEmpty';
 
 interface Props {
+  toggleWarningModalState: (warningModalResp: {}) => {};
+  toggleModalState: () => {};
+  reset: (formReset: string) => {};
   props: {
+    handleAddNote: () => {};
+    handleEditNote: () => {};
+    handleDeleteNote: (deleteProps: {}) => {};
     state: {
-      notes: {}
-    }
+      noteList: {
+        [noteListNumber: number]: {
+          noteText: string;
+          changeNoteList: [];
+        };
+      };
+    };
   };
 }
 
@@ -149,7 +160,7 @@ function noteList(props: Props) {
     return returnNotes;
   };
 
-  const renderCustomerNotes = () => {
+  const renderNotes = () => {
     const returnNoteLists: JSX.Element[] = [];
 
     if (isObjEmpty(noteList)) {
@@ -208,17 +219,15 @@ function noteList(props: Props) {
   return (
     <div className={styles['single-notes']}>
       <div>
-
         {noteDisplayState.listNotes && (
           <div className={styles['list-note-wrapper']}>
             <div>
               <div>Part Number Notes:</div>
               <Btn buttonName="Add Note" ClickHandler={addNote} />
             </div>
-            <div>{renderCustomerNotes()}</div>
+            <div>{renderNotes()}</div>
           </div>
         )}
-
         {noteDisplayState.addNote && (
           <div className={styles['add-note-wrapper']}>
             <div>
@@ -233,8 +242,6 @@ function noteList(props: Props) {
             </div>
           </div>
         )}
-
-
         {noteDisplayState.editNote && (
           <div className={styles['add-note-wrapper']}>
             <div>
@@ -248,8 +255,6 @@ function noteList(props: Props) {
             </div>
           </div>
         )}
-
-
       </div>
     </div>
   );

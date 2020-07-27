@@ -12,9 +12,9 @@ interface DispatchProps {
   props: {};
 }
 
-interface CustomerNoteState {
+interface NoteState {
   // TODO: Change to displaySubmitBtn
-  customerNoteDataCheck: boolean;
+  NoteDataCheck: boolean;
 }
 
 function charCheck(value: string) {
@@ -28,20 +28,20 @@ const AddNote = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
-  const [customerNoteState, setCustomerNoteState] = useState<
-    CustomerNoteState | { customerNoteDataCheck: boolean }
-  >({ customerNoteDataCheck: false });
+  const [NoteState, setNoteState] = useState<
+    NoteState | { NoteDataCheck: boolean }
+  >({ NoteDataCheck: false });
 
   const checkTextArea = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value !== '') {
-      setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: true
+      setNoteState({
+        ...NoteState,
+        NoteDataCheck: true
       });
     } else {
-      setCustomerNoteState({
-        ...customerNoteState,
-        customerNoteDataCheck: false
+      setNoteState({
+        ...NoteState,
+        NoteDataCheck: false
       });
     }
   };
@@ -52,7 +52,7 @@ const AddNote = (
         <Field
           label="Add Notes:"
           component="textarea"
-          name="addCustomerNote"
+          name="addNote"
           type="textarea"
           aria-multiline
           rows="15"
@@ -61,7 +61,7 @@ const AddNote = (
         />
       </div>
       <div>
-        {customerNoteState.customerNoteDataCheck && (
+        {NoteState.NoteDataCheck && (
           <FormBtn props={props} buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
         )}
       </div>

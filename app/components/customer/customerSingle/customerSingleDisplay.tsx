@@ -4,7 +4,6 @@
 /* eslint-disable no-shadow */
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
-import { reset } from 'redux-form';
 import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
@@ -78,8 +77,7 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
       handleDeleteCustomerNote,
       handleDeleteCustomer,
       toggleWarningModalState,
-      toggleModalState,
-      reset
+      toggleModalState
     },
     dispatch
   );

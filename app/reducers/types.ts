@@ -3,6 +3,13 @@ import { Dispatch as ReduxDispatch, Store as ReduxStore, Action } from 'redux';
 // export type counterStateType = {
 //   counter: number;
 // };
+interface SinglePartNumber {
+  id: number;
+  partNumberMaterial: string;
+  partNumberName: string;
+  partNumberSerialNumberRequired: boolean;
+  partNumberSetForProduction: boolean;
+}
 
 export type partNumbersStateType = {
   partnumbers: {
@@ -13,7 +20,9 @@ export type partNumbersStateType = {
     loadSinglePartNumberPage: boolean;
     loadPartNumberListPage: boolean;
     partNumberList: {};
-    singlePartNumber: {};
+    singlePartNumber: {
+      singlePartNumber: SinglePartNumber;
+    };
   };
 };
 

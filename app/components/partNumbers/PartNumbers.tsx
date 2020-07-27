@@ -58,7 +58,7 @@ export default function PartNumbers(props: Props) {
           <PartNumAddFormComponent onSubmit={handlePartNumberAddForm} />
         )}
         {props.partNumbers.loadSinglePartNumberPage && (
-          <PartNumberSingleDisplay props={props.partNumbers.singlePartNumber} />
+          <PartNumberSingleDisplay />
         )}
         {props.partNumbers.loadPartNumberListPage && (
           <PartNumberListHeader props={props.partNumbers.partNumberList.list} />

@@ -11,7 +11,7 @@ export function toggleModalState() {
   };
 }
 
-export function toggleErrorModalState(resp: string) {
+export function toggleErrorModalState(resp: {}) {
   return {
     type: TOGGLE_ERROR_MODAL_STATE,
     resp

@@ -20,6 +20,7 @@ import getSingleCustomer from './api/getSingleCustomer';
 import getSinglePartNumber from './api/getSinglePartNumber';
 import postNewCustomer from './api/postNewCustomer';
 import postCustomerNote from './api/postCustomerNote';
+import postPartNumberNote from './api/postPartNumberNote';
 import postNewPartNumber from './api/postNewPartNumber';
 import updateCustomer from './api/updateCustomer';
 import updateCustomerNote from './api/updateCustomerNote';
@@ -157,6 +158,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       break;
     case 'postNewPartNumber':
       requestToSend = postNewPartNumber;
+      break;
+    case 'postPartNumberNote':
+      requestToSend = postPartNumberNote;
       break;
     // Update Requests Here.
     case 'updateCustomer':
