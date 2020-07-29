@@ -5,6 +5,7 @@ import {
   partNumLoadAddPage,
   handlePartNumSearchForm,
   handlePartNumberAddForm,
+  handleEditPartNumberSubmit,
   handleListPartNum
 } from '../actions/partNumbersActions';
 import { partNumbersStateType } from '../reducers/types';
@@ -21,6 +22,7 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
       partNumLoadAddPage,
       handlePartNumSearchForm,
       handlePartNumberAddForm,
+      handleEditPartNumberSubmit,
       handleListPartNum
     },
     dispatch

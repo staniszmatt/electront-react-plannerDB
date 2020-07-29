@@ -32,7 +32,7 @@ interface Props {
   // handleDeleteCustomer: () => {};
   toggleModalState: () => {};
   handleAddPartNumNote: (noteRequest: {}) => {};
-  handleEditPartNumForm: (id: number) => {};
+  handleEditPartNumForm: (partNumberName: string) => {};
   handleEditPartNumNote: (
     noteRequest: { updateNote: string },
     _e: unused,
@@ -172,7 +172,7 @@ function PartNumberSingleDisplay(props: Props) {
   // Setup so Action isn't called until the button is clicked.
   const editPartNumber = () => {
     handleEditPartNumForm(
-      props.partNumbers.singlePartNumber.singlePartNumber.id
+      props.partNumbers.singlePartNumber.singlePartNumber.partNumberName
     );
   };
 

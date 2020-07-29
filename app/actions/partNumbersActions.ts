@@ -14,6 +14,7 @@ export const PARTNUM_LOAD_ADD_PAGE = 'PARTNUM_LOAD_ADD_PAGE';
 export const PARTNUM_ERROR_PAGE = 'PARTNUM_ERROR_PAGE';
 export const PARTNUM_LOAD_SINGLE_PAGE = 'PARTNUM_LOAD_SINGLE_PAGE';
 export const PARTNUM_LOAD_LIST_PAGE = 'PARTNUM_LOAD_LIST_PAGE';
+export const PARTNUM_LOAD_EDIT_PAGE = 'PARTNUM_LOAD_EDIT_PAGE';
 
 // Un-used arguments setup
 type unused = unknown;
@@ -53,6 +54,13 @@ export function partNumberError(resp: {}) {
 export function partNumberSinglePage(resp: {}) {
   return {
     type: PARTNUM_LOAD_SINGLE_PAGE,
+    resp
+  };
+}
+
+export function partNumberEditPage(resp: {}) {
+  return {
+    type: PARTNUM_LOAD_EDIT_PAGE,
     resp
   };
 }
@@ -255,12 +263,86 @@ export function handleListPartNum() {
   }
 }
 
-export function handleEditPartNumForm(partNumberName: number) {
-  console.log('Handle Edit Part Number clicked, partNumberName', partNumberName);
-  return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    const state = getState().partnumbers;
-    console.log("handle edit part number state:", state);
+
+
+
+
+
+
+
+
+export function handleEditPartNumberSubmit(editPartNumber) {
+  console.log("handle edit customer submit, editPartNumber", editPartNumber)
+  return (dispatch: Dispatch) => {
+
+  }
+}
+
+
+
+
+
+
+
+
+
+export function handleEditPartNumForm(partNumberName: string) {
+
+
+  return (dispatch: Dispatch) => {
+    const mainIPCRequest = {
+      request: 'getSearchPartNumber',
+      partNumberName
+    };
+
+
+
+
+
+
+
+
+
+    const handlePartNumberSearchFormResp = (_event: {}, resp: { partNumber: string; error: { customerName:string; name: string; } }) => {
+      if (!isObjEmpty(resp.partNumber)) {
+        dispatch(reset('partNumberEditForm'));
+        dispatch(partNumberEditPage(resp));
+      } else if (resp.error.name === 'RequestError') {
+        // If request isn't in the server
+        dispatch(
+          partNumberError({
+            list: [],
+            error: {
+              customerName: `Part number has not been added, please add '${mainIPCRequest.partNumberName}'`
+            }
+          })
+        );
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(partNumberError(resp));
+      }
+      // Remove Listener to prevent adding one every time this method is called
+      ipcRenderer.removeListener(
+        'asynchronous-reply',
+        handlePartNumberSearchFormResp
+      );
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handlePartNumberSearchFormResp);
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }
 

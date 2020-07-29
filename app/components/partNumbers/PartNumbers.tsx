@@ -8,12 +8,14 @@ import PartNumberListHeader from './partNumberList/partNumberListHeader';
 import LoadingScreen from '../LoadingDisplay';
 import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
 import PartNumberSingleDisplay from './partNumberSingle/partNumberSingleDisplay';
+import PartNumberEditPage from './partNumberEdit/partNumberEditPage';
 
 interface Props {
   handlePartNumSearchForm: () => {};
   handlePartNumberAddForm: () => {};
   handleListPartNum: () => {};
   partNumLoadAddPage: () => {};
+  handleEditPartNumberSubmit: () => {};
   partNumbers: {
     errorState: boolean;
     error: {};
@@ -21,6 +23,7 @@ interface Props {
     loadPartAddPage: boolean;
     loadSinglePartNumberPage: boolean;
     loadPartNumberListPage: boolean;
+    loadPartNumberEditPage: boolean;
     partNumberList: {
       list: [];
     };
@@ -32,6 +35,7 @@ export default function PartNumbers(props: Props) {
   const {
     handlePartNumSearchForm,
     handlePartNumberAddForm,
+    handleEditPartNumberSubmit,
     handleListPartNum,
     partNumLoadAddPage
   } = props;
@@ -65,6 +69,14 @@ export default function PartNumbers(props: Props) {
         {props.partNumbers.loadPartNumberListPage && (
           <PartNumberListHeader props={props.partNumbers.partNumberList.list} />
         )}
+
+        {props.partNumbers.loadPartNumberEditPage && (
+          <PartNumberEditPage
+            onSubmit={handleEditPartNumberSubmit}
+            props={props.partNumbers.singlePartNumber}
+          />
+        )}
+
       </div>
     </div>
   );

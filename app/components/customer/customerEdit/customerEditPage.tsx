@@ -202,11 +202,6 @@ const CustomerEditFormComponent = (
       <div>
         <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
       </div>
-      {/**
-      <div>
-        <FormBtn buttonName="DELETE" ClickHandler={handleDelete} />
-      </div>
-      */}
     </form>
   );
 };
