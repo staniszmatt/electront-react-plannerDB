@@ -193,8 +193,8 @@ export function handleEditCustomerNote(customerNoteRequest: {updateNote: string}
     const state = getState()
     const mainIPCRequest = {
       request: 'updateCustomerNote',
-      customerNoteID: `${props.props.noteID}`,
-      customerNoteText: `${customerNoteRequest.updateNote}`,
+      noteID: `${props.props.noteID}`,
+      noteText: `${customerNoteRequest.updateNote}`,
       changeNoteDescription: 'Modified customer note.'
     };
 
@@ -223,7 +223,7 @@ export function handleEditCustomerNote(customerNoteRequest: {updateNote: string}
   };
 }
 
-export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string}) {
+export function handleAddCustomerNote(customerNoteRequest: {addCustomerNote: string; addNote: string}) {
   return (dispatch: Dispatch, getState: GetCustomerState) => {
     const state = getState()
     const mainIPCRequest = {

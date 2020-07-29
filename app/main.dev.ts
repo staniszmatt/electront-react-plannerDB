@@ -171,7 +171,7 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       requestToSend = updateCustomerNote;
       break;
     case 'updatePartNumberNote':
-      requestToSend = updateCustomerNote;
+      requestToSend = updatePartNumberNote;
       break;
     // Delete Requests Here
     case 'deleteCustomerNote':

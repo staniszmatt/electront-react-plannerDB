@@ -112,14 +112,39 @@ export function handlePartNumSearchForm(partNumName: { partNumSearch: string }) 
   }
 }
 
-
-
 export function handleEditPartNumNote(noteRequest: {updateNote: string}, _e: unused, props: { props: { noteID: number } }) {
-  console.log('handleEditPartNumber Note', noteRequest);
-  console.log('handle edit part number props:', props);
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log("handle add part number note, getState", getState());
-    console.log("handle add part number note, props", noteRequest);
+    const state = getState().partnumbers.singlePartNumber
+    const mainIPCRequest = {
+      request: 'updatePartNumberNote',
+      noteID: props.props.noteID,
+      noteText: `${noteRequest.updateNote}`,
+      changeNoteDescription: 'Modified part number note.'
+    };
+
+    // Function needs to be inside the return dispatch scope
+    const handleUpdatePartNumberNoteResp = (
+      _event: unused,
+      resp: { error: {} }
+    ) => {
+
+      if (isObjEmpty(resp.error)) {
+        const searchFormObj = {
+          partNumSearch: state.singlePartNumber.partNumberName
+        };
+        dispatch(reset('editNote'));
+        dispatch(toggleSuccessModalState('Part Number Note Updated!'));
+        dispatch(handlePartNumSearchForm(searchFormObj));
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(partNumberError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleUpdatePartNumberNoteResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handleUpdatePartNumberNoteResp);
   }
 }
 
@@ -207,7 +232,6 @@ export function handleListPartNum() {
 export function handleEditPartNumForm(partNumberName: number) {
   console.log('Handle Edit Part Number clicked, partNumberName', partNumberName);
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    debugger;
     const state = getState().partnumbers;
     console.log("handle edit part number state:", state);
     dispatch(partNumLoading());
