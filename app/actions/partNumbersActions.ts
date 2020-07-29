@@ -148,11 +148,37 @@ export function handleEditPartNumNote(noteRequest: {updateNote: string}, _e: unu
   }
 }
 
-export function handleDeletePartNumNote(noteRequest: {updateNote: string}) {
-  console.log('handleDeletePartNumber Note', noteRequest)
+export function handleDeletePartNumNote(partNumberID: { props: string }) {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    console.log("handle add part number note, getState", getState().partnumbers.singlePartNumber);
-    console.log("handle add part number note, props", noteRequest);
+    const state =  getState().partnumbers.singlePartNumber;
+    const id = parseInt(partNumberID.props, 10);
+    const mainIPCRequest = {
+      request: 'deletePartNumberNote',
+      noteID: id,
+      partNumberID: state.singlePartNumber.id,
+      changeNoteDescription: `Deleted Part Number Note: ${partNumberID.props}`
+    };
+    // Function needs to be inside the return dispatch scope
+    const handleDeletePartNumberNoteResp = (
+      _event: {},
+      resp: { error: {} }
+    ) => {
+      if (isObjEmpty(resp.error)) {
+        const searchFormObj = {
+          partNumSearch: state.singlePartNumber.partNumberName
+        };
+        dispatch(toggleSuccessModalState('Part Number Note Deleted!'));
+        dispatch(handlePartNumSearchForm(searchFormObj));
+      } else {
+        // If errors are not specified above, then pass whole error
+        dispatch(partNumberError(resp));
+      }
+      // This prevents adding a listener every time this function is called on ipcRenderOn
+      ipcRenderer.removeListener('asynchronous-reply', handleDeletePartNumberNoteResp);
+    };
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handleDeletePartNumberNoteResp);
   }
 }
 
