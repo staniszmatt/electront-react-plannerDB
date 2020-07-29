@@ -264,11 +264,43 @@ export function handleEditPartNumForm(partNumberName: number) {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export function handleDeletePartNumber() {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
     debugger;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export function handleAddPartNumNote(noteRequest: { addNote: string }) {
   console.log('handle add part number note, request:', noteRequest);

@@ -1,7 +1,3 @@
-.single-notes {
-  padding-right: 10px;
-}
-
 .single-notes > div {
   width: 100%;
   display: flex;
@@ -13,12 +9,12 @@
   margin: 5px 0;
 }
 
-.add-note-wrapper > div {
-  width: 100%;
-}
-
 .delete-btn > button {
   color: red;
+}
+
+.add-note-wrapper > div > button {
+  margin: auto;
 }
 
 .delete-btn:hover > button {
@@ -28,6 +24,11 @@
 
 .list-note-wrapper > div:first-child > button {
   margin: auto;
+}
+
+.add-note-wrapper > div {
+  width: 100%;
+  display: flex;
 }
 
 .list-note-wrapper > div > div {
@@ -58,6 +59,7 @@
 
 .single-note-wrapper > div:nth-child(2) {
   width: 100%;
+  display: flex;
 }
 
 .list-note-wrapper > div:last-child {
@@ -76,12 +78,10 @@
   width: 100%;
 }
 
-.add-note-wrapper > div:last-child {
-  display: flex;
-  margin: 10px 0;
+.single-note-wrapper > div:nth-child(2) > div {
+  width: 100%;
+  margin: auto;
 }
-
-
 
 .list-note-wrapper > div:first-child > div {
   margin: auto;
@@ -91,8 +91,6 @@
   width: 100%;
   border: none;
 }
-
-
 
 .single-note-wrapper > div:first-child > div {
   margin: auto;
@@ -107,31 +105,6 @@
   border-bottom: 1px solid black;
 }
 
-.add-note-wrapper > div:first-child > form > div > button {
-  margin: auto;
-}
-
-.add-note-wrapper > div:first-child > form > div > div > button {
-  margin: auto;
-}
-
-
-
-.add-note-wrapper > div:first-child > form > div:last-child {
-  margin: 10px 0;
-}
-
-.add-note-wrapper {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.add-note-wrapper > div:first-child > form {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .single-note-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -144,11 +117,15 @@
   min-height: 125px;
 }
 
-.add-note-wrapper > div:first-child > form > div > textarea {
-  width: 98%;
-  resize: vertical;
-  min-height: 125px;
-  box-shadow: inset 0 0 5px #000154;
-  padding: 20px 15px;
+.add-note-wrapper > div:first-child > form > div > button {
+  margin: auto;
 }
 
+.add-note-wrapper > div:first-child > form > div:last-child {
+  margin: 10px 0;
+}
+
+.add-note-wrapper > div:first-child > form {
+  display: flex;
+  flex-wrap: wrap;
+}

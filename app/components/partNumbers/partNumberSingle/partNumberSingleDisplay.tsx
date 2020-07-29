@@ -20,7 +20,7 @@ import {
 } from '../../../actions/modalActions';
 import { partNumbersStateType } from '../../../reducers/types';
 import Btn from '../../buttonFunctions/buttonClickHandler';
-import styles from '../../customer/customerSingle/customerSingleDisplay.css';
+import styles from './partNumberSingleDisplay.css';
 import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
 import ChangeNoteRow from '../../singleChangeNote';
 
@@ -153,7 +153,7 @@ function PartNumberSingleDisplay(props: Props) {
     const setForProd = booleanToStringYesNo(partNumberSetForProduction);
 
     return (
-      <div className={styles['single-customer-status']}>
+      <div className={styles['single-status']}>
         <div>
           <div>Status:</div>
         </div>
@@ -192,16 +192,16 @@ function PartNumberSingleDisplay(props: Props) {
   };
 
   return (
-    <div className={styles['main-single-customer']}>
+    <div className={styles['main-single']}>
       <div>
         <div>
-          <Btn buttonName="Edit Customer" ClickHandler={editPartNumber} />
+          <Btn buttonName="Edit Part Number" ClickHandler={editPartNumber} />
         </div>
         <div className={styles['delete-btn']}>
-          <Btn buttonName="DELETE CUSTOMER" ClickHandler={deleteCustomer} />
+          <Btn buttonName="DELETE Part Number" ClickHandler={deleteCustomer} />
         </div>
       </div>
-      <div className={styles['single-main-customer-info']}>
+      <div className={styles['single-main-info']}>
         <div>
           <div>
             <div>Part Number:</div>

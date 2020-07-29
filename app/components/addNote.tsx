@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from './buttonFunctions/buttonClickHandler';
+import FormTextArea from './forms/formTextArea';
 
 interface FormProps {
   any: unknown;
@@ -51,7 +52,7 @@ const AddNote = (
       <div>
         <Field
           label="Add Notes:"
-          component="textarea"
+          component={FormTextArea}
           name="addNote"
           type="textarea"
           aria-multiline

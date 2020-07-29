@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormBtn from './buttonFunctions/buttonClickHandler';
+import FormTextArea from './forms/formTextArea';
 
 interface FormProps {
   any: unknown;
@@ -51,12 +52,14 @@ const EditNote = (
     }
   };
 
+  // component={FormTextArea}
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <Field
-          label="Add Notes:"
-          component="textarea"
+          label="Edit Note:"
+          component={FormTextArea}
           name="updateNote"
           type="textarea"
           aria-multiline

@@ -1,0 +1,134 @@
+.single-status > div {
+  padding: 5px 0;
+}
+
+.list-note-wrapper > div {
+  margin: 5px 0;
+}
+
+
+.single-main-info > div {
+  margin: auto;
+}
+
+.single-main-info > div > div {
+  padding: 5px;
+  display: flex;
+  font-size: 14px;
+}
+
+.list-note-wrapper > div > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.list-note-wrapper > div:last-child {
+  width: 100%;
+  display: flex;
+  height: 360px;
+  overflow-y: scroll;
+}
+
+.list-note-wrapper > div:not(:first-child) {
+  flex-wrap: wrap;
+}
+
+.list-note-wrapper > div:first-child {
+  display: flex;
+  width: 100%;
+}
+
+.main-single > div:first-child {
+  display: flex;
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.single-main-info > div:first-child {
+  width: 270px;
+}
+
+.single-main-info > div:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  height: 185px;
+}
+
+.single-status > div:first-child {
+  text-align: center;
+  font-size: 16px;
+  display: flex;
+}
+
+.single-status > div:not(:first-child) {
+  display: flex;
+}
+
+.main-single > div:first-child > div {
+  margin: auto;
+}
+
+.delete-btn > button {
+  color: red;
+}
+
+.delete-btn:hover > button {
+  background-color: red;
+  color: black;
+}
+
+.list-note-wrapper > div:first-child > button {
+  margin: auto;
+}
+
+.main-single > div:first-child > div:last-child > button {
+  width: 150px;
+}
+
+.list-note-wrapper > div:first-child > div {
+  margin: auto;
+}
+
+.single-status > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.list-note-wrapper > div:not(:first-child) > div {
+  width: 100%;
+  border: none;
+}
+
+.single-main-info > div:last-child > div:first-child {
+  width: 100%;
+}
+
+.single-main-info > div:last-child > div:last-child {
+  height: 150px;
+  width: 100%;
+}
+
+.single-status > div:not(:first-child) > div:first-child {
+  width: 205px;
+}
+
+.single-main-info {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.single-main-info > div:last-child > div:first-child > div {
+  margin: auto;
+  border-bottom: 1px solid;
+}
+
+.single-main-info > div:last-child > div:last-child > div {
+  overflow-y: scroll;
+  border: 1px solid black;
+  width: 100%;
+}
+
+.single-main-info > div:first-child > div:not(:nth-child(3)) > div:first-child {
+  width: 125px;
+}

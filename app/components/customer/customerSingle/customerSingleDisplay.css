@@ -6,6 +6,11 @@
   margin: 5px 0;
 }
 
+
+.single-main-customer-info > div {
+  margin: auto;
+}
+
 .single-main-customer-info > div > div {
   padding: 5px;
   display: flex;
@@ -47,7 +52,6 @@
   display: flex;
   flex-wrap: wrap;
   height: 185px;
-  width: 80%;
 }
 
 .single-customer-status > div:first-child {
