@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-shadow */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
@@ -32,6 +33,7 @@ interface Props {
           changeNoteList: [];
         };
       };
+      itemID: number;
     };
   };
 }
@@ -54,8 +56,6 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function noteList(props: Props) {
-  console.log('notes, props', props);
-
   const noteList = props.props.state.noteList;
   const { handleAddNote, handleEditNote, handleDeleteNote } = props.props;
 
@@ -80,7 +80,6 @@ function noteList(props: Props) {
   });
 
   const addNote = () => {
-    console.log('temp add note log');
     setNoteDisplayState({
       ...noteDisplayState,
       listNotes: false,
@@ -102,7 +101,6 @@ function noteList(props: Props) {
       };
     }
   ) => {
-    console.log('temp edit btn function call, editNoteProps', editNoteProps);
     setNoteDisplayState({
       ...noteDisplayState,
       listNotes: false,
@@ -126,7 +124,7 @@ function noteList(props: Props) {
       }
     };
     toggleWarningModalState(warningModalResp);
-  }
+  };
 
   const cancelNote = () => {
     // Clear forms if canceled.
@@ -148,7 +146,7 @@ function noteList(props: Props) {
   const renderChangeNoteRow = (list: { forEach: Function }) => {
     const returnNotes: JSX.Element[] = [];
 
-    list.forEach((note: {}, arrIndex: number) => {
+    list.forEach((note: {} | any, arrIndex: number) => {
       returnNotes.push(
         <SingleChangeNote
           // eslint-disable-next-line react/no-array-index-key

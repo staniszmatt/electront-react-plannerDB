@@ -193,8 +193,8 @@ export function handleEditCustomerNote(customerNoteRequest: {updateNote: string}
     const state = getState()
     const mainIPCRequest = {
       request: 'updateCustomerNote',
-      noteID: `${props.props.noteID}`,
-      noteText: `${customerNoteRequest.updateNote}`,
+      customerNoteID: `${props.props.noteID}`,
+      customerNoteText: `${customerNoteRequest.updateNote}`,
       changeNoteDescription: 'Modified customer note.'
     };
 

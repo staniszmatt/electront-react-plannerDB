@@ -263,63 +263,23 @@ export function handleListPartNum() {
   }
 }
 
-
-
-
-
-
-
-
-
-export function handleEditPartNumberSubmit(editPartNumber) {
-  console.log("handle edit customer submit, editPartNumber", editPartNumber)
-  return (dispatch: Dispatch) => {
-
-  }
-}
-
-
-
-
-
-
-
-
-
 export function handleEditPartNumForm(partNumberName: string) {
-
-
   return (dispatch: Dispatch) => {
     const mainIPCRequest = {
       request: 'getSearchPartNumber',
       partNumberName
     };
 
+    const handlePartNumberSearchFormResp = (_event: {}, resp: { singlePartNumber: { partNumberName: string }; error: { customerName:string; name: string; } }) => {
 
-
-
-
-
-
-
-
-    const handlePartNumberSearchFormResp = (_event: {}, resp: { partNumber: string; error: { customerName:string; name: string; } }) => {
-      if (!isObjEmpty(resp.partNumber)) {
+      if (!isObjEmpty(resp.singlePartNumber)) {
         dispatch(reset('partNumberEditForm'));
         dispatch(partNumberEditPage(resp));
       } else if (resp.error.name === 'RequestError') {
-        // If request isn't in the server
-        dispatch(
-          partNumberError({
-            list: [],
-            error: {
-              customerName: `Part number has not been added, please add '${mainIPCRequest.partNumberName}'`
-            }
-          })
-        );
+        dispatch(partNumberError(resp.error));
       } else {
         // If errors are not specified above, then pass whole error
-        dispatch(partNumberError(resp));
+        dispatch(partNumberError(resp.error));
       }
       // Remove Listener to prevent adding one every time this method is called
       ipcRenderer.removeListener(
@@ -330,9 +290,85 @@ export function handleEditPartNumForm(partNumberName: string) {
     ipcRenderer.send('asynchronous-message', mainIPCRequest);
     dispatch(partNumLoading());
     ipcRenderer.on('asynchronous-reply', handlePartNumberSearchFormResp);
+  }
+}
 
 
 
+
+
+
+
+
+export function handleEditPartNumberSubmit(editPartNumber: {
+  partNumberMaterial: string;
+  partNumberName: string;
+  partNumberSerialNumberRequired: string;
+  partNumberSetForProduction: string;
+ }) {
+  console.log("handle edit customer submit, editPartNumber", editPartNumber)
+  return (dispatch: Dispatch) => {
+    const { partNumberName, partNumberMaterial, partNumberSerialNumberRequired, partNumberSetForProduction } = editPartNumber
+
+
+
+
+
+    const mainIPCRequest = {
+      request: 'updatePartNumber',
+      partNumberName,
+      partNumberMaterial,
+      partNumberSerialNumberRequired: returnOneZeroFromString(partNumberSerialNumberRequired),
+      partNumberSetForProduction: returnOneZeroFromString(partNumberSetForProduction)
+    }
+
+    if (mainIPCRequest.partNumberName === null
+      && mainIPCRequest.partNumberMaterial === null
+      && mainIPCRequest.partNumberSerialNumberRequired === null
+      && mainIPCRequest.partNumberSetForProduction === null) {
+        dispatch(toggleErrorModalState('No Changes Where Made!'));
+        dispatch(handleEditPartNumForm(partNumberName))
+      } else {
+
+
+
+
+
+        const handleUpdatePartNumberFormResp = (_event: {}, resp: {
+          editPartNumber: { success: string; };
+          changeNotePost: { success: string };
+          error:{ number: number }
+        }) => {
+
+          console.log('update part number resp:', resp);
+
+          if (!isObjEmpty(resp.error)) {
+            dispatch(partNumberError(resp.error));
+          } else if (resp.editPartNumber.success === 'Success' && resp.changeNotePost.success === 'Success') {
+            const searchFormObj = {
+              partNumSearch: partNumberName
+            };
+            dispatch(toggleSuccessModalState('Part Number Update Complete!'));
+            dispatch(handlePartNumSearchForm(searchFormObj));
+          } else {
+            dispatch(partNumberError(resp.error));
+          }
+          ipcRenderer.removeListener('asynchronous-reply',handleUpdatePartNumberFormResp);
+        }
+        ipcRenderer.send('asynchronous-message', mainIPCRequest);
+        dispatch(partNumLoading());
+        ipcRenderer.on('asynchronous-reply', handleUpdatePartNumberFormResp);
+
+
+
+
+
+
+
+
+
+
+      }
 
 
 
@@ -345,6 +381,15 @@ export function handleEditPartNumForm(partNumberName: string) {
 
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import styles from '../styling/pageHeaderBar.css';
@@ -8,7 +9,7 @@ import PartNumberListHeader from './partNumberList/partNumberListHeader';
 import LoadingScreen from '../LoadingDisplay';
 import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
 import PartNumberSingleDisplay from './partNumberSingle/partNumberSingleDisplay';
-import PartNumberEditPage from './partNumberEdit/partNumberEditPage';
+import PartNumberEditFormPage from './partNumberEdit/partNumberEditPage';
 
 interface Props {
   handlePartNumSearchForm: () => {};
@@ -27,7 +28,7 @@ interface Props {
     partNumberList: {
       list: [];
     };
-    singlePartNumber: {};
+    singlePartNumber: {} | any;
   };
 }
 
@@ -71,12 +72,11 @@ export default function PartNumbers(props: Props) {
         )}
 
         {props.partNumbers.loadPartNumberEditPage && (
-          <PartNumberEditPage
+          <PartNumberEditFormPage
             onSubmit={handleEditPartNumberSubmit}
             props={props.partNumbers.singlePartNumber}
           />
         )}
-
       </div>
     </div>
   );

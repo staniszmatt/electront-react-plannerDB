@@ -5,38 +5,37 @@ import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
 import FormInput from '../../forms/formInput';
 import FormRadioInput from '../../forms/formRadioInput';
+import FormDropDown from '../../forms/formDropDown';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import '../../forms/formInput.css';
-import styles from './partNumberEdit.css';
+import styles from './partNumberEditPage.css';
+import getMaterialList from '../../../lists/materialList';
 
 interface FormProps {
   props: {
-    customer: {};
+    singlePartNumber: {};
   };
-  customerName: string | null;
-  customerCodeName: string | null;
-  customerGenStd: boolean | null;
-  customerRsStd: boolean | null;
-  customerActive: boolean | null;
+  partNumberMaterial: string | null;
+  partNumberName: string | null;
+  partNumberSerialNumberRequired: boolean | null;
+  partNumberSetForProduction: boolean | null;
 }
 
 interface DispatchProps {
   onSubmit: () => {};
   props: {
-    customer: {
-      customerName: string;
-      customerCodeName: string;
-      customerGenStd: boolean;
-      customerRsStd: boolean;
-      customerActive: boolean;
+    singlePartNumber: {
+      partNumberMaterial: string;
+      partNumberName: string;
+      partNumberSerialNumberRequired: boolean;
+      partNumberSetForProduction: boolean;
     };
   };
 }
 
 interface CheckRadioState {
-  customerGenStd: boolean;
-  customerRsStd: boolean;
-  customerActive: boolean;
+  partNumberSerialNumberRequired: boolean;
+  partNumberSetForProduction: boolean;
 }
 
 function toUpperCase(value: string) {
@@ -49,203 +48,139 @@ const PartNumberEditFormPage = (
   // Preset the value for the customer name only.
   // The disabled no-param-reassign was disabled, From what I can tell we are allowed to reassign the initial values for redux-form here.
   // eslint-disable-next-line no-param-reassign
-  // props.initialValues.customerName = props.props.customer.customerName;
 
-  // const [
-  //   checkRadioState,
-  //   setCheckRadioState
-  //   // eslint-disable-next-line react/destructuring-assignment
-  // ] = useState<
-  //   | CheckRadioState
-  //   | {
-  //       customerGenStd: boolean;
-  //       customerRsStd: boolean;
-  //       customerActive: boolean;
-  //     }
-  // >(props.props.customer);
+  const [
+    checkRadioState,
+    setCheckRadioState
+    // eslint-disable-next-line react/destructuring-assignment
+  ] = useState<
+    | CheckRadioState
+    | {
+        partNumberSerialNumberRequired: boolean;
+        partNumberSetForProduction: boolean;
+      }
+  >(props.props.singlePartNumber);
 
-  // const { handleSubmit, onSubmit } = props;
+  const { partNumberMaterial, partNumberName } = props.props.singlePartNumber;
+  props.initialValues.partNumberName = partNumberName;
+  const materialType = getMaterialList();
+  const { handleSubmit, onSubmit } = props;
 
-  // const radioButtonCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   let setBoolean = false;
+  const radioButtonCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Setting radio button selection with switch of each radio button type
+    let setBoolean = false;
 
-  //   if (event.target.value === 'yes') setBoolean = true;
+    if (event.target.value === 'yes') setBoolean = true;
 
-  //   switch (event.target.name) {
-  //     case 'customerGenStd':
-  //       setCheckRadioState({
-  //         ...checkRadioState,
-  //         customerGenStd: setBoolean
-  //       });
-  //       break;
-  //     case 'customerRsStd':
-  //       setCheckRadioState({
-  //         ...checkRadioState,
-  //         customerRsStd: setBoolean
-  //       });
-  //       break;
-  //     case 'customerActive':
-  //       setCheckRadioState({
-  //         ...checkRadioState,
-  //         customerActive: setBoolean
-  //       });
-  //       break;
-  //     default:
-  //   }
-  // };
+    switch (event.target.name) {
+      case 'partNumberSerialNumberRequired':
+        setCheckRadioState({
+          ...checkRadioState,
+          partNumberSerialNumberRequired: setBoolean
+        });
+        break;
+      case 'partNumberSetForProduction':
+        setCheckRadioState({
+          ...checkRadioState,
+          partNumberSetForProduction: setBoolean
+        });
+        break;
+      default:
+    }
+  };
 
-  return <div>Test Edit Part Number Page</div>
-
-  // return (
-  //   <form
-  //     onSubmit={handleSubmit(onSubmit)}
-  //     className={styles['form-main-container']}
-  //   >
-  //     <div>
-  //       <Field
-  //         label="Customer Name:"
-  //         format={toUpperCase}
-  //         component={FormInput}
-  //         name="customerName"
-  //         type="text"
-  //         defaultValue={props.props.customer.customerName}
-  //         disabled={true}
-  //       />
-  //       <Field
-  //         label="Customer Code Name:"
-  //         format={toUpperCase}
-  //         component={FormInput}
-  //         name="customerCodeName"
-  //         type="text"
-  //         defaultValue={props.props.customer.customerCodeName}
-  //       />
-  //       <label>
-  //         General Standards Approved:
-  //         <div>
-  //           <label>
-  //             Yes
-  //             <Field
-  //               name="customerGenStd"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="yes"
-  //               checkedValue={checkRadioState.customerGenStd}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //           <label>
-  //             No
-  //             <Field
-  //               name="customerGenStd"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="no"
-  //               checkedValue={!checkRadioState.customerGenStd}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //         </div>
-  //       </label>
-  //       <label>
-  //         RS Standards Approved:
-  //         <div>
-  //           <label>
-  //             Yes
-  //             <Field
-  //               name="customerRsStd"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="yes"
-  //               checkedValue={checkRadioState.customerRsStd}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //           <label>
-  //             No
-  //             <Field
-  //               name="customerRsStd"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="no"
-  //               checkedValue={!checkRadioState.customerRsStd}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //         </div>
-  //       </label>
-  //       <label>
-  //         Customer Active:
-  //         <div>
-  //           <label>
-  //             Yes
-  //             <Field
-  //               name="customerActive"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="yes"
-  //               checkedValue={checkRadioState.customerActive}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //           <label>
-  //             No
-  //             <Field
-  //               name="customerActive"
-  //               component={FormRadioInput}
-  //               type="radio"
-  //               value="no"
-  //               checkedValue={!checkRadioState.customerActive}
-  //               onChange={radioButtonCheck}
-  //             />
-  //           </label>
-  //         </div>
-  //       </label>
-  //     </div>
-  //     <div>
-  //       <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
-  //     </div>
-  //   </form>
-  // );
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={styles['form-main-container']}
+    >
+      <div>
+        <Field
+          label="Part Number:"
+          format={toUpperCase}
+          component={FormInput}
+          name="partNumberName"
+          type="text"
+          defaultValue={partNumberName}
+          disabled={true}
+        />
+        <Field
+          label="Material Type:"
+          name="partNumberMaterial"
+          component={FormDropDown}
+          type="select"
+          data={materialType}
+          defaultValue={partNumberMaterial}
+        />
+        <label>
+          Serial Number Required:
+          <div>
+            <label>
+              Yes
+              <Field
+                name="partNumberSerialNumberRequired"
+                component={FormRadioInput}
+                type="radio"
+                value="yes"
+                checkedValue={checkRadioState.partNumberSerialNumberRequired}
+                onChange={radioButtonCheck}
+              />
+            </label>
+            <label>
+              No
+              <Field
+                name="partNumberSerialNumberRequired"
+                component={FormRadioInput}
+                type="radio"
+                value="no"
+                checkedValue={!checkRadioState.partNumberSerialNumberRequired}
+                onChange={radioButtonCheck}
+              />
+            </label>
+          </div>
+        </label>
+        <label>
+          Approved for Production:
+          <div>
+            <label>
+              Yes
+              <Field
+                name="partNumberSetForProduction"
+                component={FormRadioInput}
+                type="radio"
+                value="yes"
+                checkedValue={checkRadioState.partNumberSetForProduction}
+                onChange={radioButtonCheck}
+              />
+            </label>
+            <label>
+              No
+              <Field
+                name="partNumberSetForProduction"
+                component={FormRadioInput}
+                type="radio"
+                value="no"
+                checkedValue={!checkRadioState.partNumberSetForProduction}
+                onChange={radioButtonCheck}
+              />
+            </label>
+          </div>
+        </label>
+      </div>
+      <div>
+        <FormBtn buttonName="Submit" ClickHandler={handleSubmit(onSubmit)} />
+      </div>
+    </form>
+  );
 };
-
-function validate(values: FormProps) {
-  // const { customerName, customerCodeName } = values;
-  // const errors = {
-  //   customerName: '',
-  //   customerCodeName: ''
-  // };
-
-  // if (customerName === null || customerCodeName === null) {
-  //   return;
-  // }
-
-  // if (!customerName) {
-  //   errors.customerName = 'Please Enter a Customer Name!';
-  // }
-  // if (customerName) {
-  //   if (customerName.length > 32) {
-  //     errors.customerName = 'Customer name is to long!';
-  //   }
-  // }
-  // if (!customerCodeName) {
-  //   errors.customerCodeName = 'Please Enter a Customer Name!';
-  // }
-  // if (customerCodeName) {
-  //   if (customerCodeName.length > 6) {
-  //     errors.customerCodeName = 'Code name is too long!';
-  //   }
-  // }
-}
 
 export default reduxForm<FormProps, DispatchProps>({
   form: 'partNumberEditForm',
-  validate,
   destroyOnUnmount: false,
-  // initialValues: {
-  //   customerName: null,
-  //   customerCodeName: null,
-  //   customerGenStd: null,
-  //   customerRsStd: null,
-  //   customerActive: null
-  // }
+  initialValues: {
+    partNumberMaterial: null,
+    partNumberName: null,
+    partNumberSerialNumberRequired: null,
+    partNumberSetForProduction: null
+  }
 })(PartNumberEditFormPage);

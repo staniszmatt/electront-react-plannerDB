@@ -3,6 +3,15 @@
   margin: auto;
 }
 
+.form-main-container > div {
+  display: flex;
+}
+
+.form-main-container > div > label {
+  margin: auto;
+  padding: 0 10px;
+}
+
 .form-main-container button {
   font-family: serif;
   border-radius: 3px;

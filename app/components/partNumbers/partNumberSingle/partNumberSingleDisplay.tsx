@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable react/jsx-boolean-value */
@@ -90,7 +91,6 @@ function mapDispatchToProps(dispatch: Dispatch<null>) {
 }
 
 function PartNumberSingleDisplay(props: Props) {
-  console.log('single part number display, props', props);
   const {
     handleAddPartNumNote,
     handleEditPartNumNote,
@@ -100,10 +100,12 @@ function PartNumberSingleDisplay(props: Props) {
     toggleWarningModalState,
     toggleModalState
   } = props;
-  const partNumberInfo = props.partNumbers.singlePartNumber.singlePartNumber;
+  // Set type to any, types set on here any on props of notesList.tsx file
+  // eslint-disable-next-line prettier/prettier
+  const partNumberInfo: any = props.partNumbers.singlePartNumber.singlePartNumber;
   // eslint-disable-next-line prettier/prettier
   const partNumberChangeNoteList = props.partNumbers.singlePartNumber.singlePartNumber.changeNoteList.list;
-  const partNumberNoteList = {
+  const partNumberNoteList: any = {
     handleAddNote: (noteRequest: { addNote: string }) => {
       handleAddPartNumNote(noteRequest);
     },
@@ -177,7 +179,6 @@ function PartNumberSingleDisplay(props: Props) {
   };
 
   const deleteCustomer = () => {
-    console.log('Delete PartNumber');
     const warningModalResp = {
       warningMsg:
         'Do you really want to delete the part number and everything referenced to it?',
@@ -228,7 +229,6 @@ function PartNumberSingleDisplay(props: Props) {
       </div>
     </div>
   );
-
 }
 // TODO: Figure out how to fix this type script error or fix typescript rule.
 // @ts-ignore: Argument of type '(props: Props)'

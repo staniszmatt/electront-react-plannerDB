@@ -4,17 +4,16 @@ import pool from '../config/config';
 import postNewChangeNote from './postChangeNote';
 
 interface Request {
-  customerGenStd: number;
-  customerActive: number;
-  customerRsStd: number;
-  customerCodeName: string;
-  customerName: string;
+  partNumberName: string;
+  partNumberMaterial: string;
+  partNumberSerialNumberRequired: number;
+  partNumberSetForProduction: number;
 }
 
 interface ReturnData {
   error?: {} | string;
   success?: string;
-  editCustomer?: {
+  editPartNumber?: {
     success: string;
     updatedCustomerData: {};
   };
@@ -29,12 +28,18 @@ async function updatePartNumber(request: Request) {
   let returnData: ReturnData = {
     error: {}
   };
+  const {
+    partNumberName,
+    partNumberMaterial,
+    partNumberSerialNumberRequired,
+    partNumberSetForProduction
+  } = request;
   let requestList = '';
   const modifyRequest: any = {
-    customerGenStd: request.customerGenStd,
-    customerActive: request.customerActive,
-    customerRsStd: request.customerRsStd,
-    customerCodeName: request.customerCodeName
+    partNumberName,
+    partNumberMaterial,
+    partNumberSerialNumberRequired,
+    partNumberSetForProduction
   };
   // Setup Change note info to submit
   let changeNoteString = '';
@@ -48,6 +53,7 @@ async function updatePartNumber(request: Request) {
     }
   });
   // Setup string of key values to pass to the query string
+  // Last index is setup so it doesn't end with a comma
   // eslint-disable-next-line array-callback-return
   Object.keys(dbRequest).map((key, index) => {
     const keyLastIndex = Object.keys(dbRequest).length - 1;
@@ -64,25 +70,27 @@ async function updatePartNumber(request: Request) {
   // Add Change Note History
   try {
     const db = await pool.connect();
-    const query = `UPDATE customer
+    const query = `UPDATE partNumber
       SET ${requestList}
         OUTPUT INSERTED.id, GETDATE() as dateStamp, CURRENT_USER as UserName, HOST_NAME() AS HostName, SUSER_NAME() LoggedInUser
-          WHERE customerName = '${request.customerName}'`;
+          WHERE partNumberName = '${request.partNumberName}'`;
+
+    console.log('*************** part number update query: ', query);
 
     const data = await db.query(query);
 
-    // If customer add worked, then create the change note to show when customer was created
+    // If part number add worked, then create the change note to show when part number was created
     if (data.recordset[0].id) {
-      returnData.editCustomer = {
+      returnData.editPartNumber = {
         success: 'Success',
         updatedCustomerData: data
       };
-      // Setup to add change note for adding customer.
+      // Setup to add change note for adding part number.
       try {
         const postChangeNote: any = {
           typeID: data.recordset[0].id,
-          typeCategory: 'customer',
-          changeNoteDescription: `Edited Customer: ${changeNoteString} `,
+          typeCategory: 'partNumber',
+          changeNoteDescription: `Edited Part Number: ${changeNoteString} `,
           // Store as a comma separated string for now.
           userId: `${data.recordset[0].LoggedInUser}`,
           changeNoteDateStamp: `${data.recordset[0].dateStamp}`
@@ -90,7 +98,7 @@ async function updatePartNumber(request: Request) {
 
         const changeNoteData: any = await postNewChangeNote(postChangeNote);
 
-        // If changeNote passes, then finally add a customer note if it has any text
+        // If changeNote passes, then finally add a part number note if it has any text
         if (changeNoteData.changeNoteData.success === 'Success') {
           returnData.changeNotePost = {
             success: 'Success',
@@ -107,10 +115,10 @@ async function updatePartNumber(request: Request) {
       }
     } else {
       returnData = {
-        success: 'Failed to update customer!',
+        success: 'Failed to update part number!',
         updatedCustomerData: data,
         error: {
-          empty: `Something went wrong on updating customer`
+          empty: `Something went wrong on updating part number!`
         }
       };
     }

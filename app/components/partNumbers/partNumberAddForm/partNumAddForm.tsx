@@ -12,6 +12,7 @@ import FormTextArea from '../../forms/formTextArea';
 import FormYesNo from '../../forms/formYesNo';
 import FormBtn from '../../buttonFunctions/buttonClickHandler';
 import styles from './partNumAddForm.css';
+import getMaterialList from '../../../lists/materialList';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface FormProps {}
@@ -34,13 +35,7 @@ const PartNumAddFormComponent = (
   props: DispatchProps & InjectedFormProps<FormProps, DispatchProps>
 ) => {
   const { handleSubmit, onSubmit } = props;
-
-  const materialType = [
-    'INCONEL',
-    'ALUMINUM',
-    'TITANIUM',
-    'STAINLESS'
-  ]
+  const materialType = getMaterialList();
 
   return (
     <form
