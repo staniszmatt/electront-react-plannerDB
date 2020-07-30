@@ -3,13 +3,13 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormInput from '../../forms/formInput';
-import FormRadioInput from '../../forms/formRadioInput';
-import FormDropDown from '../../forms/formDropDown';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
-import '../../forms/formInput.css';
+import FormInput from '../forms/formInput';
+import FormRadioInput from '../forms/formRadioInput';
+import FormDropDown from '../forms/formDropDown';
+import FormBtn from '../buttonFunctions/buttonClickHandler';
+import '../forms/formInput.css';
 import styles from './partNumberEditPage.css';
-import getMaterialList from '../../../lists/materialList';
+import getMaterialList from '../../lists/materialList';
 
 interface FormProps {
   props: {
@@ -62,6 +62,9 @@ const PartNumberEditFormPage = (
   >(props.props.singlePartNumber);
 
   const { partNumberMaterial, partNumberName } = props.props.singlePartNumber;
+  // Setting Initial prop value here:
+  // TODO: Check if this needs to be setup differently
+  // eslint-disable-next-line no-param-reassign
   props.initialValues.partNumberName = partNumberName;
   const materialType = getMaterialList();
   const { handleSubmit, onSubmit } = props;

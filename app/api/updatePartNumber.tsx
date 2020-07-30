@@ -74,9 +74,6 @@ async function updatePartNumber(request: Request) {
       SET ${requestList}
         OUTPUT INSERTED.id, GETDATE() as dateStamp, CURRENT_USER as UserName, HOST_NAME() AS HostName, SUSER_NAME() LoggedInUser
           WHERE partNumberName = '${request.partNumberName}'`;
-
-    console.log('*************** part number update query: ', query);
-
     const data = await db.query(query);
 
     // If part number add worked, then create the change note to show when part number was created

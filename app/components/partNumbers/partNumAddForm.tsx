@@ -6,13 +6,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormInput from '../../forms/formInput';
-import FormDropDown from '../../forms/formDropDown';
-import FormTextArea from '../../forms/formTextArea';
-import FormYesNo from '../../forms/formYesNo';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
+import FormInput from '../forms/formInput';
+import FormDropDown from '../forms/formDropDown';
+import FormTextArea from '../forms/formTextArea';
+import FormYesNo from '../forms/formYesNo';
+import FormBtn from '../buttonFunctions/buttonClickHandler';
 import styles from './partNumAddForm.css';
-import getMaterialList from '../../../lists/materialList';
+import getMaterialList from '../../lists/materialList';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface FormProps {}
@@ -96,7 +96,6 @@ function validate(values: Values) {
     partSerialNumReq,
     partSetForProduction
   } = values;
-console.log("validation, values:", values);
   const errors: any = {};
 
   if (!partNumber) {

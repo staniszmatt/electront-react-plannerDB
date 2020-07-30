@@ -3,13 +3,13 @@
 import React from 'react';
 import styles from '../styling/pageHeaderBar.css';
 import CustomerBtn from '../buttonFunctions/buttonClickHandler';
-import CustomerHeadTable from './customerList/customerHeaderTable';
+import CustomerHeadTable from './customerHeaderTable';
 import CustomerErrorDisplay from '../../errorComponents/ErrorComponent';
-import CustomerSearchForm from './customerSearch/customerSearchField';
-import CustomerAddFormComponent from './customerAdd/customerAdd';
+import CustomerSearchForm from './customerSearchField';
+import CustomerAddFormComponent from './customerAdd';
 import LoadingScreen from '../LoadingDisplay';
-import CustomerSingleDisplay from './customerSingle/customerSingleDisplay';
-import CustomerEditFormComponent from './customerEdit/customerEditPage';
+import CustomerSingleDisplay from './customerSingleDisplay';
+import CustomerEditFormComponent from './customerEditPage';
 
 export type singleCustomer = {
   changeNoteList: {

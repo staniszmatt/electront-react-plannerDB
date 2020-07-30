@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/destructuring-assignment */
@@ -11,17 +12,17 @@ import {
   handleEditCustomerNote,
   handleDeleteCustomerNote,
   handleDeleteCustomer
-} from '../../../actions/customerActions';
+} from '../../actions/customerActions';
 import {
   toggleWarningModalState,
   toggleModalState
-} from '../../../actions/modalActions';
-import { customerStateType } from '../../../reducers/types';
-import NoteList from '../../notesList';
-import Btn from '../../buttonFunctions/buttonClickHandler';
+} from '../../actions/modalActions';
+import { customerStateType } from '../../reducers/types';
+import NoteList from '../notesList';
+import Btn from '../buttonFunctions/buttonClickHandler';
 import styles from './customerSingleDisplay.css';
-import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import CustomerChangeNoteRow from '../../singleChangeNote';
+import booleanToStringYesNo from '../../helpFunctions/booleanToStringYesNo';
+import CustomerChangeNoteRow from '../singleChangeNote';
 
 // Un-used arguments setup
 type unused = unknown;
@@ -37,6 +38,7 @@ interface Props {
   customer: {
     singleCustomerInfo: {
       customer: {
+        id: number;
         customerName: string;
         customerCodeName: string;
         customerGenStd: boolean;
@@ -93,7 +95,7 @@ function CustomerHeadTable(props: Props) {
     toggleWarningModalState,
     toggleModalState
   } = props;
-  const customerNoteList = {
+  const customerNoteList: any = {
     handleAddNote: (noteRequest: { addNote: string }) => {
       handleAddCustomerNote(noteRequest);
     },

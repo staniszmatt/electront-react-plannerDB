@@ -3,10 +3,10 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormInput from '../../forms/formInput';
-import FormRadioInput from '../../forms/formRadioInput';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
-import '../../forms/formInput.css';
+import FormInput from '../forms/formInput';
+import FormRadioInput from '../forms/formRadioInput';
+import FormBtn from '../buttonFunctions/buttonClickHandler';
+import '../forms/formInput.css';
 import styles from './customerEditPage.css';
 
 interface FormProps {

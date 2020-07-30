@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 import {
   handleEditPartNumForm,
   handlePartNumSearchForm
-} from '../../../actions/partNumbersActions';
-import { partNumbersStateType } from '../../../reducers/types';
-import EditButton from '../../buttonFunctions/buttonClickHandler';
-import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
+} from '../../actions/partNumbersActions';
+import { partNumbersStateType } from '../../reducers/types';
+import EditButton from '../buttonFunctions/buttonClickHandler';
+import booleanToStringYesNo from '../../helpFunctions/booleanToStringYesNo';
 import styles from './partNumberList.css';
 
 // Has to be mapped in order for dispatch to work.

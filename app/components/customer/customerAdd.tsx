@@ -5,11 +5,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Field, reduxForm, InjectedFormProps } from 'redux-form';
-import FormInput from '../../forms/formInput';
-import FormYesNo from '../../forms/formYesNo';
-import FormTextArea from '../../forms/formTextArea';
-import FormBtn from '../../buttonFunctions/buttonClickHandler';
-import '../../forms/formInput.css';
+import FormInput from '../forms/formInput';
+import FormYesNo from '../forms/formYesNo';
+import FormTextArea from '../forms/formTextArea';
+import FormBtn from '../buttonFunctions/buttonClickHandler';
+import '../forms/formInput.css';
 import styles from './customerAdd.css';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

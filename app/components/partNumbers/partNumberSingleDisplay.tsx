@@ -13,17 +13,17 @@ import {
   handleDeletePartNumNote,
   handleEditPartNumForm,
   handleDeletePartNumber
-} from '../../../actions/partNumbersActions';
-import NoteList from '../../notesList';
+} from '../../actions/partNumbersActions';
+import NoteList from '../notesList';
 import {
   toggleWarningModalState,
   toggleModalState
-} from '../../../actions/modalActions';
-import { partNumbersStateType } from '../../../reducers/types';
-import Btn from '../../buttonFunctions/buttonClickHandler';
+} from '../../actions/modalActions';
+import { partNumbersStateType } from '../../reducers/types';
+import Btn from '../buttonFunctions/buttonClickHandler';
 import styles from './partNumberSingleDisplay.css';
-import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
-import ChangeNoteRow from '../../singleChangeNote';
+import booleanToStringYesNo from '../../helpFunctions/booleanToStringYesNo';
+import ChangeNoteRow from '../singleChangeNote';
 
 // Un-used arguments setup
 type unused = unknown;

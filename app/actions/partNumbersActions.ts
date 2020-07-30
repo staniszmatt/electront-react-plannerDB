@@ -293,27 +293,14 @@ export function handleEditPartNumForm(partNumberName: string) {
   }
 }
 
-
-
-
-
-
-
-
 export function handleEditPartNumberSubmit(editPartNumber: {
   partNumberMaterial: string;
   partNumberName: string;
   partNumberSerialNumberRequired: string;
   partNumberSetForProduction: string;
  }) {
-  console.log("handle edit customer submit, editPartNumber", editPartNumber)
   return (dispatch: Dispatch) => {
-    const { partNumberName, partNumberMaterial, partNumberSerialNumberRequired, partNumberSetForProduction } = editPartNumber
-
-
-
-
-
+    const { partNumberName, partNumberMaterial, partNumberSerialNumberRequired, partNumberSetForProduction } = editPartNumber;
     const mainIPCRequest = {
       request: 'updatePartNumber',
       partNumberName,
@@ -328,81 +315,31 @@ export function handleEditPartNumberSubmit(editPartNumber: {
       && mainIPCRequest.partNumberSetForProduction === null) {
         dispatch(toggleErrorModalState('No Changes Where Made!'));
         dispatch(handleEditPartNumForm(partNumberName))
-      } else {
-
-
-
-
-
-        const handleUpdatePartNumberFormResp = (_event: {}, resp: {
-          editPartNumber: { success: string; };
-          changeNotePost: { success: string };
-          error:{ number: number }
-        }) => {
-
-          console.log('update part number resp:', resp);
-
-          if (!isObjEmpty(resp.error)) {
-            dispatch(partNumberError(resp.error));
-          } else if (resp.editPartNumber.success === 'Success' && resp.changeNotePost.success === 'Success') {
-            const searchFormObj = {
-              partNumSearch: partNumberName
-            };
-            dispatch(toggleSuccessModalState('Part Number Update Complete!'));
-            dispatch(handlePartNumSearchForm(searchFormObj));
-          } else {
-            dispatch(partNumberError(resp.error));
-          }
-          ipcRenderer.removeListener('asynchronous-reply',handleUpdatePartNumberFormResp);
+    } else {
+      const handleUpdatePartNumberFormResp = (_event: {}, resp: {
+        editPartNumber: { success: string; };
+        changeNotePost: { success: string };
+        error:{ number: number }
+      }) => {
+        if (!isObjEmpty(resp.error)) {
+          dispatch(partNumberError(resp.error));
+        } else if (resp.editPartNumber.success === 'Success' && resp.changeNotePost.success === 'Success') {
+          const searchFormObj = {
+            partNumSearch: partNumberName
+          };
+          dispatch(toggleSuccessModalState('Part Number Update Complete!'));
+          dispatch(handlePartNumSearchForm(searchFormObj));
+        } else {
+          dispatch(partNumberError(resp.error));
         }
-        ipcRenderer.send('asynchronous-message', mainIPCRequest);
-        dispatch(partNumLoading());
-        ipcRenderer.on('asynchronous-reply', handleUpdatePartNumberFormResp);
-
-
-
-
-
-
-
-
-
-
+        ipcRenderer.removeListener('asynchronous-reply',handleUpdatePartNumberFormResp);
       }
-
-
-
-
-
-
-
-
-
-
+      ipcRenderer.send('asynchronous-message', mainIPCRequest);
+      dispatch(partNumLoading());
+      ipcRenderer.on('asynchronous-reply', handleUpdatePartNumberFormResp);
+    }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -416,21 +353,7 @@ export function handleDeletePartNumber() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 export function handleAddPartNumNote(noteRequest: { addNote: string }) {
-  console.log('handle add part number note, request:', noteRequest);
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
     const state = getState();
     const mainIPCRequest = {

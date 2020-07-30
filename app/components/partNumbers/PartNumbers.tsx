@@ -3,13 +3,13 @@
 import React from 'react';
 import styles from '../styling/pageHeaderBar.css';
 import PartNumberBtn from '../buttonFunctions/buttonClickHandler';
-import PartNumSearchFormComponent from './partNumberSearch/partNumberSearchField';
+import PartNumSearchFormComponent from './partNumberSearchField';
 import PartNumberErrorDisplay from '../../errorComponents/ErrorComponent';
-import PartNumberListHeader from './partNumberList/partNumberListHeader';
+import PartNumberListHeader from './partNumberListHeader';
 import LoadingScreen from '../LoadingDisplay';
-import PartNumAddFormComponent from './partNumberAddForm/partNumAddForm';
-import PartNumberSingleDisplay from './partNumberSingle/partNumberSingleDisplay';
-import PartNumberEditFormPage from './partNumberEdit/partNumberEditPage';
+import PartNumAddFormComponent from './partNumAddForm';
+import PartNumberSingleDisplay from './partNumberSingleDisplay';
+import PartNumberEditFormPage from './partNumberEditPage';
 
 interface Props {
   handlePartNumSearchForm: () => {};

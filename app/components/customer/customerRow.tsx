@@ -7,10 +7,10 @@ import { connect } from 'react-redux';
 import {
   handleEditCustomerForm,
   handleCustomerSearchForm
-} from '../../../actions/customerActions';
-import { customerStateType } from '../../../reducers/types';
-import EditButton from '../../buttonFunctions/buttonClickHandler';
-import booleanToStringYesNo from '../../../helpFunctions/booleanToStringYesNo';
+} from '../../actions/customerActions';
+import { customerStateType } from '../../reducers/types';
+import EditButton from '../buttonFunctions/buttonClickHandler';
+import booleanToStringYesNo from '../../helpFunctions/booleanToStringYesNo';
 import styles from './customerList.css';
 
 // Has to be mapped in order for dispatch to work.
