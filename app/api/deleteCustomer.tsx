@@ -125,7 +125,6 @@ async function deleteCustomer(request: Request) {
               errorMsg: 'Something went wrong deleting customer!'
             };
             return customerNoteDeleteSuccess;
-            // returnData.customerNoteDeleteSuccess[noteID].customerSuccessDeleteChangeNote.push(customerSuccessDeleteChangeNote);
           }
         } else {
           customerNoteDeleteSuccess[noteID].error = {
@@ -139,8 +138,6 @@ async function deleteCustomer(request: Request) {
     returnData.customerNoteDeleteSuccess = customerDeleteNotesResp;
     // Delete Customer Change Notes Here
     if (customerDeleteNotesResp) {
-      // TODO: Start Delete Customer Notes and then customer
-      // return returnData;
       try {
         const db = await pool.connect();
         const deleteCustomerChangeNoteQuery = `DELETE changeNote

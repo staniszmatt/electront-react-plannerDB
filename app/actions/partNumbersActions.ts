@@ -344,11 +344,42 @@ export function handleEditPartNumberSubmit(editPartNumber: {
 
 
 
+
+
+
 export function handleDeletePartNumber() {
   return (dispatch: Dispatch, getState: GetPartNumbersState) => {
-    debugger;
+    const state = getState().partnumbers.singlePartNumber
+    const partNumberNoteIDList = Object.keys(state.partNumberNotes.noteList)
+
+    const mainIPCRequest = {
+      request: 'deletePartNumber',
+      partNumberID: state.singlePartNumber.id,
+      partNumberNoteIDList
+    }
+
+    const handleDeletePartNumberResp = (
+      _event: {},
+      resp: { error: {} }
+    ) => {
+
+      if (isObjEmpty(resp.error)) {
+        dispatch(partNumLoading());
+        dispatch(toggleSuccessModalState('Part Number Has Been Deleted!'))
+      } else {
+        dispatch(partNumberError(resp.error))
+      }
+      ipcRenderer.removeListener('asynchronous-reply', handleDeletePartNumberResp);
+    }
+    ipcRenderer.send('asynchronous-message', mainIPCRequest);
+    dispatch(partNumLoading());
+    ipcRenderer.on('asynchronous-reply', handleDeletePartNumberResp);
   }
 }
+
+
+
+
 
 
 

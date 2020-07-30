@@ -22,6 +22,9 @@ export type partNumbersStateType = {
     loadPartNumberEditPage: boolean;
     partNumberList: {};
     singlePartNumber: {
+      partNumberNotes: {
+        noteList: {};
+      };
       singlePartNumber: SinglePartNumber;
     };
   };

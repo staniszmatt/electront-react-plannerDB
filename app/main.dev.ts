@@ -29,6 +29,7 @@ import updatePartNumberNote from './api/updatePartNumberNote';
 import deleteCustomerNote from './api/deleteCustomerNote';
 import deletePartNumberNote from './api/deletePartNumberNote';
 import deleteCustomer from './api/deleteCustomer';
+import deletePartNumber from './api/deletePartNumber';
 
 export default class AppUpdater {
   constructor() {
@@ -187,6 +188,9 @@ ipcMain.on('asynchronous-message', async (event, arg) => {
       break;
     case 'deleteCustomer':
       requestToSend = deleteCustomer;
+      break;
+    case 'deletePartNumber':
+      requestToSend = deletePartNumber;
       break;
     default:
       switchFail = true;
