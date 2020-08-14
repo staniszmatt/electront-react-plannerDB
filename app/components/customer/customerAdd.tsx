@@ -98,6 +98,7 @@ interface Values {
 }
 
 function validate(values: Values) {
+  console.log('add customer validation check', values)
   const {
     customerName,
     customerCodeName,
