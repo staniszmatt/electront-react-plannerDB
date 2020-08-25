@@ -8,6 +8,7 @@ import {
   Store,
   customerStateType,
   modalStateType,
+  counterStateType,
   partNumbersStateType
 } from '../reducers/types';
 // import { Store, customerStateType, counterStateType } from '../reducers/types';
@@ -57,7 +58,7 @@ function configureStore(initialState?: {
         // eslint-disable-next-line prettier/prettier
       } | any
     | modalStateType;
-  // counter?: number | counterStateType;
+  counter?: number | counterStateType;
 }): Store {
   return createStore(rootReducer, initialState, enhancer);
 }

@@ -5,15 +5,15 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 import createRootReducer from '../reducers';
-// import * as counterActions from '../actions/counterActions';
+import * as counterActions from '../actions/counterActions';
 import * as customerActions from '../actions/customerActions';
 import * as partNumbersActions from '../actions/partNumbersActions';
 import * as modalActions from '../actions/modalActions';
 import {
   customerStateType,
   modalStateType,
-  partNumbersStateType
-  // counterStateType
+  partNumbersStateType,
+  counterStateType
 } from '../reducers/types';
 
 declare global {
@@ -35,7 +35,7 @@ const history = createHashHistory();
 const rootReducer = createRootReducer(history);
 
 const configureStore = (initialState?: {
-  // counter?: number | counterStateType;
+  counter?: number | counterStateType;
   partNumbers?:
     | {
         errorState: boolean;
@@ -105,7 +105,7 @@ const configureStore = (initialState?: {
     ...customerActions,
     ...partNumbersActions,
     ...modalActions,
-    // ...counterActions,
+    ...counterActions,
     ...routerActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
