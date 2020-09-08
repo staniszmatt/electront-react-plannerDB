@@ -1,6 +1,13 @@
 import 'mssql/msnodesqlv8';
 import pool from '../config/config';
 
+// Query of a list of items as user types in search
+//
+//  SELECT customer.CustomerName
+//    FROM customer
+//      WHERE CustomerName LIKE 'CAL%'
+//        ORDER BY CustomerName ASC
+
 async function customerList() {
   let returnData = {};
   try {
